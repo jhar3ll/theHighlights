@@ -1,0 +1,66 @@
+.requestContainer{
+    gap: 1rem;
+    justify-content: center;
+    text-align: center;
+}
+
+.songListContainer{
+    margin-top: 20px;
+}
+
+.songSearchContainer{
+    
+    margin-top: 15px;
+}
+
+.songSelectionRadio{
+    display: flex;
+    justify-content: center;
+}
+
+.songSelectionRadioGroup{
+    gap: 1rem;
+}
+
+.submitButtonsContainer {
+    display: flex;
+    gap: 4rem;
+}
+
+.submitButtonsContainer .css-1b9ih93-MuiButtonBase-root-MuiButton-root.Mui-disabled {
+    background-color: lightgray;
+    color: gray;
+    pointer-events: all;
+}
+
+.submitButtonsContainer .css-1b9ih93-MuiButtonBase-root-MuiButton-root {
+    color: white;
+}
+
+.tipInfoFormContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.tipMainButtonsContainer{
+    display: flex;
+    gap: 4rem;
+}
+
+.tipMainContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.tipMainContainer h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+}

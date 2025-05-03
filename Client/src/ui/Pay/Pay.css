@@ -1,0 +1,32 @@
+.payErrorMessage{
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.songRequestedInfoContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.songRequestedSongInfo{
+    color: lightgreen;
+}
+
+.submitPayButtonsContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.submitPayButtonsContainer .css-1b9ih93-MuiButtonBase-root-MuiButton-root {
+    color: white;
+}
+
+.submitPayButtonsContainer .css-1b9ih93-MuiButtonBase-root-MuiButton-root.MuiButton-loading {
+    color: green;
+}
+
+.submitPayButtonsContainer .css-14m8o6v-MuiButton-loadingIndicator {
+    color: white;
+}

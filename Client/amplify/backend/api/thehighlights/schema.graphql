@@ -1,0 +1,26 @@
+type ContactInfo {
+  email: String
+  phoneNumber: String
+  name: String!
+}
+
+type Contact @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String!
+  contactInfo: ContactInfo!
+  message: String!
+}
+
+enum TipType {
+  REQUEST
+  DONATION
+  PAYMENT
+}
+
+type Tip @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  amount: Float!
+  type: TipType!
+}
+ 
