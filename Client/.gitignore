@@ -12,6 +12,7 @@
 /build
 
 # misc
+./https
 .DS_Store
 .env.local
 .env.development.local

@@ -22,10 +22,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "mac": "HTTPS=true SSL_CRT_FILE=./https/cert.crt SSL_KEY_FILE=./https/cert.key react-scripts start",
     "start": "set HTTPS=true&&set SSL_CRT_FILE=./https/cert.crt&&set SSL_KEY_FILE=./https/cert.key&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "http": "react-scripts start"
   },
   "eslintConfig": {
     "extends": [

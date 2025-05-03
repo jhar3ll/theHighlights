@@ -36,7 +36,7 @@ const list = [
 ];
 
 const Tip = () => {
-  const defaultTipInfo = { name: "", amount: 0, message: "" };
+  const defaultTipInfo = { name: "", amount: 0, message: "", email: "" };
   const [searchValue, setSearchValue] = useState<string>("");
   const [selection, setSelection] = useState<"tip"|"request"|null>(null);
   const [songList, setSongList] = useState<Song[]>(list);
@@ -182,18 +182,35 @@ const Tip = () => {
             variant="filled" 
             value={tipInfo.amount}
           />
-          <TextField
-            className="tipMessage"
-            label="Message (Optional)"
-            multiline
-            name="message"
-            onChange={handleTip}
-            rows={3}
-            size="small"
-            style={{ backgroundColor: "whitesmoke", borderRadius: "5px", width: "80%" }}
-            variant="filled"
-            value={tipInfo.message}
-          />
+          <div className="tipEmailContainer">
+            <TextField
+              className="tipEmail"
+              label="Email (Optional)"
+              name="email"
+              onChange={handleTip}
+              size="small"
+              style={{ backgroundColor: "whitesmoke", borderRadius: "5px", width: "100%" }}
+              type="text"
+              variant="filled"
+              value={tipInfo.email}
+              />
+            <span className="tipEmailHelperText">Enter your email if you would like a receipt</span>
+          </div>
+           <div className="tipEmailContainer">
+            <TextField
+              className="tipMessage"
+              label="Message (Optional)"
+              multiline
+              name="message"
+              onChange={handleTip}
+              rows={3}
+              size="small"
+              style={{ backgroundColor: "whitesmoke", borderRadius: "5px", width: "80%" }}
+              variant="filled"
+              value={tipInfo.message}
+            />
+            <span className="tipEmailHelperText">Leave the band a nice message!</span>
+          </div>
         </div>
       </div>
 

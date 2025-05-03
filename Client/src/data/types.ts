@@ -5,7 +5,8 @@ export type Song = {
 }
 
 export type tipInfoType = {
-    name: string;
     amount: number|string;
+    email: string;
     message: string;
+    name: string;
 }

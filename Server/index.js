@@ -4,21 +4,23 @@ const app = express();
 const cors = require("cors");
 const fs = require('fs');
 const https = require('https');
-app.use(cors);
-app.use(express.json());
+app.use(cors());
+app.use(express.static('public'));
 
-const privateKey = fs.readFileSync("../Client/https/cert.key");
-const certificate = fs.readFileSync("../Client/https/cert.crt");
-const credentials = {key: privateKey, cert: certificate};
+// const privateKey = fs.readFileSync("../Client/https/cert.key");
+// const certificate = fs.readFileSync("../Client/https/cert.crt");
+// const credentials = {key: privateKey, cert: certificate};
 
 app.get("/create-intent", async (req, res) => {
   console.log(req.query);
+  const { amount, artist, email, song } = req.query;
+  const song_requested = artist ? `${artist} - ${song}` : null;
     const paymentIntent = await stripe.paymentIntents.create({
-        amount: Number(req.query.amount),
+        amount: Number(amount),
+        automatic_payment_methods: { enabled: true},
         currency: 'usd',
-        metadata: {
-            song_requested: `${req.query.artist} - ${req.query.song}`,
-        }
+        metadata: { song_requested },
+        receipt_email: email === "null" ? "example@example.com" : email,
       });
   
     res.send({ client_secret: paymentIntent.client_secret });
@@ -33,5 +35,4 @@ app.get("/create-intent", async (req, res) => {
     });
   });
 
-const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(4242, () => console.log('Running on port 4242'));
+app.listen(4242, () => console.log('Running on port 4242'));

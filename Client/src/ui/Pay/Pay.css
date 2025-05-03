@@ -24,6 +24,7 @@
 }
 
 .submitPayButtonsContainer .css-1b9ih93-MuiButtonBase-root-MuiButton-root.MuiButton-loading {
+    background-color: green;
     color: green;
 }
 

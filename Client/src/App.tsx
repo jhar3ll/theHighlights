@@ -9,7 +9,7 @@ import Home from "./pages/Home/Home";
 import Tip from "./pages/Tip/Tip";
 import Events from './pages/Events/Events';
 import Navbar from './layout/Navbar';
-import Confirm from './ui/Confirm/Confirm';
+import Confirm from './pages/Confirm/Confirm';
 
 const { Route, Routes } = Library.Router;
 function App() {

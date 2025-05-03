@@ -1,4 +1,4 @@
-import { BrowserRouter, Link, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes, useLocation, useNavigate, useParams, parsePath } from "react-router-dom";
 import Button from '@mui/material/Button';
 import FormControlLabel  from "@mui/material/FormControlLabel";
 import IconButton from '@mui/material/IconButton';
@@ -26,6 +26,6 @@ export const Library = {
     IconButton,
     Radio,
     RadioGroup,
-    Router: { BrowserRouter, Link, Route, Routes, useLocation, useNavigate, useParams },
+    Router: { BrowserRouter, Link, Route, Routes, useLocation, useNavigate, useParams,  parsePath },
     TextField
 }

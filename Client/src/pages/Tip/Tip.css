@@ -37,6 +37,20 @@
     color: white;
 }
 
+.tipEmailContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    width: 100%;
+}
+
+.tipEmailContainer span {
+    font-size: 10px;
+    font-style: italic;
+}
+
 .tipInfoFormContainer{
     display: flex;
     flex-direction: column;
