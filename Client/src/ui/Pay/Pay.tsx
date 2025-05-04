@@ -1,6 +1,6 @@
 import "./Pay.css";
 import { useState } from 'react';
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { Library } from "../../lib/library";
 import { Elements } from '@stripe/react-stripe-js';
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
@@ -51,18 +51,17 @@ const Pay = ({ handleCancel, songSelection, tipInfo }: PayProps) => {
                 }
                 
                 // Create the PaymentIntent and obtain clientSecret from your server endpoint
-                const res = await fetch(`http://localhost:4242/create-intent?${urlSuffix}`, {
+                const res = await fetch(`https://localhost:4242/create-intent?${urlSuffix}`, {
                     method: 'GET',
                 });
             
-                const {client_secret: clientSecret} = await res.json();
-            
+                const {client_secret: clientSecret, transaction_id: paymentId} = await res.json();
                 const {error} = await stripe.confirmPayment({
                 //`Elements` instance that was used to create the Payment Element
                     elements,
                     clientSecret,
                     confirmParams: {
-                        return_url: `http://localhost:3000/confirm?${urlSuffix}&${returnUrlSuffix}`,
+                        return_url: `https://localhost:3000/confirm?${urlSuffix}&${returnUrlSuffix}&paymentId=${paymentId}`,
                     },
                 });
     
@@ -73,6 +72,7 @@ const Pay = ({ handleCancel, songSelection, tipInfo }: PayProps) => {
                     setErrorMessage(error.message || "error in payment confirmation");
                     throw new Error(error.message || "error in payment confirmation");
                 } else {
+                    alert("Payment successful!");
                     console.log("Payment successful!");
                     // Your customer will be redirected to your `return_url`. For some payment
                     // methods like iDEAL, your customer will be redirected to an intermediate
@@ -87,7 +87,7 @@ const Pay = ({ handleCancel, songSelection, tipInfo }: PayProps) => {
         }
         
       return (
-        <div>    
+        <div className="payMain">    
             <PaymentElement id="payment-element" />
             {errorMessage && <span className="payErrorMessage">{errorMessage}</span>}
             
@@ -112,7 +112,7 @@ const Pay = ({ handleCancel, songSelection, tipInfo }: PayProps) => {
       )
     }
 
-    const options = {
+    const options:StripeElementsOptions = {
         mode: 'payment',
         amount: convertedTipAmount,
         currency: 'usd',
@@ -135,11 +135,11 @@ const Pay = ({ handleCancel, songSelection, tipInfo }: PayProps) => {
                     <h3 className="songRequestedSongInfo">${tipInfo.amount}</h3>
                 </div>
             </div>
-            <Elements stripe={stripePromise} options={options as any}>
+            <Elements stripe={stripePromise} options={options}>
                 <CheckoutForm />
             </Elements>
         </div>
     )
 }
 
-export default Pay
+export default Pay;

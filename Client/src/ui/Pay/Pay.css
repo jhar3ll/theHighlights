@@ -13,9 +13,10 @@
     color: lightgreen;
 }
 
-.submitPayButtonsContainer {
+.payMain .submitPayButtonsContainer {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 200px;
   margin-top: 20px;
 }
 

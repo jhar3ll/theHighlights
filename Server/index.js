@@ -7,9 +7,14 @@ const https = require('https');
 app.use(cors());
 app.use(express.static('public'));
 
-// const privateKey = fs.readFileSync("../Client/https/cert.key");
-// const certificate = fs.readFileSync("../Client/https/cert.crt");
-// const credentials = {key: privateKey, cert: certificate};
+const privateKey = fs.readFileSync("../Client/https/cert.key");
+const certificate = fs.readFileSync("../Client/https/cert.crt");
+const credentials = {key: privateKey, cert: certificate};
+
+const httpsServer = https.createServer(credentials, app);
+httpsServer.listen(4242, () => {
+  console.log('HTTPS Server running on port 4242');
+});
 
 app.get("/create-intent", async (req, res) => {
   console.log(req.query);
@@ -17,22 +22,22 @@ app.get("/create-intent", async (req, res) => {
   const song_requested = artist ? `${artist} - ${song}` : null;
     const paymentIntent = await stripe.paymentIntents.create({
         amount: Number(amount),
-        automatic_payment_methods: { enabled: true},
+        automatic_payment_methods: { enabled: true },
         currency: 'usd',
         metadata: { song_requested },
         receipt_email: email === "null" ? "example@example.com" : email,
       });
+  console.log(paymentIntent);
+    res.send({ client_secret: paymentIntent.client_secret, transaction_id: paymentIntent.id });
+});
   
-    res.send({ client_secret: paymentIntent.client_secret });
-  });
-  
-  app.get("/session-status", async (req, res) => {
-    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-  
-    res.send({
-      status: session.status,
-      customer_email: session.customer_details.email
-    });
-  });
+// app.get("/session-status", async (req, res) => {
+//   const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
 
-app.listen(4242, () => console.log('Running on port 4242'));
+//   res.send({
+//     status: session.status,
+//     customer_email: session.customer_details.email
+//   });
+// });
+
+//app.listen(4242, () => console.log('Running on port 4242'));

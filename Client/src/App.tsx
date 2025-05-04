@@ -12,9 +12,10 @@ import Navbar from './layout/Navbar';
 import Confirm from './pages/Confirm/Confirm';
 
 const { Route, Routes } = Library.Router;
-function App() {
+
+const App = () => {
   return (
-    <div className="App" style={{ backgroundColor: "black", color: "white" }}>
+    <div className="App">
       <Navbar />
       <Routes>
         <Route path="*" element={<Error />} />
