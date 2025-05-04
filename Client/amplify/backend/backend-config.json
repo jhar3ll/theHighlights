@@ -21,5 +21,41 @@
       "providerPlugin": "awscloudformation",
       "service": "AppSync"
     }
+  },
+  "function": {
+    "theHighlightsCreateTipOnSuccess": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "thehighlights"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_theHighlightsCreateTipOnSuccess_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "theHighlightsCreateTipOnSuccess"
+        }
+      ]
+    },
+    "AMPLIFY_function_theHighlightsCreateTipOnSuccess_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "theHighlightsCreateTipOnSuccess"
+        }
+      ]
+    }
   }
 }

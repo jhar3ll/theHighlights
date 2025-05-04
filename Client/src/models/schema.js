@@ -1,7 +1,7 @@
 export const schema = {
     "models": {
-        "Contact": {
-            "name": "Contact",
+        "Message": {
+            "name": "Message",
             "fields": {
                 "id": {
                     "name": "id",
@@ -26,8 +26,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "message": {
-                    "name": "message",
+                "description": {
+                    "name": "description",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -51,7 +51,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Contacts",
+            "pluralName": "Messages",
             "attributes": [
                 {
                     "type": "model",
@@ -105,6 +105,27 @@ export const schema = {
                     "type": {
                         "enum": "TipType"
                     },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "transactionId": {
+                    "name": "transactionId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "paymentType": {
+                    "name": "paymentType",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -190,5 +211,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "15c7fedbd340e1e2217eae72123f49be"
+    "version": "9acb6d208c044d0253be923e9e821d0e"
 };

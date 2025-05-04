@@ -4,11 +4,11 @@ type ContactInfo {
   name: String!
 }
 
-type Contact @model @auth(rules: [{allow: public}]) {
+type Message @model @auth(rules: [{allow: public}]) {
   id: ID!
   title: String!
   contactInfo: ContactInfo!
-  message: String!
+  description: String!
 }
 
 enum TipType {
@@ -22,5 +22,8 @@ type Tip @model @auth(rules: [{allow: public}]) {
   name: String!
   amount: Float!
   type: TipType!
+  transactionId: String!
+  email: String
+  paymentType: String!
 }
  

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "api": {
+      "thehighlights": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

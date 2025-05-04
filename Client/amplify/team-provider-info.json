@@ -14,6 +14,12 @@
     "categories": {
       "api": {
         "thehighlights": {}
+      },
+      "function": {
+        "theHighlightsCreateTipOnSuccess": {
+          "deploymentBucketName": "amplify-thehighlights-dev-3db9d-deployment",
+          "s3Key": "amplify-builds/theHighlightsCreateTipOnSuccess-726e4370515165477058-build.zip"
+        }
       }
     }
   }

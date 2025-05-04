@@ -24,36 +24,36 @@ export declare type ContactInfo = LazyLoading extends LazyLoadingDisabled ? Eage
 
 export declare const ContactInfo: (new (init: ModelInit<ContactInfo>) => ContactInfo)
 
-type EagerContact = {
+type EagerMessage = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Contact, 'id'>;
+    identifier: ManagedIdentifier<Message, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly title: string;
   readonly contactInfo: ContactInfo;
-  readonly message: string;
+  readonly description: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-type LazyContact = {
+type LazyMessage = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Contact, 'id'>;
+    identifier: ManagedIdentifier<Message, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly title: string;
   readonly contactInfo: ContactInfo;
-  readonly message: string;
+  readonly description: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-export declare type Contact = LazyLoading extends LazyLoadingDisabled ? EagerContact : LazyContact
+export declare type Message = LazyLoading extends LazyLoadingDisabled ? EagerMessage : LazyMessage
 
-export declare const Contact: (new (init: ModelInit<Contact>) => Contact) & {
-  copyOf(source: Contact, mutator: (draft: MutableModel<Contact>) => MutableModel<Contact> | void): Contact;
+export declare const Message: (new (init: ModelInit<Message>) => Message) & {
+  copyOf(source: Message, mutator: (draft: MutableModel<Message>) => MutableModel<Message> | void): Message;
 }
 
 type EagerTip = {
@@ -65,6 +65,9 @@ type EagerTip = {
   readonly name: string;
   readonly amount: number;
   readonly type: TipType | keyof typeof TipType;
+  readonly transactionId: string;
+  readonly email?: string | null;
+  readonly paymentType: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -78,6 +81,9 @@ type LazyTip = {
   readonly name: string;
   readonly amount: number;
   readonly type: TipType | keyof typeof TipType;
+  readonly transactionId: string;
+  readonly email?: string | null;
+  readonly paymentType: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

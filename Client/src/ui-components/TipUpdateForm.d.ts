@@ -26,11 +26,17 @@ export declare type TipUpdateFormInputValues = {
     name?: string;
     amount?: number;
     type?: string;
+    transactionId?: string;
+    email?: string;
+    paymentType?: string;
 };
 export declare type TipUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
     amount?: ValidationFunction<number>;
     type?: ValidationFunction<string>;
+    transactionId?: ValidationFunction<string>;
+    email?: ValidationFunction<string>;
+    paymentType?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TipUpdateFormOverridesProps = {
@@ -38,6 +44,9 @@ export declare type TipUpdateFormOverridesProps = {
     name?: PrimitiveOverrideProps<TextFieldProps>;
     amount?: PrimitiveOverrideProps<TextFieldProps>;
     type?: PrimitiveOverrideProps<SelectFieldProps>;
+    transactionId?: PrimitiveOverrideProps<TextFieldProps>;
+    email?: PrimitiveOverrideProps<TextFieldProps>;
+    paymentType?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type TipUpdateFormProps = React.PropsWithChildren<{
     overrides?: TipUpdateFormOverridesProps | undefined | null;
