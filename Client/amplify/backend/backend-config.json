@@ -22,6 +22,49 @@
       "service": "AppSync"
     }
   },
+  "auth": {
+    "thehighlights40e79d2b": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL",
+          "NAME"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    },
+    "userPoolGroups": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "thehighlights40e79d2b"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito-UserPool-Groups"
+    }
+  },
   "function": {
     "theHighlightsCreateTipOnSuccess": {
       "build": true,
@@ -38,24 +81,6 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_function_theHighlightsCreateTipOnSuccess_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "theHighlightsCreateTipOnSuccess"
-        }
-      ]
-    },
-    "AMPLIFY_function_theHighlightsCreateTipOnSuccess_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "theHighlightsCreateTipOnSuccess"
-        }
-      ]
     }
   }
 }

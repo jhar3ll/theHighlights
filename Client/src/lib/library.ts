@@ -1,3 +1,9 @@
+import { Amplify } from "aws-amplify";
+import { fetchAuthSession, fetchUserAttributes, signOut, updateUserAttribute } from "aws-amplify/auth";
+import { DataStore, Predicates, SortDirection } from "aws-amplify/datastore";
+import { Hub } from "aws-amplify/utils";
+import { Authenticator } from "@aws-amplify/ui-react";
+
 import { BrowserRouter, Link, Route, Routes, useLocation, useNavigate, useParams, parsePath } from "react-router-dom";
 import Button from '@mui/material/Button';
 import FormControlLabel  from "@mui/material/FormControlLabel";
@@ -11,6 +17,19 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import YouTubeIcon from '@mui/icons-material/YouTube';
+
+export const AWS_Services = {
+    Amplify,
+    Authenticator,
+    DataStore,
+    fetchAuthSession, 
+    fetchUserAttributes, 
+    Hub,
+    Predicates,
+    signOut,
+    SortDirection,
+    updateUserAttribute,
+}
 
 export const Icons = {
     AttachMoneyIcon,

@@ -10,3 +10,9 @@ export type tipInfoType = {
     message: string;
     name: string;
 }
+
+export type User = {
+    email: string;
+    name: string;
+    userId: string;
+}
