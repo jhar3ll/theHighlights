@@ -35,6 +35,7 @@ export default function TipUpdateForm(props) {
     transactionId: "",
     email: "",
     paymentType: "",
+    requestInfo: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [amount, setAmount] = React.useState(initialValues.amount);
@@ -45,6 +46,9 @@ export default function TipUpdateForm(props) {
   const [email, setEmail] = React.useState(initialValues.email);
   const [paymentType, setPaymentType] = React.useState(
     initialValues.paymentType
+  );
+  const [requestInfo, setRequestInfo] = React.useState(
+    initialValues.requestInfo
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
@@ -57,6 +61,7 @@ export default function TipUpdateForm(props) {
     setTransactionId(cleanValues.transactionId);
     setEmail(cleanValues.email);
     setPaymentType(cleanValues.paymentType);
+    setRequestInfo(cleanValues.requestInfo);
     setErrors({});
   };
   const [tipRecord, setTipRecord] = React.useState(tipModelProp);
@@ -75,6 +80,7 @@ export default function TipUpdateForm(props) {
     transactionId: [{ type: "Required" }],
     email: [],
     paymentType: [{ type: "Required" }],
+    requestInfo: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -108,6 +114,7 @@ export default function TipUpdateForm(props) {
           transactionId,
           email,
           paymentType,
+          requestInfo,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -169,6 +176,7 @@ export default function TipUpdateForm(props) {
               transactionId,
               email,
               paymentType,
+              requestInfo,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -202,6 +210,7 @@ export default function TipUpdateForm(props) {
               transactionId,
               email,
               paymentType,
+              requestInfo,
             };
             const result = onChange(modelFields);
             value = result?.amount ?? value;
@@ -231,6 +240,7 @@ export default function TipUpdateForm(props) {
               transactionId,
               email,
               paymentType,
+              requestInfo,
             };
             const result = onChange(modelFields);
             value = result?.type ?? value;
@@ -276,6 +286,7 @@ export default function TipUpdateForm(props) {
               transactionId: value,
               email,
               paymentType,
+              requestInfo,
             };
             const result = onChange(modelFields);
             value = result?.transactionId ?? value;
@@ -305,6 +316,7 @@ export default function TipUpdateForm(props) {
               transactionId,
               email: value,
               paymentType,
+              requestInfo,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -334,6 +346,7 @@ export default function TipUpdateForm(props) {
               transactionId,
               email,
               paymentType: value,
+              requestInfo,
             };
             const result = onChange(modelFields);
             value = result?.paymentType ?? value;
@@ -347,6 +360,36 @@ export default function TipUpdateForm(props) {
         errorMessage={errors.paymentType?.errorMessage}
         hasError={errors.paymentType?.hasError}
         {...getOverrideProps(overrides, "paymentType")}
+      ></TextField>
+      <TextField
+        label="Request info"
+        isRequired={false}
+        isReadOnly={false}
+        value={requestInfo}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              amount,
+              type,
+              transactionId,
+              email,
+              paymentType,
+              requestInfo: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.requestInfo ?? value;
+          }
+          if (errors.requestInfo?.hasError) {
+            runValidationTasks("requestInfo", value);
+          }
+          setRequestInfo(value);
+        }}
+        onBlur={() => runValidationTasks("requestInfo", requestInfo)}
+        errorMessage={errors.requestInfo?.errorMessage}
+        hasError={errors.requestInfo?.hasError}
+        {...getOverrideProps(overrides, "requestInfo")}
       ></TextField>
       <Flex
         justifyContent="space-between"

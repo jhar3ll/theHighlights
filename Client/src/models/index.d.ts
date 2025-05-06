@@ -68,6 +68,7 @@ type EagerTip = {
   readonly transactionId: string;
   readonly email?: string | null;
   readonly paymentType: string;
+  readonly requestInfo?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -84,6 +85,7 @@ type LazyTip = {
   readonly transactionId: string;
   readonly email?: string | null;
   readonly paymentType: string;
+  readonly requestInfo?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

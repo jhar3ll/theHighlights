@@ -1,0 +1,16 @@
+.adminMain .css-7ax0nd-MuiBottomNavigation-root {
+    background-color: black;
+    margin-block: 50px;
+}
+
+.adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected, .adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected svg {
+    color: cyan;
+}
+
+.adminMain .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root {
+    color: white;
+}
+
+.adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root span, .adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root svg {
+    font-size: 30px;
+}

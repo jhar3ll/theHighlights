@@ -1,7 +1,8 @@
 import { useEffect, useState} from 'react';
-import { AWS_Services } from '../lib/library';
+import { AWS_Services, Library } from '../lib/library';
 import { User } from '../data/types';
 const { DataStore, fetchAuthSession, fetchUserAttributes, Hub } = AWS_Services;
+const { useNavigate } = Library.Router;
 
 type useGetUserProps = {
   setAuthOpen: (value: boolean) => void;
@@ -10,6 +11,7 @@ type useGetUserProps = {
 
 const useGetUser = ({ setAuthOpen, setLoading }: useGetUserProps): [User|null, React.Dispatch<React.SetStateAction<User|null>>] => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
       //check if user is authorized on component mount
@@ -25,9 +27,10 @@ const useGetUser = ({ setAuthOpen, setLoading }: useGetUserProps): [User|null, R
             
             const user: User = {userId: sub, email, name}; 
             const session = await fetchAuthSession();
-            console.log(session);
-            if (!(session.tokens?.accessToken.payload["cognito:groups"] as string[]).includes("highlights_admin_user_group")){ 
-              return alert("Unauthorized!" + "You are not authorized to use this page. Please contact your administrator if you feel this is a mistake.");
+            const userGroups = session.tokens?.accessToken.payload["cognito:groups"] as string[];
+            if (!userGroups || !userGroups.length || !userGroups.includes("highlights_admin_user_group")){ 
+              alert("Unauthorized! \n You are not authorized to use this page. Please contact your administrator if you feel this is a mistake.");
+              return navigate("/");
             };
             setCurrentUser({ ...user });
           } catch (error) {
@@ -55,7 +58,7 @@ const useGetUser = ({ setAuthOpen, setLoading }: useGetUserProps): [User|null, R
       checkUser();
       //unsubscribe from AWS Auth Listener on unmount
       return authHub;
-  }, [currentUser, setCurrentUser, setLoading, setAuthOpen]);
+  }, [currentUser, setCurrentUser, setLoading, setAuthOpen, navigate]);
     
   async function handleDataStore(){
     await DataStore.clear();

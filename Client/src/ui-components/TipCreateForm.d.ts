@@ -28,6 +28,7 @@ export declare type TipCreateFormInputValues = {
     transactionId?: string;
     email?: string;
     paymentType?: string;
+    requestInfo?: string;
 };
 export declare type TipCreateFormValidationValues = {
     name?: ValidationFunction<string>;
@@ -36,6 +37,7 @@ export declare type TipCreateFormValidationValues = {
     transactionId?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
     paymentType?: ValidationFunction<string>;
+    requestInfo?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TipCreateFormOverridesProps = {
@@ -46,6 +48,7 @@ export declare type TipCreateFormOverridesProps = {
     transactionId?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
     paymentType?: PrimitiveOverrideProps<TextFieldProps>;
+    requestInfo?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type TipCreateFormProps = React.PropsWithChildren<{
     overrides?: TipCreateFormOverridesProps | undefined | null;

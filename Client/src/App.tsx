@@ -22,7 +22,6 @@ const App = () => {
   const [authOpen, setAuthOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useGetUser({ setAuthOpen, setLoading });
-  console.log(authOpen, currentUser, loading);
   
   return (
     <div className="App">

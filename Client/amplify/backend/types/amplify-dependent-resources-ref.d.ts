@@ -7,17 +7,12 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "auth": {
-    "thehighlights40e79d2b": {
+    "thehighlights21a9c44321a9c443": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
-      "IdentityPoolId": "string",
-      "IdentityPoolName": "string",
       "UserPoolArn": "string",
       "UserPoolId": "string",
       "UserPoolName": "string"
-    },
-    "userPoolGroups": {
-      "userGroupsTheHighlightsAdminGroupRole": "string"
     }
   },
   "function": {
