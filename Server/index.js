@@ -18,13 +18,13 @@ httpsServer.listen(4242, () => {
 
 app.get("/create-intent", async (req, res) => {
   console.log(req.query);
-  const { amount, artist, email, name, song } = req.query;
+  const { amount, artist, email, message, name, song } = req.query;
   const song_requested = artist ? `${artist} - ${song}` : null;
     const paymentIntent = await stripe.paymentIntents.create({
         amount: Number(amount),
         automatic_payment_methods: { enabled: true },
         currency: 'usd',
-        metadata: { name, song_requested },
+        metadata: { message, name, song_requested },
         receipt_email: email === "null" ? "example@example.com" : email,
       });
   console.log(paymentIntent);

@@ -22,33 +22,36 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type TipCreateFormInputValues = {
-    name?: string;
     amount?: number;
-    type?: string;
-    transactionId?: string;
     email?: string;
+    message?: string;
+    name?: string;
     paymentType?: string;
     requestInfo?: string;
+    transactionId?: string;
+    type?: string;
 };
 export declare type TipCreateFormValidationValues = {
-    name?: ValidationFunction<string>;
     amount?: ValidationFunction<number>;
-    type?: ValidationFunction<string>;
-    transactionId?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
+    message?: ValidationFunction<string>;
+    name?: ValidationFunction<string>;
     paymentType?: ValidationFunction<string>;
     requestInfo?: ValidationFunction<string>;
+    transactionId?: ValidationFunction<string>;
+    type?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TipCreateFormOverridesProps = {
     TipCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    name?: PrimitiveOverrideProps<TextFieldProps>;
     amount?: PrimitiveOverrideProps<TextFieldProps>;
-    type?: PrimitiveOverrideProps<SelectFieldProps>;
-    transactionId?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
+    message?: PrimitiveOverrideProps<TextFieldProps>;
+    name?: PrimitiveOverrideProps<TextFieldProps>;
     paymentType?: PrimitiveOverrideProps<TextFieldProps>;
     requestInfo?: PrimitiveOverrideProps<TextFieldProps>;
+    transactionId?: PrimitiveOverrideProps<TextFieldProps>;
+    type?: PrimitiveOverrideProps<SelectFieldProps>;
 } & EscapeHatchProps;
 export declare type TipCreateFormProps = React.PropsWithChildren<{
     overrides?: TipCreateFormOverridesProps | undefined | null;

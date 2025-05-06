@@ -85,33 +85,10 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "amount": {
                     "name": "amount",
                     "isArray": false,
                     "type": "Float",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "type": {
-                    "name": "type",
-                    "isArray": false,
-                    "type": {
-                        "enum": "TipType"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "transactionId": {
-                    "name": "transactionId",
-                    "isArray": false,
-                    "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -120,6 +97,20 @@ export const schema = {
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
+                    "attributes": []
+                },
+                "message": {
+                    "name": "message",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
                     "attributes": []
                 },
                 "paymentType": {
@@ -134,6 +125,22 @@ export const schema = {
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
+                    "attributes": []
+                },
+                "transactionId": {
+                    "name": "transactionId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "TipType"
+                    },
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createdAt": {
@@ -218,5 +225,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "63f51d1283926cb22923a65d83b54548"
+    "version": "cb667509afe5bc40ac0f649cac26ff11"
 };

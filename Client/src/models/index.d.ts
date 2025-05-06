@@ -62,13 +62,14 @@ type EagerTip = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly name: string;
   readonly amount: number;
-  readonly type: TipType | keyof typeof TipType;
-  readonly transactionId: string;
   readonly email?: string | null;
+  readonly message?: string | null;
+  readonly name: string;
   readonly paymentType: string;
   readonly requestInfo?: string | null;
+  readonly transactionId: string;
+  readonly type: TipType | keyof typeof TipType;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -79,13 +80,14 @@ type LazyTip = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly name: string;
   readonly amount: number;
-  readonly type: TipType | keyof typeof TipType;
-  readonly transactionId: string;
   readonly email?: string | null;
+  readonly message?: string | null;
+  readonly name: string;
   readonly paymentType: string;
   readonly requestInfo?: string | null;
+  readonly transactionId: string;
+  readonly type: TipType | keyof typeof TipType;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

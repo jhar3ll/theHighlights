@@ -17,7 +17,7 @@ type PayProps = {
 const Pay = ({ handleCancel, songSelection, tipInfo }: PayProps) => {
     const convertedTipAmount = Number(tipInfo.amount) * 100; // Convert to cents
     const urlPreSuffix = !!songSelection ? `&song=${songSelection.title}&artist=${songSelection.artist}` : "";
-    const urlSuffix = `amount=${convertedTipAmount}&email=${tipInfo.email || null}&name=${tipInfo.name}${urlPreSuffix}`;
+    const urlSuffix = `amount=${convertedTipAmount}&email=${tipInfo.email || null}&name=${tipInfo.name}&message=${tipInfo.message || null}${urlPreSuffix}`;
     const returnUrlSuffix = `name=${tipInfo.name}&message=${tipInfo.message}`;
 
     const CheckoutForm = () => {

@@ -17,14 +17,21 @@ enum TipType {
   PAYMENT
 }
 
+type Song @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  artist: String!
+  title: String!
+}
+
 type Tip @model @auth(rules: [{allow: public}]) {
   id: ID!
-  name: String!
   amount: Float!
-  type: TipType!
-  transactionId: String!
   email: String
+  message: String
+  name: String!
   paymentType: String!
   requestInfo: String
+  transactionId: String!
+  type: TipType!
 }
  

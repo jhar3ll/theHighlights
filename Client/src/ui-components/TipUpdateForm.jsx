@@ -29,39 +29,42 @@ export default function TipUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    name: "",
     amount: "",
-    type: "",
-    transactionId: "",
     email: "",
+    message: "",
+    name: "",
     paymentType: "",
     requestInfo: "",
+    transactionId: "",
+    type: "",
   };
-  const [name, setName] = React.useState(initialValues.name);
   const [amount, setAmount] = React.useState(initialValues.amount);
-  const [type, setType] = React.useState(initialValues.type);
-  const [transactionId, setTransactionId] = React.useState(
-    initialValues.transactionId
-  );
   const [email, setEmail] = React.useState(initialValues.email);
+  const [message, setMessage] = React.useState(initialValues.message);
+  const [name, setName] = React.useState(initialValues.name);
   const [paymentType, setPaymentType] = React.useState(
     initialValues.paymentType
   );
   const [requestInfo, setRequestInfo] = React.useState(
     initialValues.requestInfo
   );
+  const [transactionId, setTransactionId] = React.useState(
+    initialValues.transactionId
+  );
+  const [type, setType] = React.useState(initialValues.type);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = tipRecord
       ? { ...initialValues, ...tipRecord }
       : initialValues;
-    setName(cleanValues.name);
     setAmount(cleanValues.amount);
-    setType(cleanValues.type);
-    setTransactionId(cleanValues.transactionId);
     setEmail(cleanValues.email);
+    setMessage(cleanValues.message);
+    setName(cleanValues.name);
     setPaymentType(cleanValues.paymentType);
     setRequestInfo(cleanValues.requestInfo);
+    setTransactionId(cleanValues.transactionId);
+    setType(cleanValues.type);
     setErrors({});
   };
   const [tipRecord, setTipRecord] = React.useState(tipModelProp);
@@ -74,13 +77,14 @@ export default function TipUpdateForm(props) {
   }, [idProp, tipModelProp]);
   React.useEffect(resetStateValues, [tipRecord]);
   const validations = {
-    name: [{ type: "Required" }],
     amount: [{ type: "Required" }],
-    type: [{ type: "Required" }],
-    transactionId: [{ type: "Required" }],
     email: [],
+    message: [],
+    name: [{ type: "Required" }],
     paymentType: [{ type: "Required" }],
     requestInfo: [],
+    transactionId: [{ type: "Required" }],
+    type: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -108,13 +112,14 @@ export default function TipUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          name,
           amount,
-          type,
-          transactionId,
           email,
+          message,
+          name,
           paymentType,
           requestInfo,
+          transactionId,
+          type,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -162,6 +167,103 @@ export default function TipUpdateForm(props) {
       {...rest}
     >
       <TextField
+        label="Amount"
+        isRequired={true}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={amount}
+        onChange={(e) => {
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              amount: value,
+              email,
+              message,
+              name,
+              paymentType,
+              requestInfo,
+              transactionId,
+              type,
+            };
+            const result = onChange(modelFields);
+            value = result?.amount ?? value;
+          }
+          if (errors.amount?.hasError) {
+            runValidationTasks("amount", value);
+          }
+          setAmount(value);
+        }}
+        onBlur={() => runValidationTasks("amount", amount)}
+        errorMessage={errors.amount?.errorMessage}
+        hasError={errors.amount?.hasError}
+        {...getOverrideProps(overrides, "amount")}
+      ></TextField>
+      <TextField
+        label="Email"
+        isRequired={false}
+        isReadOnly={false}
+        value={email}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              amount,
+              email: value,
+              message,
+              name,
+              paymentType,
+              requestInfo,
+              transactionId,
+              type,
+            };
+            const result = onChange(modelFields);
+            value = result?.email ?? value;
+          }
+          if (errors.email?.hasError) {
+            runValidationTasks("email", value);
+          }
+          setEmail(value);
+        }}
+        onBlur={() => runValidationTasks("email", email)}
+        errorMessage={errors.email?.errorMessage}
+        hasError={errors.email?.hasError}
+        {...getOverrideProps(overrides, "email")}
+      ></TextField>
+      <TextField
+        label="Message"
+        isRequired={false}
+        isReadOnly={false}
+        value={message}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              amount,
+              email,
+              message: value,
+              name,
+              paymentType,
+              requestInfo,
+              transactionId,
+              type,
+            };
+            const result = onChange(modelFields);
+            value = result?.message ?? value;
+          }
+          if (errors.message?.hasError) {
+            runValidationTasks("message", value);
+          }
+          setMessage(value);
+        }}
+        onBlur={() => runValidationTasks("message", message)}
+        errorMessage={errors.message?.errorMessage}
+        hasError={errors.message?.hasError}
+        {...getOverrideProps(overrides, "message")}
+      ></TextField>
+      <TextField
         label="Name"
         isRequired={true}
         isReadOnly={false}
@@ -170,13 +272,14 @@ export default function TipUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name: value,
               amount,
-              type,
-              transactionId,
               email,
+              message,
+              name: value,
               paymentType,
               requestInfo,
+              transactionId,
+              type,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -192,38 +295,97 @@ export default function TipUpdateForm(props) {
         {...getOverrideProps(overrides, "name")}
       ></TextField>
       <TextField
-        label="Amount"
+        label="Payment type"
         isRequired={true}
         isReadOnly={false}
-        type="number"
-        step="any"
-        value={amount}
+        value={paymentType}
         onChange={(e) => {
-          let value = isNaN(parseFloat(e.target.value))
-            ? e.target.value
-            : parseFloat(e.target.value);
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
-              amount: value,
-              type,
-              transactionId,
+              amount,
               email,
-              paymentType,
+              message,
+              name,
+              paymentType: value,
               requestInfo,
+              transactionId,
+              type,
             };
             const result = onChange(modelFields);
-            value = result?.amount ?? value;
+            value = result?.paymentType ?? value;
           }
-          if (errors.amount?.hasError) {
-            runValidationTasks("amount", value);
+          if (errors.paymentType?.hasError) {
+            runValidationTasks("paymentType", value);
           }
-          setAmount(value);
+          setPaymentType(value);
         }}
-        onBlur={() => runValidationTasks("amount", amount)}
-        errorMessage={errors.amount?.errorMessage}
-        hasError={errors.amount?.hasError}
-        {...getOverrideProps(overrides, "amount")}
+        onBlur={() => runValidationTasks("paymentType", paymentType)}
+        errorMessage={errors.paymentType?.errorMessage}
+        hasError={errors.paymentType?.hasError}
+        {...getOverrideProps(overrides, "paymentType")}
+      ></TextField>
+      <TextField
+        label="Request info"
+        isRequired={false}
+        isReadOnly={false}
+        value={requestInfo}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              amount,
+              email,
+              message,
+              name,
+              paymentType,
+              requestInfo: value,
+              transactionId,
+              type,
+            };
+            const result = onChange(modelFields);
+            value = result?.requestInfo ?? value;
+          }
+          if (errors.requestInfo?.hasError) {
+            runValidationTasks("requestInfo", value);
+          }
+          setRequestInfo(value);
+        }}
+        onBlur={() => runValidationTasks("requestInfo", requestInfo)}
+        errorMessage={errors.requestInfo?.errorMessage}
+        hasError={errors.requestInfo?.hasError}
+        {...getOverrideProps(overrides, "requestInfo")}
+      ></TextField>
+      <TextField
+        label="Transaction id"
+        isRequired={true}
+        isReadOnly={false}
+        value={transactionId}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              amount,
+              email,
+              message,
+              name,
+              paymentType,
+              requestInfo,
+              transactionId: value,
+              type,
+            };
+            const result = onChange(modelFields);
+            value = result?.transactionId ?? value;
+          }
+          if (errors.transactionId?.hasError) {
+            runValidationTasks("transactionId", value);
+          }
+          setTransactionId(value);
+        }}
+        onBlur={() => runValidationTasks("transactionId", transactionId)}
+        errorMessage={errors.transactionId?.errorMessage}
+        hasError={errors.transactionId?.hasError}
+        {...getOverrideProps(overrides, "transactionId")}
       ></TextField>
       <SelectField
         label="Type"
@@ -234,13 +396,14 @@ export default function TipUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
               amount,
-              type: value,
-              transactionId,
               email,
+              message,
+              name,
               paymentType,
               requestInfo,
+              transactionId,
+              type: value,
             };
             const result = onChange(modelFields);
             value = result?.type ?? value;
@@ -271,126 +434,6 @@ export default function TipUpdateForm(props) {
           {...getOverrideProps(overrides, "typeoption2")}
         ></option>
       </SelectField>
-      <TextField
-        label="Transaction id"
-        isRequired={true}
-        isReadOnly={false}
-        value={transactionId}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              amount,
-              type,
-              transactionId: value,
-              email,
-              paymentType,
-              requestInfo,
-            };
-            const result = onChange(modelFields);
-            value = result?.transactionId ?? value;
-          }
-          if (errors.transactionId?.hasError) {
-            runValidationTasks("transactionId", value);
-          }
-          setTransactionId(value);
-        }}
-        onBlur={() => runValidationTasks("transactionId", transactionId)}
-        errorMessage={errors.transactionId?.errorMessage}
-        hasError={errors.transactionId?.hasError}
-        {...getOverrideProps(overrides, "transactionId")}
-      ></TextField>
-      <TextField
-        label="Email"
-        isRequired={false}
-        isReadOnly={false}
-        value={email}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              amount,
-              type,
-              transactionId,
-              email: value,
-              paymentType,
-              requestInfo,
-            };
-            const result = onChange(modelFields);
-            value = result?.email ?? value;
-          }
-          if (errors.email?.hasError) {
-            runValidationTasks("email", value);
-          }
-          setEmail(value);
-        }}
-        onBlur={() => runValidationTasks("email", email)}
-        errorMessage={errors.email?.errorMessage}
-        hasError={errors.email?.hasError}
-        {...getOverrideProps(overrides, "email")}
-      ></TextField>
-      <TextField
-        label="Payment type"
-        isRequired={true}
-        isReadOnly={false}
-        value={paymentType}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              amount,
-              type,
-              transactionId,
-              email,
-              paymentType: value,
-              requestInfo,
-            };
-            const result = onChange(modelFields);
-            value = result?.paymentType ?? value;
-          }
-          if (errors.paymentType?.hasError) {
-            runValidationTasks("paymentType", value);
-          }
-          setPaymentType(value);
-        }}
-        onBlur={() => runValidationTasks("paymentType", paymentType)}
-        errorMessage={errors.paymentType?.errorMessage}
-        hasError={errors.paymentType?.hasError}
-        {...getOverrideProps(overrides, "paymentType")}
-      ></TextField>
-      <TextField
-        label="Request info"
-        isRequired={false}
-        isReadOnly={false}
-        value={requestInfo}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              amount,
-              type,
-              transactionId,
-              email,
-              paymentType,
-              requestInfo: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.requestInfo ?? value;
-          }
-          if (errors.requestInfo?.hasError) {
-            runValidationTasks("requestInfo", value);
-          }
-          setRequestInfo(value);
-        }}
-        onBlur={() => runValidationTasks("requestInfo", requestInfo)}
-        errorMessage={errors.requestInfo?.errorMessage}
-        hasError={errors.requestInfo?.hasError}
-        {...getOverrideProps(overrides, "requestInfo")}
-      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

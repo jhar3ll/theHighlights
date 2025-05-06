@@ -1,0 +1,58 @@
+.tipAmount {
+    color: green;
+}
+
+.tipField {
+    color: darkslategray;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.tipFilterChipContainer {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-block: 30px;
+}
+
+.tipFilterChipContainer .css-16yb58i-MuiButtonBase-root-MuiChip-root, .tipFilterChipContainer .css-1ykktcv-MuiButtonBase-root-MuiChip-root {
+    background-color: rgb(155, 155, 155);
+    color: black;
+}
+
+.tipFilterChipContainer .css-1ykktcv-MuiButtonBase-root-MuiChip-root:hover {
+    background-color: white;
+    color: gray;
+}
+
+.tipListContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+}
+
+.tipListContainer h2 {
+    margin: 0;
+    text-decoration: underline;
+}
+.tipListContainer span {
+    font-size: large;
+    font-weight: 900;
+}
+
+.tipListItem {
+    background-color: gainsboro;
+    border: 5px solid lightslategray;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: auto;
+    padding: 20px;
+}
+
+.tipValue {
+    color: cadetblue;
+}

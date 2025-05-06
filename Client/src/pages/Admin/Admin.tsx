@@ -25,16 +25,19 @@ const Admin = ({ currentUser }: { currentUser: User|null }) => {
   if (!currentUser) return <Authenticator />;
   return (
     <div className="adminMain">
+      <div className="adminNavigationPanelContainer">
+
       <BottomNavigation
         className="adminNavigationPanelContainer"
         showLabels
         value={currentPage}
         onChange={(_event, newValue) => setCurrentPage(newValue)}
-      >
-        <BottomNavigationAction label="Tips" icon={<MonetizationOnIcon htmlColor="white"/>} />
-        <BottomNavigationAction label="Songs List" icon={<LibraryMusicIcon htmlColor="white"/>} />
-        <BottomNavigationAction label="Events" icon={<EventIcon htmlColor="white"/>} />
+        >
+        <BottomNavigationAction label="Tips" icon={<MonetizationOnIcon />} />
+        <BottomNavigationAction label="Songs" icon={<LibraryMusicIcon />} />
+        <BottomNavigationAction label="Events" icon={<EventIcon />} />
       </BottomNavigation>
+        </div>
 
       <CurrentComponent />
     </div>

@@ -8,6 +8,7 @@ import { BrowserRouter, Link, Route, Routes, useLocation, useNavigate, useParams
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
 import FormControlLabel  from "@mui/material/FormControlLabel";
 import IconButton from '@mui/material/IconButton';
 import Radio from '@mui/material/Radio';
@@ -49,6 +50,7 @@ export const Library = {
     BottomNavigation,
     BottomNavigationAction,
     Button,
+    Chip,
     FormControlLabel,
     IconButton,
     Radio,

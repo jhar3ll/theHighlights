@@ -1,16 +1,30 @@
+/* .adminNavigationPanelContainer {
+    background-color: lightgray;
+    
+    display: flex;
+    margin-inline: auto;
+    width: 50%;
+} */
+
 .adminMain .css-7ax0nd-MuiBottomNavigation-root {
-    background-color: black;
-    margin-block: 50px;
+    background-color: gainsboro;
+    border-radius: 10px;
+    margin-inline: auto;
+    height: fit-content;
+    padding-bottom: 10px;
+    padding-top: 22px;
+    width: 30%;
 }
 
 .adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected, .adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected svg {
-    color: cyan;
+    color: cadetblue;
 }
 
 .adminMain .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root {
-    color: white;
+   
 }
 
 .adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root span, .adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root svg {
+    font-weight: 800;
     font-size: 30px;
 }
