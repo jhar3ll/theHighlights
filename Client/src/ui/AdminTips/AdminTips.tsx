@@ -8,7 +8,6 @@ const { Chip } = Library;
 
 type chipType = {
   active: boolean
-  field: string
   label: string|number
   value: string|number
 }
@@ -19,12 +18,13 @@ const AdminTips = () => {
   const today = new Date();
   const todayMonth = today.getMonth();
   const todayYear = today.getFullYear();
+  const todayMonthLabel = monthNames[todayMonth];
   const [chips, setChips] = useState<chipType[]>([
-    {active: false, field: "createdAt", label: "Today", value: today.getDay()},
-    {active: false, field: "type", label: "Requests", value: "REQUEST"},
-    {active: false, field: "type", label: "Tips", value: "DONATION"},
-    {active: false, field: "createdAtMonth", label: monthNames[todayMonth], value: todayMonth},
-    {active: false, field: "createdAtYear", label: todayYear, value: todayYear}
+    {active: false, label: "Today", value: today.getDay()},
+    {active: false, label: "Requests", value: "REQUEST"},
+    {active: false, label: "Tips", value: "DONATION"},
+    {active: false, label: todayMonthLabel, value: todayMonth},
+    {active: false, label: todayYear, value: todayYear}
   ]);
   const [tips, setTips] = useState<tipsArrayType>(null);
   const tipsBackup = useRef<tipsArrayType>(null);
@@ -53,9 +53,24 @@ const AdminTips = () => {
     if (!tipsBackup.current) return;
     const appliedChips = chips.filter(chip => chip.active);
     if (appliedChips.length === chips.length) return setTips(tipsBackup.current);
-
-    const tipsToFilter = [...tipsBackup.current];
+    setTips([...tipsBackup.current].filter(tip => appliedChips.every(chip => filterTip(chip, tip))));
     //take all tips and filter by appliedChips array
+  }
+
+  function filterTip(chip: chipType, tip: Tip){
+    if (["Today", todayMonthLabel, todayYear].includes(chip.label)){
+      if (!tip.createdAt){
+        return true;
+      } else {
+        const createdAt = new Date(tip.createdAt);
+        const chipMap = {
+          Today: createdAt.toDateString() === today.toDateString(),
+          [todayMonthLabel]: `${createdAt.getMonth()}-${createdAt.getFullYear()}` === `${todayMonth}-${todayYear}`,
+          [todayYear]: createdAt.getFullYear() === todayYear
+        }
+        return chipMap[chip.label];
+      } 
+    } else return chip.label === "Requests" ? tip.type === "REQUEST" : tip.type === "DONATION";
   }
 
   return (
@@ -71,34 +86,28 @@ const AdminTips = () => {
           />
         )}
       </div>
-      <div className='tipListContainer'>
+      <table className='tipListContainer'>
+        <thead>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Name</th>
+          <th>Song</th>
+          <th>Message</th>
+          <th>Date</th>
+        </thead>
         {tips && tips.map((tip, index) => (
-          <div className="tipListItem"key={index}>
-            <h2 className='tipValue'>{tip.type === "DONATION" ? "Donation" : "Song Request"}</h2>
-            <span className='tipField'>Name: 
-              <span className='tipValue'>{tip.name.charAt(0).toUpperCase() + tip.name.slice(1)}</span> 
-            </span>
-            <span className='tipField'>Tip Amount: 
-              <span className='tipAmount'>${tip.amount.toFixed(2)}</span>
-            </span>
-            { tip.type === "REQUEST" && <span className='tipField'>Song Requested: 
-                <span className='tipValue'>{tip.requestInfo}</span>
-              </span>
-            }
-            { tip.email && tip.email !== "null" && <span className='tipField'>Email: 
-                <span className='tipValue'>{tip.email}</span>
-              </span>
-            }
-            { tip.message && tip.message !== "null" && <span className='tipField'>Message: 
-                <span className='tipValue'>{tip.message}</span>
-              </span>
-            }
-            <span className='tipField'>Date: 
-              <span className='tipAmount'>{new Date(tip.createdAt || "").toLocaleString()}</span>
-            </span>
-          </div>
+          <tbody>
+            <tr>
+              <td>{tip.type[0] + tip.type.slice(1).toLowerCase()}</td>
+              <td>${tip.amount.toFixed(2)}</td>
+              <td>{tip.name}</td>
+              <td>{tip.type === "REQUEST" && !!tip.requestInfo && tip.requestInfo !== "null" ? tip.requestInfo : "-"}</td>
+              <td>{tip.message && tip.message !== "null" ? tip.message :  "-"}</td>
+              <td>{tip.createdAt ? new Date(tip.createdAt).toLocaleDateString() : new Date().toLocaleDateString()}</td>
+            </tr>
+          </tbody>
         ))}
-      </div>
+      </table>
     </div>
   )
 }
