@@ -32,7 +32,29 @@ async function listSongs() {
     }
 }
 
+//update song
+async function updateSong(song: Song): Promise<{result: "SUCCESS"|"FAIL", updatedSong: Song}|undefined> {
+    const { addedBy, album, artist, title } = song;
+    try {
+        const original = await DataStore.query(Song, song.id);
+        if (!original) throw new Error("Unable to retrieve original song with id: " + song.id);
+        const updatedSong = await DataStore.save(
+            Song.copyOf(original, updated => {
+                updated.addedBy = addedBy
+                updated.album = album
+                updated.artist = artist
+                updated.title = title
+        }));
+        console.log("update song SUCCESS: ", updatedSong);
+        return { result: "SUCCESS", updatedSong };
+    } catch (error) {
+        console.log("createSong() error: ", error);
+    }    
+}
+
+
 export const SongsAPI = {
     createSong,
-    listSongs
+    listSongs,
+    updateSong
 };

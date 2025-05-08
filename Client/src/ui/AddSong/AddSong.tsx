@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import { Library } from '../../lib/library';
 import { SongsAPI } from "../../api/SongsAPI";
 import { AdminContext } from "../../contexts/contexts";
+import { capitalizeWords } from "../../util/capitalizeWords";
 const { Button, TextField } = Library;
 
 type newSongType = {
@@ -17,11 +18,10 @@ const AddSong = () => {
     const { currentUser, setAlertMessage } = useContext(AdminContext) || {};
     const [songInfo, setSongInfo] = useState<newSongType>(initialSet);
     const isFieldEmpty = Object.values(songInfo).some(field => !field);
-    
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.currentTarget;
-        setSongInfo(prevState => ({ ...prevState, [name]: value }));
+        setSongInfo(prevState => ({ ...prevState, [name]: capitalizeWords(value) }));
     }
 
     async function handleSubmit() {

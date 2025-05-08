@@ -16,7 +16,7 @@ const AlertMessage = ({ duration, message, open, setShowAlert, severity }: Alert
 
     return (
         <div className='errorContainer'>
-            <Snackbar sx={{marginTop: "20px"}} open={open}
+            <Snackbar  open={open}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center"}}
                 autoHideDuration={duration} onClose={handleClose}
             >
