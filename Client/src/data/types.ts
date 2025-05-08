@@ -1,3 +1,10 @@
+import { AlertMessageProps } from "../ui/AlertMessage/AlertMessage";
+
+export type AdminContextType = {
+    currentUser: User
+    setAlertMessage: React.Dispatch<React.SetStateAction<AlertMessageProps>>
+}
+
 export type Song = {
     artist: string;
     id: number;

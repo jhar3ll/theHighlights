@@ -6,11 +6,14 @@ import { AWS_Services, Icons, Library } from "../../lib/library";
 import AdminTips from "../../ui/AdminTips/AdminTips";
 import AdminSongs from "../../ui/AdminSongs/AdminSongs";
 import AdminEvents from "../../ui/AdminEvents/AdminEvents";
+import AlertMessage, { AlertMessageProps } from "../../ui/AlertMessage/AlertMessage";
+import { AdminContext } from "../../contexts/contexts";
 const { Authenticator } = AWS_Services;
 const { EventIcon, LibraryMusicIcon, MonetizationOnIcon} = Icons;
 const { BottomNavigation, BottomNavigationAction } = Library;
 
 const Admin = ({ currentUser }: { currentUser: User|null }) => {
+  const [alertMessage, setAlertMessage] = useState<AlertMessageProps>({duration: 2500, message: "", open: false, severity: "success"});
   const [currentPage, setCurrentPage] = useState(0);
   
   const CurrentComponent = () => {
@@ -39,7 +42,11 @@ const Admin = ({ currentUser }: { currentUser: User|null }) => {
       </BottomNavigation>
         </div>
 
-      <CurrentComponent />
+      <AdminContext.Provider value={{ currentUser, setAlertMessage}}>
+        <CurrentComponent />
+      </AdminContext.Provider>
+
+      <AlertMessage {...alertMessage} setShowAlert={setAlertMessage} />
     </div>
   )
 }

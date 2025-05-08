@@ -1,50 +1,35 @@
 import "./Tip.css";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icons, Library } from "../../lib/library";
 import Pay from "../../ui/Pay/Pay";
-import { Song, tipInfoType } from "../../data/types";
+import { tipInfoType } from "../../data/types";
+import { SongsAPI } from "../../api/SongsAPI";
+import { Song } from "../../models";
 
 const { Button, FormControlLabel, Radio, RadioGroup, TextField } = Library;
 const { AttachMoneyIcon, LibraryMusicIcon } = Icons;
-
-const list = [
-  {
-    "id": 1,
-    "title": "Death Bed",
-    "artist": "Powfu",
-  },
-  { "id": 2,
-    "title": "Bad Liar",
-    "artist": "Imagine Dragons",
-  },
-  { "id": 3,
-    "title": "Faded",
-    "artist": "Alan Walker",
-  },
-  { "id": 4,
-    "title": "Hate Me",
-    "artist": "Ellie Goulding",
-  },
-  { "id": 5,
-    "title": "Solo",
-    "artist": "Clean Bandit",
-  },
-  { "id": 6,
-    "title": "Without Me",
-    "artist": "Halsey",
-  }
-];
 
 const Tip = () => {
   const defaultTipInfo = { name: "", amount: 0, message: "", email: "" };
   const [searchValue, setSearchValue] = useState<string>("");
   const [selection, setSelection] = useState<"tip"|"request"|null>(null);
-  const [songList, setSongList] = useState<Song[]>(list);
+  const [songList, setSongList] = useState<Song[]>([]);
   const [songSelection, setSongSelection] = useState<Song | null>(null);
   const [songSelectionConfirmed, setSongSelectionConfirmed] = useState<boolean>(false);
   const [readyToPay, setReadyToPay] = useState<boolean>(false);
   const [tipInfo, setTipInfo] = useState<tipInfoType>(defaultTipInfo);
   const submitDisabled = !checkReadyForSubmit();
+
+  useEffect(() => {
+    async function getAllSongsUser() {
+      if (!songList.length){
+        const allSongs = await SongsAPI.listSongs();
+        allSongs && setSongList(allSongs);
+      }
+    }
+
+    getAllSongsUser();
+  },[songList])
 
   function checkReadyForSubmit() {
     if (selection === "tip") return !!tipInfo.name && Number(tipInfo.amount) > 0;
@@ -74,7 +59,7 @@ const Tip = () => {
   function handleSearch(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.currentTarget;
     setSearchValue(value);
-    const filteredSongs = list.filter(song => song.title.toLowerCase().includes(value.toLowerCase()) || song.artist.toLowerCase().includes(value.toLowerCase()));
+    const filteredSongs = songList.filter(song => song.title.toLowerCase().includes(value.toLowerCase()) || song.artist.toLowerCase().includes(value.toLowerCase()));
     setSongList(filteredSongs);
   }
 
@@ -84,9 +69,9 @@ const Tip = () => {
   }
 
   function handleSongSelection(event: React.ChangeEvent<HTMLInputElement>) {
-    const song = songList.find(song => song.id === Number(event.target.value));
-    if (!song) return;
-    setSongSelection(song);
+    const songIndex = songList.findIndex(song => song.id === event.target.value);
+    if (!songIndex) return;
+    setSongSelection(songList[songIndex]);
   }
 
   function handleSubmit(){
@@ -134,17 +119,14 @@ const Tip = () => {
         </div>
         <div className="songListContainer">
           <RadioGroup className="songSelectionRadioGroup" value={songSelection && songSelection.id} onChange={handleSongSelection}>
-            {songList.map((song, index) => {
-              const songId = `${song.artist} - ${song.title}`;
-              return (
-                <FormControlLabel 
-                  className="songSelectionRadio"
-                  key={index} 
-                  value={song.id} 
-                  control={<Radio style={{color: "white"}}/>} label={songId} 
-                />
-              )
-            })}
+            {songList.map((song, index) => (
+              <FormControlLabel 
+                className="songSelectionRadio"
+                key={index} 
+                value={song.id} 
+                control={<Radio style={{color: "white"}}/>} label={`${song.artist} - ${song.title}`} 
+              />
+            ))}
           </RadioGroup>
         </div>
       </div>

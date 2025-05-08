@@ -1,10 +1,9 @@
 import "./AdminTips.css";
 import { useEffect, useRef, useState } from 'react'
 import { Tip } from '../../models';
-import { TipsAPI } from '../../api/TipsAPI';
 import { Icons, Library } from "../../lib/library";
 import { monthNames } from "../../data/staticData";
-import { removeAndLowercase } from "../../util/removeAndLowercase";
+import { TipsAPI } from "../../api/TipsAPI";
 const { Chip, DateCalendar, TextField } = Library;
 const { CalendarMonthIcon, SearchIcon } = Icons;
 
@@ -15,7 +14,7 @@ type chipType = {
   value: string|number
 }
 
-type tipsArrayType = Tip[]|null;
+type tipsArrayType = Tip[];
 
 const AdminTips = () => {
   const today = new Date();
@@ -32,12 +31,12 @@ const AdminTips = () => {
     {active: false, label: todayYear, toggleType: "date", value: todayYear},
   ]);
   const [searchValue, setSearchValue] = useState("");
-  const [tips, setTips] = useState<tipsArrayType>(null);
+  const [tips, setTips] = useState<tipsArrayType>([]);
   const tipsBackup = useRef<tipsArrayType>(null);
 
   useEffect(() => {
     async function getTips(){
-      if (tips) return;
+      if (tips.length) return;
       const allTips = await TipsAPI.listTips();
       // console.log(allTips);
       if (allTips){
@@ -104,7 +103,7 @@ const AdminTips = () => {
   function resetChips(){
     if (chips.some(chip => chip.active))
     setChips(prevState => prevState.map(chip => ({...chip, active: false})));
-    setTips(tipsBackup.current);
+    setTips(tipsBackup.current as []);
   }
 
   return (
@@ -142,7 +141,7 @@ const AdminTips = () => {
           </tr>
         </thead>
         <tbody>
-        {tips && tips.map((tip, index) => (
+        {tips.map((tip, index) => (
           <tr key={index}>
             <td>{tip.type[0] + tip.type.slice(1).toLowerCase()}</td>
             <td>${tip.amount.toFixed(2)}</td>

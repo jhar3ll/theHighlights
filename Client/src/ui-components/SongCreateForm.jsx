@@ -22,18 +22,26 @@ export default function SongCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
+    addedBy: "",
+    album: "",
     artist: "",
     title: "",
   };
+  const [addedBy, setAddedBy] = React.useState(initialValues.addedBy);
+  const [album, setAlbum] = React.useState(initialValues.album);
   const [artist, setArtist] = React.useState(initialValues.artist);
   const [title, setTitle] = React.useState(initialValues.title);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
+    setAddedBy(initialValues.addedBy);
+    setAlbum(initialValues.album);
     setArtist(initialValues.artist);
     setTitle(initialValues.title);
     setErrors({});
   };
   const validations = {
+    addedBy: [{ type: "Required" }],
+    album: [{ type: "Required" }],
     artist: [{ type: "Required" }],
     title: [{ type: "Required" }],
   };
@@ -63,6 +71,8 @@ export default function SongCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
+          addedBy,
+          album,
           artist,
           title,
         };
@@ -111,6 +121,60 @@ export default function SongCreateForm(props) {
       {...rest}
     >
       <TextField
+        label="Added by"
+        isRequired={true}
+        isReadOnly={false}
+        value={addedBy}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              addedBy: value,
+              album,
+              artist,
+              title,
+            };
+            const result = onChange(modelFields);
+            value = result?.addedBy ?? value;
+          }
+          if (errors.addedBy?.hasError) {
+            runValidationTasks("addedBy", value);
+          }
+          setAddedBy(value);
+        }}
+        onBlur={() => runValidationTasks("addedBy", addedBy)}
+        errorMessage={errors.addedBy?.errorMessage}
+        hasError={errors.addedBy?.hasError}
+        {...getOverrideProps(overrides, "addedBy")}
+      ></TextField>
+      <TextField
+        label="Album"
+        isRequired={true}
+        isReadOnly={false}
+        value={album}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              addedBy,
+              album: value,
+              artist,
+              title,
+            };
+            const result = onChange(modelFields);
+            value = result?.album ?? value;
+          }
+          if (errors.album?.hasError) {
+            runValidationTasks("album", value);
+          }
+          setAlbum(value);
+        }}
+        onBlur={() => runValidationTasks("album", album)}
+        errorMessage={errors.album?.errorMessage}
+        hasError={errors.album?.hasError}
+        {...getOverrideProps(overrides, "album")}
+      ></TextField>
+      <TextField
         label="Artist"
         isRequired={true}
         isReadOnly={false}
@@ -119,6 +183,8 @@ export default function SongCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              addedBy,
+              album,
               artist: value,
               title,
             };
@@ -144,6 +210,8 @@ export default function SongCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              addedBy,
+              album,
               artist,
               title: value,
             };

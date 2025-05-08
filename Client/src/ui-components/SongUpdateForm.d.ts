@@ -23,16 +23,22 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type SongUpdateFormInputValues = {
+    addedBy?: string;
+    album?: string;
     artist?: string;
     title?: string;
 };
 export declare type SongUpdateFormValidationValues = {
+    addedBy?: ValidationFunction<string>;
+    album?: ValidationFunction<string>;
     artist?: ValidationFunction<string>;
     title?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type SongUpdateFormOverridesProps = {
     SongUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    addedBy?: PrimitiveOverrideProps<TextFieldProps>;
+    album?: PrimitiveOverrideProps<TextFieldProps>;
     artist?: PrimitiveOverrideProps<TextFieldProps>;
     title?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;

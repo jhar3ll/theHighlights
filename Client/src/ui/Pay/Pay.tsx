@@ -4,7 +4,8 @@ import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { Library } from "../../lib/library";
 import { Elements } from '@stripe/react-stripe-js';
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import { Song, tipInfoType } from "../../data/types";
+import { tipInfoType } from "../../data/types";
+import { Song } from "../../models";
 const { Button } = Library;
 const stripePromise = loadStripe("pk_test_51RK9PMReK3eL4UG52wV1m6DHYDyIAZP79xphWzoYjGcZIzwgZVElaXcBfAeC76bsB2bNQka0lUc5L0V6qnGyOBFg00oQs8ZUbk");
 

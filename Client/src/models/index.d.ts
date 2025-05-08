@@ -56,6 +56,40 @@ export declare const Message: (new (init: ModelInit<Message>) => Message) & {
   copyOf(source: Message, mutator: (draft: MutableModel<Message>) => MutableModel<Message> | void): Message;
 }
 
+type EagerSong = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Song, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly addedBy: string;
+  readonly album: string;
+  readonly artist: string;
+  readonly title: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazySong = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Song, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly addedBy: string;
+  readonly album: string;
+  readonly artist: string;
+  readonly title: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Song = LazyLoading extends LazyLoadingDisabled ? EagerSong : LazySong
+
+export declare const Song: (new (init: ModelInit<Song>) => Song) & {
+  copyOf(source: Song, mutator: (draft: MutableModel<Song>) => MutableModel<Song> | void): Song;
+}
+
 type EagerTip = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Tip, 'id'>;

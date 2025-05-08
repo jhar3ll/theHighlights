@@ -19,6 +19,8 @@ enum TipType {
 
 type Song @model @auth(rules: [{allow: public}]) {
   id: ID!
+  addedBy: String!
+  album: String!
   artist: String!
   title: String!
 }

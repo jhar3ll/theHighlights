@@ -1,0 +1,17 @@
+.addSongMain {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    padding: 100px;
+    text-align: center;
+    width: 100%;
+}
+
+.addSongMain .css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input {
+    text-transform: capitalize;
+}
+
+.addSongMain span {
+    font-size: 12px;
+    font-style: italic;
+}
