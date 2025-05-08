@@ -4,6 +4,7 @@ import { Library } from '../../lib/library';
 import { SongsAPI } from "../../api/SongsAPI";
 import { AdminContext } from "../../contexts/contexts";
 import { capitalizeWords } from "../../util/capitalizeWords";
+import { Song } from "../../models";
 const { Button, TextField } = Library;
 
 type newSongType = {
@@ -12,26 +13,49 @@ type newSongType = {
     title: string
 }
 
-const initialSet = {album: "", artist: "", title: ""};
 
-const AddSong = () => {
+const AddSong = ({ songToEdit }: {songToEdit: Song|null}) => {
+    const initialSet = songToEdit ? {album: songToEdit.album, artist: songToEdit.artist, title: songToEdit.title} : {album: "", artist: "", title: ""};
     const { currentUser, setAlertMessage } = useContext(AdminContext) || {};
     const [songInfo, setSongInfo] = useState<newSongType>(initialSet);
     const isFieldEmpty = Object.values(songInfo).some(field => !field);
+
+    async function confirmDelete(){
+        if (window.confirm(`Are you sure you want to delete ${songToEdit?.artist} - ${songToEdit?.title}`)) await handleDelete();
+    }
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.currentTarget;
         setSongInfo(prevState => ({ ...prevState, [name]: capitalizeWords(value) }));
     }
 
+    async function handleDelete() {
+        if (!songToEdit) return;
+        const deleteResult = await SongsAPI.deleteSong(songToEdit);
+        if (deleteResult && deleteResult === "SUCCESS") 
+            setAlertMessage && setAlertMessage({
+                duration: 2500, 
+                message: `Successfully deleted song ${songToEdit.artist} - ${songToEdit.title}`,
+                open: true,
+                severity: "success"
+        });
+    }
+
     async function handleSubmit() {
+        let newSongResult;
         const { album, artist, title } = songInfo;
         if (!currentUser) return setAlertMessage && setAlertMessage({duration: 2500, message: "Unable to retrieve user", severity: "error"});
-        const newSongResult = await SongsAPI.createSong({ addedBy: currentUser.name, album, artist, title });
+        const addedBy = currentUser.name;
+
+        if (songToEdit){
+            newSongResult = await SongsAPI.updateSong({...songToEdit, addedBy, album, artist, title});
+        } else {
+            newSongResult = await SongsAPI.createSong({ addedBy: currentUser.name, album, artist, title });
+        }
         if (newSongResult && newSongResult.result === "SUCCESS"){
             setAlertMessage && setAlertMessage({
                 duration: 2500, 
-                message: `Successfully added new song ${newSongResult.newSong.artist} - ${newSongResult.newSong.title}`,
+                message: `Successfully ${songToEdit ? "updated": "added new"} song ${newSongResult.songOutput.artist} - ${newSongResult.songOutput.title}`,
                 open: true,
                 severity: "success"
             });
@@ -40,7 +64,7 @@ const AddSong = () => {
 
     return (
         <div className='addSongMain'>
-            <h2>Add New Song</h2>
+            <h2>{songToEdit ? "Update Song" : "Add New Song"}</h2>
             <TextField 
                 label="Artist"
                 name='artist'
@@ -62,12 +86,21 @@ const AddSong = () => {
                 required
                 value={songInfo.title}
             />
-            <Button 
-                disabled={isFieldEmpty} 
-                onClick={handleSubmit} 
-                style={{cursor: isFieldEmpty ? "not-allowed" : "pointer", pointerEvents: "all"}}
-                variant="contained"
-            >submit</Button>
+            <div className="addSongButtonsContainer">
+                {songToEdit && 
+                    <Button 
+                        color="error"
+                        onClick={confirmDelete} 
+                        variant="contained"
+                    >delete</Button>
+                }
+                <Button 
+                    disabled={isFieldEmpty} 
+                    onClick={handleSubmit} 
+                    style={{cursor: isFieldEmpty ? "not-allowed" : "pointer", pointerEvents: "all"}}
+                    variant="contained"
+                >submit</Button>
+            </div>
         </div>
     )
 }

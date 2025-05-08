@@ -1,11 +1,26 @@
-.adminSongListTable caption {
-    font-size: 30px;
-    font-weight: 800;
+.adminSongsHeader {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    font-size: xx-large;
+}
+
+.adminSongsListTable tbody tr{
+    cursor: pointer;
+}
+
+.adminSongsListTable tbody tr:hover{
+    opacity: 50%;
 }
 
 .adminSongsMain {
     display: flex;
     justify-content: center;
-    margin-top: 30px;
 }
 
+.adminSongsSecondaryContainer .css-1jpc804-MuiDivider-root {
+    background-color: white;
+    border-width: 3px;
+    margin-bottom: 10px;
+}

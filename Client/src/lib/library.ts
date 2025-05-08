@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import { DateCalendar } from "@mui/x-date-pickers";
 import Dialog from '@mui/material/Dialog';
+import Divider from '@mui/material/Divider';
 import Fab from '@mui/material/Fab';
 import FormControlLabel  from "@mui/material/FormControlLabel";
 import IconButton from '@mui/material/IconButton';
@@ -66,6 +67,7 @@ export const Library = {
     Chip,
     DateCalendar,
     Dialog,
+    Divider,
     Fab,
     FormControlLabel,
     IconButton,

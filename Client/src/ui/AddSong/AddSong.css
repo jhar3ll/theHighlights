@@ -1,3 +1,8 @@
+.addSongButtonsContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
 .addSongMain {
     display: flex;
     flex-direction: column;

@@ -1,15 +1,16 @@
 import "./AdminSongs.css";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Song } from '../../models';
 import { SongsAPI } from '../../api/SongsAPI';
 import { Icons, Library } from "../../lib/library";
 import AddSong from "../AddSong/AddSong";
 const { AddIcon } = Icons;
-const { Dialog, Fab } = Library;
+const { Dialog, Divider, Fab } = Library;
 
 const AdminSongs = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [songs, setSongs] = useState<Song[]>([]);
+  const songToEdit = useRef<Song|null>(null);
 
   useEffect(() => {
     async function getAllSongs() {
@@ -21,35 +22,51 @@ const AdminSongs = () => {
 
     getAllSongs();
   },[songs])
+  
+  function handleDialogClose(){
+    if (songToEdit.current) songToEdit.current = null;
+    setDialogOpen(false);
+  }
+
+  function handleEditSong(song: Song){
+    songToEdit.current = song;
+    setDialogOpen(true);
+  }
 
   return (
     <div className='adminSongsMain'>
-      <Dialog onClose={() => setDialogOpen(false)} open={dialogOpen}>
-        <AddSong />
+      <Dialog onClose={handleDialogClose} open={dialogOpen}>
+        <AddSong songToEdit={songToEdit.current} />
       </Dialog>
       
-      <Fab color="primary" onClick={() => setDialogOpen(true)} size="large"><AddIcon /></Fab>
-      <table className='adminSongListTable'>
-        <caption>{songs.length} songs</caption>
-        <thead>
-          <tr>
-            <th>Artist</th>
-            <th>Title</th>
-            <th>Album</th>
-            <th>Added By</th>
-          </tr>
-        </thead>
-        <tbody>
-        {songs.map((song, index) => (
-          <tr key={index}>
-            <td>{song.artist}</td>
-            <td>{song.title}</td>
-            <td>{song.album}</td>
-            <td>{song.addedBy || "-"}</td>
-          </tr>
-        ))}
-        </tbody>
-      </table>
+      <div className="adminSongsSecondaryContainer">
+        <div className="adminSongsHeader">
+          <h2>{songs.length} songs</h2>
+          <Fab color="primary" onClick={() => setDialogOpen(true)} size="large"><AddIcon /></Fab>
+        </div>
+    
+        <Divider />
+        <table className='adminSongsListTable'>
+          <thead>
+            <tr>
+              <th>Artist</th>
+              <th>Title</th>
+              <th>Album</th>
+              <th>Added By</th>
+            </tr>
+          </thead>
+          <tbody>
+          {songs.map((song, index) => (
+            <tr key={index} onClick={() => handleEditSong(song)}>
+              <td>{song.artist}</td>
+              <td>{song.title}</td>
+              <td>{song.album}</td>
+              <td>{song.addedBy}</td>
+            </tr>
+          ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
