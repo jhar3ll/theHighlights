@@ -25,3 +25,16 @@
     background-color: white;
     color: gray;
 }
+
+.tipsSearchAndDateContainer {
+    align-items: center;
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.tipsSearchAndDateContainer .css-1xp5r68-MuiFormControl-root-MuiTextField-root {
+    background-color: white;
+    border-radius: 20px;
+}
