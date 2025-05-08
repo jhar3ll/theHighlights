@@ -72,6 +72,7 @@ const AdminTips = () => {
 
   function handleChip(index: number, chip: chipType){
     if (!tipsBackup.current) return;
+    if (searchValue) setSearchValue("");
     const updatedChips = [...chips];
     updatedChips[index].active = !chip.active;
 
@@ -100,6 +101,12 @@ const AdminTips = () => {
     }));
   }
 
+  function resetChips(){
+    if (chips.some(chip => chip.active))
+    setChips(prevState => prevState.map(chip => ({...chip, active: false})));
+    setTips(tipsBackup.current);
+  }
+
   return (
     <div className="adminTipsMain">
       <div className="tipFilterChipContainer">
@@ -116,6 +123,7 @@ const AdminTips = () => {
       <div className="tipsSearchAndDateContainer">
         <TextField 
           onChange={handleTipSearch}
+          onFocus={resetChips}
           placeholder="Search..."
           slotProps={{ input: { startAdornment: <SearchIcon /> }}}
           value={searchValue}
