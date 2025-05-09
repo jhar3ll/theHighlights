@@ -1,0 +1,11 @@
+.confirmationBodyContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+}
+
+.confirmationButtonsContainer {
+    display: flex;
+    justify-content: space-around;
+}

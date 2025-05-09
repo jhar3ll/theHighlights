@@ -5,6 +5,7 @@ import { SongsAPI } from "../../api/SongsAPI";
 import { AdminContext } from "../../contexts/contexts";
 import { capitalizeWords } from "../../util/capitalizeWords";
 import { Song } from "../../models";
+import Confirmation from "../Confirmation/Confirmation";
 const { Button, TextField } = Library;
 
 type newSongType = {
@@ -13,16 +14,13 @@ type newSongType = {
     title: string
 }
 
-
 const AddSong = ({ songToEdit }: {songToEdit: Song|null}) => {
     const initialSet = songToEdit ? {album: songToEdit.album, artist: songToEdit.artist, title: songToEdit.title} : {album: "", artist: "", title: ""};
     const { currentUser, setAlertMessage } = useContext(AdminContext) || {};
+    const [confirmOpen, setConfirmOpen] = useState(false);
     const [songInfo, setSongInfo] = useState<newSongType>(initialSet);
     const isFieldEmpty = Object.values(songInfo).some(field => !field);
 
-    async function confirmDelete(){
-        if (window.confirm(`Are you sure you want to delete ${songToEdit?.artist} - ${songToEdit?.title}`)) await handleDelete();
-    }
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.currentTarget;
@@ -64,6 +62,12 @@ const AddSong = ({ songToEdit }: {songToEdit: Song|null}) => {
 
     return (
         <div className='addSongMain'>
+            <Confirmation 
+                confirmFunction={async () => await handleDelete()}
+                message={<span className="confirmDeleteText">Delete <strong>{songToEdit?.artist} - {songToEdit?.title}</strong> ? </span>}
+                open={confirmOpen}
+                setOpen={setConfirmOpen}
+            />
             <h2>{songToEdit ? "Update Song" : "Add New Song"}</h2>
             <TextField 
                 label="Artist"
@@ -73,24 +77,24 @@ const AddSong = ({ songToEdit }: {songToEdit: Song|null}) => {
                 value={songInfo.artist}
             />
             <TextField 
-                label="Album"
-                name='album'
-                onChange={handleChange}
-                required
-                value={songInfo.album}
-            />
-            <TextField 
                 label="Title"
                 name='title'
                 onChange={handleChange}
                 required
                 value={songInfo.title}
             />
-            <div className="addSongButtonsContainer">
+             <TextField 
+                label="Album"
+                name='album'
+                onChange={handleChange}
+                required
+                value={songInfo.album}
+            />
+            <div className="addSongButtonsContainer" style={{justifyContent: songToEdit ? "space-between" : "center"}}>
                 {songToEdit && 
                     <Button 
                         color="error"
-                        onClick={confirmDelete} 
+                        onClick={() => setConfirmOpen(true)} 
                         variant="contained"
                     >delete</Button>
                 }

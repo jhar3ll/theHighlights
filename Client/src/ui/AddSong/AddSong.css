@@ -1,12 +1,12 @@
 .addSongButtonsContainer {
     display: flex;
-    justify-content: space-between;
 }
 
 .addSongMain {
     display: flex;
     flex-direction: column;
     gap: 35px;
+    justify-content: center;
     padding: 100px;
     text-align: center;
     width: 100%;
@@ -19,4 +19,8 @@
 .addSongMain span {
     font-size: 12px;
     font-style: italic;
+}
+
+.confirmDeleteText {
+    font-size: 20px;
 }
