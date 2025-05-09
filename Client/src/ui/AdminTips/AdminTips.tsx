@@ -4,8 +4,8 @@ import { Tip } from '../../models';
 import { Icons, Library } from "../../lib/library";
 import { monthNames } from "../../data/staticData";
 import { TipsAPI } from "../../api/TipsAPI";
-const { AdapterDayjs, Button, Chip, DateCalendar, dayjs, Dayjs, IconButton, LocalizationProvider, TextField } = Library;
-const { CalendarMonthIcon, CheckIcon, ClearIcon, SearchIcon } = Icons;
+const { AdapterDayjs, Button, Chip, DateCalendar, dayjs, IconButton, LocalizationProvider, TextField } = Library;
+const { CalendarMonthIcon, CheckIcon, ClearIcon, RestoreIcon, SearchIcon } = Icons;
 
 type chipType = {
   active: boolean
@@ -16,20 +16,22 @@ type chipType = {
 
 type tipsArrayType = Tip[];
 
+const today = new Date();
+const todayMonth = today.getMonth();
+const todayYear = today.getFullYear();
+const todayMonthLabel = monthNames[todayMonth];
+const initialSet:chipType[] = [
+  {active: false, label: "Requests", toggleType: "type", value: "REQUEST"},
+  {active: false, label: "Donations", toggleType: "type", value: "DONATION"},
+  {active: false, label: "Today", toggleType: "date", value: today.getDay()},
+  {active: false, label: todayMonthLabel, toggleType: "date", value: todayMonth},
+  {active: false, label: todayYear, toggleType: "date", value: todayYear}
+];
+
 const AdminTips = () => {
-  const today = new Date();
-  const todayMonth = today.getMonth();
-  const todayYear = today.getFullYear();
-  const todayMonthLabel = monthNames[todayMonth];
   const [calendarDate, setCalendarDate] = useState(dayjs(new Date()));
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [chips, setChips] = useState<chipType[]>([
-    {active: false, label: "Requests", toggleType: "type", value: "REQUEST"},
-    {active: false, label: "Donations", toggleType: "type", value: "DONATION"},
-    {active: false, label: "Today", toggleType: "date", value: today.getDay()},
-    {active: false, label: todayMonthLabel, toggleType: "date", value: todayMonth},
-    {active: false, label: todayYear, toggleType: "date", value: todayYear},
-  ]);
+  const [chips, setChips] = useState<chipType[]>(initialSet);
   const [searchValue, setSearchValue] = useState("");
   const [tips, setTips] = useState<tipsArrayType>([]);
   const tipsBackup = useRef<tipsArrayType>(null);
@@ -64,7 +66,6 @@ const AdminTips = () => {
   }
 
   function filterTipsByDate(){
-    console.log(calendarDate.format("MM/DD/YYYY"), dayjs(new Date()).format("MM/DD/YYYY"))
     setCalendarOpen(false);
     setTips(prevState => prevState.filter(tip => !tip.createdAt ? true : dayjs(new Date(tip.createdAt)).format("MM/DD/YYYY") === calendarDate.format("MM/DD/YYYY")));
   }
@@ -93,6 +94,13 @@ const AdminTips = () => {
     }
     setChips(updatedChips);
     setTips(updatedTips);
+  }
+
+  function handleReset(){
+    if (tipsBackup.current && tipsBackup.current.length === tips.length) return;
+    setTips(tipsBackup.current || []);
+    setChips(initialSet);
+    setCalendarDate(dayjs(new Date()));
   }
 
   function handleTipSearch(event: React.ChangeEvent<HTMLInputElement>){
@@ -135,6 +143,9 @@ const AdminTips = () => {
         <IconButton onClick={() => setCalendarOpen(prevState => !prevState)}>
           <CalendarMonthIcon fontSize="large" htmlColor="white" />
         </IconButton>
+        <IconButton onClick={handleReset}>
+          <RestoreIcon fontSize="large" htmlColor="white" />
+        </IconButton>
       </div>
       
       {calendarOpen ?
@@ -153,33 +164,33 @@ const AdminTips = () => {
           </div>
         </div>
         :
-        <table className='tipListContainer'>
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Amount</th>
-              <th>Name</th>
-              <th>Song</th>
-              <th>Message</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-          {tips.length ? tips.map((tip, index) => (
-            <tr key={index}>
-              <td>{tip.type[0] + tip.type.slice(1).toLowerCase()}</td>
-              <td>${tip.amount.toFixed(2)}</td>
-              <td>{tip.name}</td>
-              <td>{tip.type === "REQUEST" && !!tip.requestInfo && tip.requestInfo !== "null" ? tip.requestInfo : "-"}</td>
-              <td>{tip.message && tip.message !== "null" ? tip.message :  "-"}</td>
-              <td>{tip.createdAt ? new Date(tip.createdAt).toLocaleDateString() : new Date().toLocaleDateString()}</td>
-            </tr>
-            ))
-            :
-            <caption>No tips found</caption>
-          }
-          </tbody>
-        </table>
+        tips.length ?
+          <table className='tipListContainer'>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Name</th>
+                <th>Song</th>
+                <th>Message</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+            {tips.map((tip, index) => (
+              <tr key={index}>
+                <td>{tip.type[0] + tip.type.slice(1).toLowerCase()}</td>
+                <td>${tip.amount.toFixed(2)}</td>
+                <td>{tip.name}</td>
+                <td>{tip.type === "REQUEST" && !!tip.requestInfo && tip.requestInfo !== "null" ? tip.requestInfo : "-"}</td>
+                <td>{tip.message && tip.message !== "null" ? tip.message :  "-"}</td>
+                <td>{tip.createdAt ? new Date(tip.createdAt).toLocaleDateString() : new Date().toLocaleDateString()}</td>
+              </tr>
+            ))}
+            </tbody>
+          </table>
+        :
+          <div><h3>No Tips Found</h3></div>
       }
     </div>
   )

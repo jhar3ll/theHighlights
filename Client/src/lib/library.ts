@@ -33,6 +33,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import RestoreIcon from '@mui/icons-material/Restore';
 import SearchIcon from '@mui/icons-material/Search';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 
@@ -62,6 +63,7 @@ export const Icons = {
     InstagramIcon,
     LibraryMusicIcon,
     MonetizationOnIcon,
+    RestoreIcon,
     SearchIcon,
     YouTubeIcon
 }
