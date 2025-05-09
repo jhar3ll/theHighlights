@@ -9,6 +9,12 @@
     text-decoration: underline;
 }
 
+.calendarConfirmButtonsContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
 .tipFilterChipContainer {
     display: flex;
     gap: 20px;
@@ -24,6 +30,11 @@
 .tipFilterChipContainer .css-1ykktcv-MuiButtonBase-root-MuiChip-root:hover {
     background-color: white;
     color: gray;
+}
+
+.tipsCalendarContainer {
+    margin: auto;
+    width: 25%;
 }
 
 .tipsSearchAndDateContainer {

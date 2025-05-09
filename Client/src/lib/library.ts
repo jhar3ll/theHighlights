@@ -3,7 +3,9 @@ import { fetchAuthSession, fetchUserAttributes, signOut, updateUserAttribute } f
 import { DataStore, Predicates, SortDirection } from "aws-amplify/datastore";
 import { Hub } from "aws-amplify/utils";
 import { Authenticator } from "@aws-amplify/ui-react";
+import dayjs, { Dayjs } from 'dayjs';
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Alert from '@mui/material/Alert';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -15,6 +17,7 @@ import Divider from '@mui/material/Divider';
 import Fab from '@mui/material/Fab';
 import FormControlLabel  from "@mui/material/FormControlLabel";
 import IconButton from '@mui/material/IconButton';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Snackbar from '@mui/material/Snackbar';
@@ -23,6 +26,8 @@ import TextField from '@mui/material/TextField';
 import AddIcon from '@mui/icons-material/Add';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
 import EventIcon from '@mui/icons-material/Event';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -50,6 +55,8 @@ export const Icons = {
     AddIcon,
     AttachMoneyIcon,
     CalendarMonthIcon,
+    CheckIcon,
+    ClearIcon,
     EventIcon,
     FacebookIcon,
     InstagramIcon,
@@ -60,17 +67,21 @@ export const Icons = {
 }
 
 export const Library = {
+    AdapterDayjs,
     Alert, 
     BottomNavigation,
     BottomNavigationAction,
     Button,
     Chip,
     DateCalendar,
+    dayjs,
+    Dayjs,
     Dialog,
     Divider,
     Fab,
     FormControlLabel,
     IconButton,
+    LocalizationProvider,
     Radio,
     RadioGroup,
     Router: { BrowserRouter, Link, Route, Routes, useLocation, useNavigate, useParams,  parsePath },

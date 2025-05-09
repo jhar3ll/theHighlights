@@ -4,8 +4,8 @@ import { Tip } from '../../models';
 import { Icons, Library } from "../../lib/library";
 import { monthNames } from "../../data/staticData";
 import { TipsAPI } from "../../api/TipsAPI";
-const { Chip, DateCalendar, TextField } = Library;
-const { CalendarMonthIcon, SearchIcon } = Icons;
+const { AdapterDayjs, Button, Chip, DateCalendar, dayjs, Dayjs, IconButton, LocalizationProvider, TextField } = Library;
+const { CalendarMonthIcon, CheckIcon, ClearIcon, SearchIcon } = Icons;
 
 type chipType = {
   active: boolean
@@ -21,7 +21,7 @@ const AdminTips = () => {
   const todayMonth = today.getMonth();
   const todayYear = today.getFullYear();
   const todayMonthLabel = monthNames[todayMonth];
-  const [calendarDate, setCalendarDate] = useState(null);
+  const [calendarDate, setCalendarDate] = useState(dayjs(new Date()));
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [chips, setChips] = useState<chipType[]>([
     {active: false, label: "Requests", toggleType: "type", value: "REQUEST"},
@@ -36,7 +36,6 @@ const AdminTips = () => {
 
   useEffect(() => {
     async function getTips(){
-      if (tips.length) return;
       const allTips = await TipsAPI.listTips();
       // console.log(allTips);
       if (allTips){
@@ -46,7 +45,7 @@ const AdminTips = () => {
     }
 
     getTips();
-  },[tips]);
+  },[]);
 
   function filterTip(chip: chipType, tip: Tip){
     if (["Today", todayMonthLabel, todayYear].includes(chip.label)){
@@ -62,6 +61,12 @@ const AdminTips = () => {
         return chipMap[chip.label];
       } 
     } else return chip.label === "Requests" ? tip.type === "REQUEST" : tip.type === "DONATION";
+  }
+
+  function filterTipsByDate(){
+    console.log(calendarDate.format("MM/DD/YYYY"), dayjs(new Date()).format("MM/DD/YYYY"))
+    setCalendarOpen(false);
+    setTips(prevState => prevState.filter(tip => !tip.createdAt ? true : dayjs(new Date(tip.createdAt)).format("MM/DD/YYYY") === calendarDate.format("MM/DD/YYYY")));
   }
 
   function getChipToToggleIndex(allChips: chipType[], appliedChips: chipType[], currentChip: chipType): [number, number] {
@@ -127,32 +132,55 @@ const AdminTips = () => {
           slotProps={{ input: { startAdornment: <SearchIcon /> }}}
           value={searchValue}
         />
-        <CalendarMonthIcon fontSize="large" htmlColor="white" />
+        <IconButton onClick={() => setCalendarOpen(prevState => !prevState)}>
+          <CalendarMonthIcon fontSize="large" htmlColor="white" />
+        </IconButton>
       </div>
-      <table className='tipListContainer'>
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Amount</th>
-            <th>Name</th>
-            <th>Song</th>
-            <th>Message</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-        {tips.map((tip, index) => (
-          <tr key={index}>
-            <td>{tip.type[0] + tip.type.slice(1).toLowerCase()}</td>
-            <td>${tip.amount.toFixed(2)}</td>
-            <td>{tip.name}</td>
-            <td>{tip.type === "REQUEST" && !!tip.requestInfo && tip.requestInfo !== "null" ? tip.requestInfo : "-"}</td>
-            <td>{tip.message && tip.message !== "null" ? tip.message :  "-"}</td>
-            <td>{tip.createdAt ? new Date(tip.createdAt).toLocaleDateString() : new Date().toLocaleDateString()}</td>
-          </tr>
-        ))}
-        </tbody>
-      </table>
+      
+      {calendarOpen ?
+        <div className="tipsCalendarContainer">
+          <span>Filter By Date</span>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateCalendar onChange={(newValue) => setCalendarDate(dayjs(newValue))} value={calendarDate} sx={{bgcolor: "white", color: "black", width: "100%"}}/>
+          </LocalizationProvider>
+          <div className="calendarConfirmButtonsContainer">
+            <Button color="error" size="large" onClick={() => setCalendarOpen(false)} variant="contained">
+              <ClearIcon fontSize="large" htmlColor="white"/>
+            </Button>
+            <Button color="success" size="large" onClick={filterTipsByDate} variant="contained">
+              <CheckIcon fontSize="large" htmlColor="white"/>
+            </Button>
+          </div>
+        </div>
+        :
+        <table className='tipListContainer'>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Name</th>
+              <th>Song</th>
+              <th>Message</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+          {tips.length ? tips.map((tip, index) => (
+            <tr key={index}>
+              <td>{tip.type[0] + tip.type.slice(1).toLowerCase()}</td>
+              <td>${tip.amount.toFixed(2)}</td>
+              <td>{tip.name}</td>
+              <td>{tip.type === "REQUEST" && !!tip.requestInfo && tip.requestInfo !== "null" ? tip.requestInfo : "-"}</td>
+              <td>{tip.message && tip.message !== "null" ? tip.message :  "-"}</td>
+              <td>{tip.createdAt ? new Date(tip.createdAt).toLocaleDateString() : new Date().toLocaleDateString()}</td>
+            </tr>
+            ))
+            :
+            <caption>No tips found</caption>
+          }
+          </tbody>
+        </table>
+      }
     </div>
   )
 }
