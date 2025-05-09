@@ -73,6 +73,126 @@ export const deleteMessage = /* GraphQL */ `
     }
   }
 `;
+export const createEvent = /* GraphQL */ `
+  mutation CreateEvent(
+    $input: CreateEventInput!
+    $condition: ModelEventConditionInput
+  ) {
+    createEvent(input: $input, condition: $condition) {
+      id
+      addedBy
+      address
+      dateTime
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateEvent = /* GraphQL */ `
+  mutation UpdateEvent(
+    $input: UpdateEventInput!
+    $condition: ModelEventConditionInput
+  ) {
+    updateEvent(input: $input, condition: $condition) {
+      id
+      addedBy
+      address
+      dateTime
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteEvent = /* GraphQL */ `
+  mutation DeleteEvent(
+    $input: DeleteEventInput!
+    $condition: ModelEventConditionInput
+  ) {
+    deleteEvent(input: $input, condition: $condition) {
+      id
+      addedBy
+      address
+      dateTime
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createSong = /* GraphQL */ `
+  mutation CreateSong(
+    $input: CreateSongInput!
+    $condition: ModelSongConditionInput
+  ) {
+    createSong(input: $input, condition: $condition) {
+      id
+      addedBy
+      album
+      artist
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateSong = /* GraphQL */ `
+  mutation UpdateSong(
+    $input: UpdateSongInput!
+    $condition: ModelSongConditionInput
+  ) {
+    updateSong(input: $input, condition: $condition) {
+      id
+      addedBy
+      album
+      artist
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteSong = /* GraphQL */ `
+  mutation DeleteSong(
+    $input: DeleteSongInput!
+    $condition: ModelSongConditionInput
+  ) {
+    deleteSong(input: $input, condition: $condition) {
+      id
+      addedBy
+      album
+      artist
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
 export const createTip = /* GraphQL */ `
   mutation CreateTip(
     $input: CreateTipInput!

@@ -4,6 +4,8 @@
  * Any changes to this file will be overwritten when running amplify pull. *
  **************************************************************************/
 
+export { default as EventCreateForm } from "./EventCreateForm";
+export { default as EventUpdateForm } from "./EventUpdateForm";
 export { default as SongCreateForm } from "./SongCreateForm";
 export { default as SongUpdateForm } from "./SongUpdateForm";
 export { default as TipCreateForm } from "./TipCreateForm";

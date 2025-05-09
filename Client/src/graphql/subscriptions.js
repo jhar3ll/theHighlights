@@ -64,6 +64,108 @@ export const onDeleteMessage = /* GraphQL */ `
     }
   }
 `;
+export const onCreateEvent = /* GraphQL */ `
+  subscription OnCreateEvent($filter: ModelSubscriptionEventFilterInput) {
+    onCreateEvent(filter: $filter) {
+      id
+      addedBy
+      address
+      dateTime
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateEvent = /* GraphQL */ `
+  subscription OnUpdateEvent($filter: ModelSubscriptionEventFilterInput) {
+    onUpdateEvent(filter: $filter) {
+      id
+      addedBy
+      address
+      dateTime
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteEvent = /* GraphQL */ `
+  subscription OnDeleteEvent($filter: ModelSubscriptionEventFilterInput) {
+    onDeleteEvent(filter: $filter) {
+      id
+      addedBy
+      address
+      dateTime
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateSong = /* GraphQL */ `
+  subscription OnCreateSong($filter: ModelSubscriptionSongFilterInput) {
+    onCreateSong(filter: $filter) {
+      id
+      addedBy
+      album
+      artist
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateSong = /* GraphQL */ `
+  subscription OnUpdateSong($filter: ModelSubscriptionSongFilterInput) {
+    onUpdateSong(filter: $filter) {
+      id
+      addedBy
+      album
+      artist
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteSong = /* GraphQL */ `
+  subscription OnDeleteSong($filter: ModelSubscriptionSongFilterInput) {
+    onDeleteSong(filter: $filter) {
+      id
+      addedBy
+      album
+      artist
+      title
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
 export const onCreateTip = /* GraphQL */ `
   subscription OnCreateTip($filter: ModelSubscriptionTipFilterInput) {
     onCreateTip(filter: $filter) {

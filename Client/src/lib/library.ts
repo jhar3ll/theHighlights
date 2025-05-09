@@ -7,6 +7,7 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Alert from '@mui/material/Alert';
+import Badge from '@mui/material/Badge';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Button from '@mui/material/Button';
@@ -18,6 +19,8 @@ import Fab from '@mui/material/Fab';
 import FormControlLabel  from "@mui/material/FormControlLabel";
 import IconButton from '@mui/material/IconButton';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { PickersDay } from '@mui/x-date-pickers/PickersDay';
+import type { PickersDayProps } from "@mui/x-date-pickers/PickersDay";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Snackbar from '@mui/material/Snackbar';
@@ -71,6 +74,7 @@ export const Icons = {
 export const Library = {
     AdapterDayjs,
     Alert, 
+    Badge,
     BottomNavigation,
     BottomNavigationAction,
     Button,
@@ -84,9 +88,12 @@ export const Library = {
     FormControlLabel,
     IconButton,
     LocalizationProvider,
+    PickersDay,
     Radio,
     RadioGroup,
     Router: { BrowserRouter, Link, Route, Routes, useLocation, useNavigate, useParams,  parsePath },
     Snackbar,
     TextField
 }
+
+export { PickersDayProps };
