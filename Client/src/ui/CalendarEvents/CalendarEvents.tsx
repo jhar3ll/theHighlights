@@ -1,63 +1,100 @@
 import "./CalendarEvents.css";
-import React, { useEffect, useState } from 'react'
-import { Library, PickersDayProps } from '../../lib/library';
+import React, { SetStateAction, useEffect, useState } from 'react'
+import { Library, PickersDayProps, PickerValidDate } from '../../lib/library';
 import { Event } from '../../models';
 import { EventsAPI } from '../../api/EventsAPI';
-const { AdapterDayjs, Badge, DateCalendar, dayjs, LocalizationProvider, PickersDay } = Library;
+const { AdapterDayjs, DateCalendar, dayjs, LocalizationProvider, PickersDay } = Library;
+
+type CalendarEventsType = {
+    onClick: (event: Event) => void;
+    setCurrentDate: React.Dispatch<SetStateAction<string>>
+}
 
 const EventDay = (props: PickersDayProps & { highlightedDays?: number[] }) => {
-    console.log(props.day.date())
+    // console.log(props.day.date())
     const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
-    const isSelected = !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
+    const isSelected = !outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
     return (
-        <Badge
-            badgeContent={isSelected ? "" : undefined}
-            color='error'
-            key={props.day.toString()}
-            overlap="circular"
-            variant={isSelected ? "dot" : "standard"}
-        >
+        <div className="eventDayContainer">
             <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-        </Badge>
+            {isSelected && <div />}
+        </div>
     )
 }
 
-const CalendarEvents = () => {
+const CalendarEvents = ({ onClick, setCurrentDate }: CalendarEventsType) => {
     const [calendarDate, setCalendarDate] = useState(dayjs(new Date()));
     const [currentMonth, setCurrentMonth] = useState<Number>(calendarDate.month());
     const [currentYear, setCurrentYear] = useState<Number>(calendarDate.year());
     const [events, setEvents] = useState<Event[]|null>(null);
-    const [highlightedDays, setHighlightedDays] = useState([1, 2, 15]);
+    const [highlightedDays, setHighlightedDays] = useState<Number[]>([]);
     
     useEffect(() => {
         async function getAllEvents() {
             const allEvents = await EventsAPI.listEvents();
             allEvents && setEvents(allEvents);
+            setCurrentDate(calendarDate.format("MMM D YYYY"))
         }
         getAllEvents();
-    },[])
+    },[calendarDate, setCurrentDate])
+
+    useEffect(() => {
+        function getMonthEvents(){
+            if (!events) return [];
+            let currentEventDays:Number[] = [];
+            [...events].forEach(event => {
+                const [eventMonth, eventDay, eventYear] = new Date(event.dateTime).toLocaleDateString().split("/");
+                if ((Number(eventMonth) - 1 === currentMonth) && (Number(eventYear) === currentYear)) currentEventDays.push(Number(eventDay));
+            });
+            setHighlightedDays(currentEventDays)
+        }
+
+        getMonthEvents();
+    },[currentMonth, currentYear, events])
+
+    function handleCalendarChange(date: PickerValidDate){
+        setCurrentMonth(date.month());
+        setCurrentYear(date.year());
+    }
+    
     
     return (
-        <div>
+        <div className="calendarEventsMain">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateCalendar 
                     onChange={(newValue) => setCalendarDate(dayjs(newValue))} 
-                    onMonthChange={(date) => setCurrentMonth(date.month())}
-                    onYearChange={(date) => setCurrentYear(date.year)}
+                    onMonthChange={handleCalendarChange}
+                    onYearChange={handleCalendarChange}
                     value={calendarDate} 
                     slots={{ day: EventDay }}
                     slotProps={{ day: { highlightedDays } as any }}
                     sx={{bgcolor: "white", color: "black"}}
                 />
             </LocalizationProvider>
-            <div>
-                <ul>
+            
+            <table className='calendarEventsTableContainer'>
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Date & Time</th>
+                    <th>Address</th>
+                    <th>Added By</th>
+                </tr>
+                </thead>
+                <tbody>
                     {events && events.map((event, index) => {
-                        const dateTime = event.dateTime ? new Date(event.dateTime) : new Date();
-                        return <li key={index}>{event.title} - {dateTime.toLocaleString()}</li>
-                    })}
-                </ul>
-            </div>
+                    const dateTime = event.dateTime ? dayjs(event.dateTime) : dayjs(new Date());
+                    return (
+                        <tr key={index} onClick={() => onClick(event)}>
+                            <td>{event.title}</td>
+                            <td>{dateTime.format("MMM D YYYY | h:mm A")}</td>
+                            <td>{event.addedBy}</td>
+                            <td>{event.addedBy}</td>
+                        </tr>
+                    )
+                })}
+                </tbody>
+            </table>
         </div>
     )
 }

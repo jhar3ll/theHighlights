@@ -1,0 +1,6 @@
+.adminEventsHeader {
+    align-items: center;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}

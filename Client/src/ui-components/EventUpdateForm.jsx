@@ -57,7 +57,7 @@ export default function EventUpdateForm(props) {
   const validations = {
     addedBy: [{ type: "Required" }],
     address: [],
-    dateTime: [],
+    dateTime: [{ type: "Required" }],
     title: [{ type: "Required" }],
   };
   const runValidationTasks = async (
@@ -209,7 +209,7 @@ export default function EventUpdateForm(props) {
       ></TextField>
       <TextField
         label="Date time"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         type="datetime-local"
         value={dateTime && convertToLocal(new Date(dateTime))}

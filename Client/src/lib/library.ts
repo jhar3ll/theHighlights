@@ -21,6 +21,7 @@ import IconButton from '@mui/material/IconButton';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import type { PickersDayProps } from "@mui/x-date-pickers/PickersDay";
+import type { PickerValidDate } from "@mui/x-date-pickers";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Snackbar from '@mui/material/Snackbar';
@@ -35,6 +36,7 @@ import EventIcon from '@mui/icons-material/Event';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
+import MenuItem from '@mui/material/MenuItem';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import RestoreIcon from '@mui/icons-material/Restore';
 import SearchIcon from '@mui/icons-material/Search';
@@ -88,6 +90,7 @@ export const Library = {
     FormControlLabel,
     IconButton,
     LocalizationProvider,
+    MenuItem,
     PickersDay,
     Radio,
     RadioGroup,
@@ -96,4 +99,4 @@ export const Library = {
     TextField
 }
 
-export { PickersDayProps };
+export { PickersDayProps, PickerValidDate };

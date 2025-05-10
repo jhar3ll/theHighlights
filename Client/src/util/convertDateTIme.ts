@@ -1,3 +1,4 @@
+import { Library } from "../lib/library";
 /**
      * Returns x raised to the n-th power.
      *
@@ -11,4 +12,10 @@ export function convertDateTime(day: string, time: string): Date{
     date.setHours(hours);
     date.setMinutes(minutes);
     return date;
+}
+
+export function convertAmPmToIso(date: string, hour: string, minutes: string, type: "AM"|"PM"){
+    const hourNum = Number(hour);
+    const realHour = type === "PM" && hourNum < 12 ? 12 + hourNum : hourNum;
+    return Library.dayjs(date).set("hour", realHour).set("minutes", Number(minutes)).toISOString();
 }

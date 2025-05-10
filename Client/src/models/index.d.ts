@@ -64,7 +64,7 @@ type EagerEvent = {
   readonly id: string;
   readonly addedBy: string;
   readonly address?: string | null;
-  readonly dateTime?: string | null;
+  readonly dateTime: string;
   readonly title: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -78,7 +78,7 @@ type LazyEvent = {
   readonly id: string;
   readonly addedBy: string;
   readonly address?: string | null;
-  readonly dateTime?: string | null;
+  readonly dateTime: string;
   readonly title: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

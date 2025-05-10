@@ -1,3 +1,38 @@
+.calendarEventsMain {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.calendarEventsTableContainer {
+    margin-top: 30px;
+}
+
+.calendarEventsTableContainer tbody tr {
+    cursor: pointer;
+}
+
+.calendarEventsTableContainer tbody tr:hover {
+    opacity: 50%;
+}
+
 .css-4k4mmf-MuiButtonBase-root-MuiPickersDay-root {
     margin-left: 0;
+}
+
+.eventDayContainer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+.eventDayContainer div {
+    background-color: red;
+    border: 1px solid red;
+    border-radius: 20px;
+    height: 7px;
+    margin-top: -15px;
+    width: 7px;
 }
