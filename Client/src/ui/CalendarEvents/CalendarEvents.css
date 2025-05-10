@@ -24,8 +24,6 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 5px;
 }
 
 .eventDayContainer div {
@@ -33,6 +31,5 @@
     border: 1px solid red;
     border-radius: 20px;
     height: 7px;
-    margin-top: -15px;
     width: 7px;
 }

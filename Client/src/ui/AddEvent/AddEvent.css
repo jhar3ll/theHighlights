@@ -1,3 +1,7 @@
+.addEventButtonsContainer {
+    display: flex;
+    justify-content: space-around;
+}
 .addEventMain {
     display: flex;
     flex-direction: column;

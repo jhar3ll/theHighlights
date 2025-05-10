@@ -1,7 +1,6 @@
 import "./AddEvent.css";
 import React, { useContext, useEffect, useState } from 'react'
 import { Library } from '../../lib/library';
-
 import { AdminContext } from "../../contexts/contexts";
 import { capitalizeWords } from "../../util/capitalizeWords";
 import { Event } from "../../models";
@@ -67,9 +66,10 @@ const AddEvent = ({ eventToEdit, selectedDate }: {eventToEdit: Event|null, selec
             newEventResult = await EventsAPI.createEvent({ addedBy: currentUser.name, address, dateTime, title });
         }
         if (newEventResult && newEventResult.result === "SUCCESS"){
+          const newDateTime = dayjs(newEventResult.eventOutput.dateTime).format("MM/DD/YYYY hh:mm A");
             setAlertMessage && setAlertMessage({
                 duration: 2500, 
-                message: `Successfully ${eventToEdit ? "updated": "added new"} event ${newEventResult.eventOutput.title} - ${newEventResult.eventOutput.dateTime}`,
+                message: `Successfully ${eventToEdit ? "updated": "added new"} event ${newEventResult.eventOutput.title} - ${newDateTime}`,
                 open: true,
                 severity: "success"
             });
@@ -80,7 +80,7 @@ const AddEvent = ({ eventToEdit, selectedDate }: {eventToEdit: Event|null, selec
         <div className='addEventMain'>
             <Confirmation 
                 confirmFunction={async () => await handleDelete()}
-                message={<span className="confirmDeleteText">Delete <strong>{eventToEdit?.title} - {eventToEdit?.dateTime}</strong> ? </span>}
+                message={<span className="confirmDeleteText">Delete <strong>{eventToEdit?.title} - {dayjs(eventToEdit?.dateTime).format("MM/DD/YYYY hh:mm A")}</strong> ? </span>}
                 open={confirmOpen}
                 setOpen={setConfirmOpen}
             />

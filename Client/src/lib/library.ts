@@ -3,7 +3,8 @@ import { fetchAuthSession, fetchUserAttributes, signOut, updateUserAttribute } f
 import { DataStore, Predicates, SortDirection } from "aws-amplify/datastore";
 import { Hub } from "aws-amplify/utils";
 import { Authenticator } from "@aws-amplify/ui-react";
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
+import type { Dayjs } from "dayjs";
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Alert from '@mui/material/Alert';
@@ -83,7 +84,6 @@ export const Library = {
     Chip,
     DateCalendar,
     dayjs,
-    Dayjs,
     Dialog,
     Divider,
     Fab,
@@ -99,4 +99,4 @@ export const Library = {
     TextField
 }
 
-export { PickersDayProps, PickerValidDate };
+export { Dayjs, PickersDayProps, PickerValidDate };

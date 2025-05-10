@@ -1,6 +1,6 @@
 import "./CalendarEvents.css";
 import React, { SetStateAction, useEffect, useState } from 'react'
-import { Library, PickersDayProps, PickerValidDate } from '../../lib/library';
+import { Dayjs, Library, PickersDayProps, PickerValidDate } from '../../lib/library';
 import { Event } from '../../models';
 import { EventsAPI } from '../../api/EventsAPI';
 const { AdapterDayjs, DateCalendar, dayjs, LocalizationProvider, PickersDay } = Library;
@@ -10,14 +10,21 @@ type CalendarEventsType = {
     setCurrentDate: React.Dispatch<SetStateAction<string>>
 }
 
-const EventDay = (props: PickersDayProps & { highlightedDays?: number[] }) => {
-    // console.log(props.day.date())
-    const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
+const EventDay = (props: PickersDayProps & { highlightedDays?: number[], calendarDate?: Dayjs }) => {
+    const dateFormat = "MM/DD/YYYY";
+    const today = dayjs().format(dateFormat);
+    const { calendarDate, highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
     const isSelected = !outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
+    const dayFormatted = day.format(dateFormat);
     return (
         <div className="eventDayContainer">
             <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-            {isSelected && <div />}
+            {isSelected && 
+                <div 
+                    className="eventDayActiveDot" 
+                    style={{marginTop: (dayFormatted === today || calendarDate?.format(dateFormat) === dayFormatted) ? "5px" : "-5px" }}
+                />
+            }
         </div>
     )
 }
@@ -67,7 +74,7 @@ const CalendarEvents = ({ onClick, setCurrentDate }: CalendarEventsType) => {
                     onYearChange={handleCalendarChange}
                     value={calendarDate} 
                     slots={{ day: EventDay }}
-                    slotProps={{ day: { highlightedDays } as any }}
+                    slotProps={{ day: { highlightedDays, calendarDate } as any }}
                     sx={{bgcolor: "white", color: "black"}}
                 />
             </LocalizationProvider>
