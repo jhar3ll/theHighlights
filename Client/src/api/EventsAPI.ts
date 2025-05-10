@@ -24,7 +24,7 @@ async function listEvents() {
 
 //create new event
 async function createEvent({addedBy, address, dateTime, title}: newEventType): Promise<{result: "SUCCESS"|"FAIL", eventOutput: Event}|undefined> {
-    if (!addedBy ||  !dateTime || !title) throw new Error("All fields are required.");
+    if (!addedBy || !dateTime || !title) throw new Error("All fields are required.");
     try {
         const eventOutput = await DataStore.save(new Event({ addedBy, address, dateTime, title}));
         console.log("create new event SUCCESS: ", eventOutput);

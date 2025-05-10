@@ -88,7 +88,7 @@ const CalendarEvents = ({ onClick, setCurrentDate }: CalendarEventsType) => {
                         <tr key={index} onClick={() => onClick(event)}>
                             <td>{event.title}</td>
                             <td>{dateTime.format("MMM D YYYY | h:mm A")}</td>
-                            <td>{event.addedBy}</td>
+                            <td>{event.address || "-"}</td>
                             <td>{event.addedBy}</td>
                         </tr>
                     )
