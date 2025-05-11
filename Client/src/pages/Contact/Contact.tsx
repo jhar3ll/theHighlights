@@ -2,21 +2,19 @@ import "./Contact.css";
 import { Library } from "../../lib/library";
 import React, { useState } from "react";
 import { ContactInfo } from "../../models";
+import { MessageInput } from "../../data/types";
+import { MessageAPI } from "../../api/MessageAPI";
+import AlertMessage, { AlertMessageProps } from "../../ui/AlertMessage/AlertMessage";
 const { Button, TextField } = Library;
 
-type MessageInput = {
-  contactInfo: ContactInfo
-  description: string
-  title: string
-}
+
 const Contact = () => {
+  const [alertMessage, setAlertMessage] = useState<AlertMessageProps>({duration: 2500, message: "", open: false, severity: "success"});
   const [contactFormInfo, setContactFormInfo] = useState<ContactInfo>({name: "", email: "", phoneNumber: ""});
   const [messageInfo, setMessageInfo] = useState<MessageInput>({contactInfo: contactFormInfo, description: "", title: ""});
-  const isFieldEmpty = Object.entries(contactFormInfo).some(([key, value]) => 
-    (key === "name" && !value) || (key === "email" && contactFormInfo.phoneNumber) || 
-    (key === "phoneNumber" && contactFormInfo.email) || !value
-  );
-
+  const [sendComplete, setSendComplete] = useState(false);
+  const isFieldEmpty = Object.values(contactFormInfo).concat([messageInfo.description, messageInfo.title]).some(value => !value);
+  
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.currentTarget;
     if (name === "description" || name === "title")
@@ -26,81 +24,85 @@ const Contact = () => {
   }
 
   async function handleSubmit() {
-    let newMessageResult;
-    const { contactInfo, description, title } = messageInfo;
-    if (!currentUser) return setAlertMessage && setAlertMessage({duration: 2500, message: "Unable to retrieve user", severity: "error"});
-    const addedBy = currentUser.name;
+    const { description, title } = messageInfo;
+    const newMessageResult = await MessageAPI.createMessage({contactInfo: contactFormInfo, description, title});
 
-    if (eventToEdit){
-        newEventResult = await EventsAPI.updateEvent({...eventToEdit, addedBy, address, dateTime, title});
-    } else {
-        newEventResult = await EventsAPI.createEvent({ addedBy: currentUser.name, address, dateTime, title });
-    }
-    if (newEventResult && newEventResult.result === "SUCCESS"){
-      const newDateTime = dayjs(newEventResult.eventOutput.dateTime).format("MM/DD/YYYY hh:mm A");
-        setAlertMessage && setAlertMessage({
-            duration: 2500, 
-            message: `Successfully ${eventToEdit ? "updated": "added new"} event ${newEventResult.eventOutput.title} - ${newDateTime}`,
-            open: true,
-            severity: "success"
-        });
+    if (newMessageResult && newMessageResult.result === "SUCCESS"){
+      setSendComplete(true);
     }
   }
 
   return (
-
-    <div>
+    <div className="contactUsMain">
+      <AlertMessage {...alertMessage} setShowAlert={setAlertMessage} />
       <h1>Contact Us!</h1>
 
-      <div className='contactUsFormContainer'>
-        <h3>Complete the form:</h3>
+      {sendComplete ?
+        <div className="sendCompleteContainer">
+          <h3>Thank you!</h3>
+          <span>Your message has been successfully sent.</span>
+          <span>We will be in touch with you as soon as possible. </span>
+          <span>Have a great day!</span>
+        </div>
+        :
+        <div className='contactUsFormContainer'>
+          <h3>Complete the form:</h3>
 
-        <TextField 
-          label="Name"
-          name="name"
-          onChange={handleChange}
-          required
-          value={contactFormInfo.name}
-        />
+          <TextField 
+            className="contactUsName"
+            label="Name"
+            name="name"
+            onChange={handleChange}
+            required
+            value={contactFormInfo.name}
+          />
 
-        <TextField 
-          label="Email"
-          name="email"
-          onChange={handleChange}
-          required={!contactFormInfo.phoneNumber}
-          value={contactFormInfo.email}
-        />
+          <TextField 
+            className="contactUsEmail"
+            label="Email"
+            name="email"
+            onChange={handleChange}
+            required
+            value={contactFormInfo.email}
+          />
 
-        <TextField 
-          label="Phone #"
-          name="phoneNumber"
-          onChange={handleChange}
-          required={!contactFormInfo.phoneNumber}
-          value={contactFormInfo.phoneNumber}
-        />
+          <TextField 
+            className="contactUsPhone"
+            label="Phone #"
+            name="phoneNumber"
+            onChange={handleChange}
+            required
+            value={contactFormInfo.phoneNumber}
+          />
 
-         <TextField 
-          label="Subject"
-          name="title"
-          onChange={handleChange}
-          required
-          value={messageInfo.title}
-        />
+          <TextField 
+            className="contactUsTitle"
+            label="Subject"
+            name="title"
+            onChange={handleChange}
+            required
+            value={messageInfo.title}
+          />
 
-        <TextField 
-          label="Message"
-          name="description"
-          onChange={handleChange}
-          required
-          value={messageInfo.description}
-        />
-        <Button 
-          disabled={isFieldEmpty} 
-          onClick={handleSubmit} 
-          style={{cursor: isFieldEmpty ? "not-allowed" : "pointer", pointerEvents: "all"}}
-          variant="contained"
-        >submit</Button>
-      </div>
+          <TextField 
+            className="contactUsDescription"
+            label="Message"
+            multiline
+            name="description"
+            onChange={handleChange}
+            required
+            rows={3}
+            value={messageInfo.description}
+          />
+          <Button 
+            disabled={isFieldEmpty} 
+            color="primary"
+            onClick={handleSubmit} 
+            style={{cursor: isFieldEmpty ? "not-allowed" : "pointer", pointerEvents: "all"}}
+            variant="contained"
+          >submit</Button>
+        </div>
+      }
     </div>
   )
 }

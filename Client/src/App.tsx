@@ -15,6 +15,7 @@ import Admin from './pages/Admin/Admin';
 import awsmobile from './aws-exports';
 import useGetUser from './hooks/useGetUser';
 import Test from './pages/Test/Test';
+import { ServiceContext } from './contexts/contexts';
 const { Amplify } = AWS_Services;
 const { Route, Routes } = Library.Router;
 Amplify.configure(awsmobile);
@@ -26,19 +27,21 @@ const App = () => {
   
   return (
     <div className="App">
-      <Navbar />
-      <Routes>
-        <Route path="*" element={<Error />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/addsongs" element={<Add />} />
-        <Route path="/admin" element={<Admin currentUser={currentUser} />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path='/events' element={<Events />} />
-        <Route path='/test' element={<Test />} />
-        <Route path="/tip" element={<Tip />} />
-        <Route path="/confirm" element={<Confirm />} />
-      </Routes>
+      <ServiceContext.Provider value={{ currentUser, setCurrentUser }}>
+        <Navbar />
+        <Routes>
+          <Route path="*" element={<Error />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/addsongs" element={<Add />} />
+          <Route path="/admin" element={<Admin currentUser={currentUser} />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path='/events' element={<Events />} />
+          <Route path='/test' element={<Test />} />
+          <Route path="/tip" element={<Tip />} />
+          <Route path="/confirm" element={<Confirm />} />
+        </Routes>
+      </ServiceContext.Provider>
     </div>
   );
 }

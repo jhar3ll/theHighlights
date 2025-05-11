@@ -8,8 +8,9 @@ import AdminSongs from "../../ui/AdminSongs/AdminSongs";
 import AdminEvents from "../../ui/AdminEvents/AdminEvents";
 import AlertMessage, { AlertMessageProps } from "../../ui/AlertMessage/AlertMessage";
 import { AdminContext } from "../../contexts/contexts";
+import AdminMessages from "../../ui/AdminMessages/AdminMessages";
 const { Authenticator } = AWS_Services;
-const { EventIcon, LibraryMusicIcon, MonetizationOnIcon} = Icons;
+const { EventIcon, LibraryMusicIcon, MessageIcon, MonetizationOnIcon} = Icons;
 const { BottomNavigation, BottomNavigationAction } = Library;
 
 const Admin = ({ currentUser }: { currentUser: User|null }) => {
@@ -20,7 +21,8 @@ const Admin = ({ currentUser }: { currentUser: User|null }) => {
     const componentsMap:{[key:number]:React.JSX.Element} = {
       0: <AdminTips />,
       1: <AdminSongs />,
-      2: <AdminEvents />
+      2: <AdminEvents />,
+      3: <AdminMessages />
     };
     return componentsMap[currentPage];
   }
@@ -39,6 +41,7 @@ const Admin = ({ currentUser }: { currentUser: User|null }) => {
         <BottomNavigationAction label="Tips" icon={<MonetizationOnIcon />} />
         <BottomNavigationAction label="Songs" icon={<LibraryMusicIcon />} />
         <BottomNavigationAction label="Events" icon={<EventIcon />} />
+        <BottomNavigationAction label="Messages" icon={<MessageIcon />} />
       </BottomNavigation>
         </div>
 

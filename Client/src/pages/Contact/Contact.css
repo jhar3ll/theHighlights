@@ -1,0 +1,52 @@
+.contactUsFormContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+
+.contactUsDescription {
+    width: 20%;
+}
+
+.contactUsEmail {
+    width: 20%;
+}
+
+.contactUsName {
+    width: 20%;
+}
+
+.contactUsPhone {
+    width: 20%;
+}
+
+.contactUsTitle {
+    width: 20%;
+}
+
+.contactUsFormContainer .css-1xp5r68-MuiFormControl-root-MuiTextField-root {
+    background-color: white;
+}
+
+.contactUsFormContainer .css-113d811-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+    color: white;
+}
+
+.contactUsFormContainer .css-quhxjy-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+    border-color: white;
+}
+
+.contactUsFormContainer .css-74d805-MuiButtonBase-root-MuiButton-root.Mui-disabled {
+    background-color: lightgray;
+    color: gray;
+}
+
+.sendCompleteContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+}
