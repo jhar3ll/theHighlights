@@ -1,15 +1,14 @@
 import "./Events.css";
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import CalendarEvents from "../../ui/CalendarEvents/CalendarEvents";
 import { Library } from "../../lib/library";
 import { Event } from "../../models";
 import ViewEvent from "../../ui/ViewEvent/ViewEvent";
-const { dayjs, Dialog } = Library;
+const { Dialog } = Library;
 
 const Events = () => {
   const currentEvent = useRef<Event|null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const date = dayjs();
 
   function handleCloseDialog(){
     setDialogOpen(false);

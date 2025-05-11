@@ -1,6 +1,6 @@
 import "./CalendarEvents.css";
 import React, { SetStateAction, useEffect, useState } from 'react'
-import { Dayjs, Library, PickersDayProps, PickerValidDate } from '../../lib/library';
+import { Library, PickersDayProps, PickerValidDate } from '../../lib/library';
 import { Event } from '../../models';
 import { EventsAPI } from '../../api/EventsAPI';
 const { AdapterDayjs, DateCalendar, dayjs, LocalizationProvider, PickersDay } = Library;
@@ -10,8 +10,6 @@ type CalendarEventsType = {
     onClick: (event: Event) => void;
     setCurrentDate?: React.Dispatch<SetStateAction<string>>
 }
-
-
 
 const CalendarEvents = ({ fromPublicPage, onClick, setCurrentDate }: CalendarEventsType) => {
     const [calendarDate, setCalendarDate] = useState(dayjs(new Date()));

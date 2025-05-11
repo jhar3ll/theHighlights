@@ -43,15 +43,15 @@ const AddEvent = ({ eventToEdit, selectedDate }: {eventToEdit: Event|null, selec
     }
 
     async function handleDelete() {
-        if (!eventToEdit) return;
-        const deleteResult = await EventsAPI.deleteEvent(eventToEdit);
-        if (deleteResult && deleteResult === "SUCCESS") 
-            setAlertMessage && setAlertMessage({
-              duration: 2500, 
-              message: `Successfully deleted event ${eventToEdit.title} - ${selectedDate}`,
-              open: true,
-              severity: "success"
-        });
+      if (!eventToEdit) return;
+      const deleteResult = await EventsAPI.deleteEvent(eventToEdit);
+      if (deleteResult && deleteResult === "SUCCESS") 
+          setAlertMessage && setAlertMessage({
+            duration: 2500, 
+            message: `Successfully deleted event ${eventToEdit.title} - ${selectedDate}`,
+            open: true,
+            severity: "success"
+      });
     }
 
     async function handleSubmit() {
