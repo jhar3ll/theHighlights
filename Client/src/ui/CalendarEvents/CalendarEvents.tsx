@@ -6,30 +6,14 @@ import { EventsAPI } from '../../api/EventsAPI';
 const { AdapterDayjs, DateCalendar, dayjs, LocalizationProvider, PickersDay } = Library;
 
 type CalendarEventsType = {
+    fromPublicPage?: boolean
     onClick: (event: Event) => void;
-    setCurrentDate: React.Dispatch<SetStateAction<string>>
+    setCurrentDate?: React.Dispatch<SetStateAction<string>>
 }
 
-const EventDay = (props: PickersDayProps & { highlightedDays?: number[], calendarDate?: Dayjs }) => {
-    const dateFormat = "MM/DD/YYYY";
-    const today = dayjs().format(dateFormat);
-    const { calendarDate, highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
-    const isSelected = !outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
-    const dayFormatted = day.format(dateFormat);
-    return (
-        <div className="eventDayContainer">
-            <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-            {isSelected && 
-                <div 
-                    className="eventDayActiveDot" 
-                    style={{marginTop: (dayFormatted === today || calendarDate?.format(dateFormat) === dayFormatted) ? "5px" : "-5px" }}
-                />
-            }
-        </div>
-    )
-}
 
-const CalendarEvents = ({ onClick, setCurrentDate }: CalendarEventsType) => {
+
+const CalendarEvents = ({ fromPublicPage, onClick, setCurrentDate }: CalendarEventsType) => {
     const [calendarDate, setCalendarDate] = useState(dayjs(new Date()));
     const [currentMonth, setCurrentMonth] = useState<Number>(calendarDate.month());
     const [currentYear, setCurrentYear] = useState<Number>(calendarDate.year());
@@ -40,7 +24,7 @@ const CalendarEvents = ({ onClick, setCurrentDate }: CalendarEventsType) => {
         async function getAllEvents() {
             const allEvents = await EventsAPI.listEvents();
             allEvents && setEvents(allEvents);
-            setCurrentDate(calendarDate.format("MMM D YYYY"))
+            if (setCurrentDate) setCurrentDate(calendarDate.format("MMM D YYYY"))
         }
         getAllEvents();
     },[calendarDate, setCurrentDate])
@@ -64,17 +48,36 @@ const CalendarEvents = ({ onClick, setCurrentDate }: CalendarEventsType) => {
         setCurrentYear(date.year());
     }
     
-    
+    const EventDay = (props: PickersDayProps & { highlightedDays?: number[] }) => {
+        const dateFormat = "MM/DD/YYYY";
+        const today = dayjs().format(dateFormat);
+        const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
+        const isSelected = !outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
+        const dayFormatted = day.format(dateFormat);
+        return (
+            <div className="eventDayContainer">
+                <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} style={{pointerEvents: fromPublicPage ? "none" : "all"}}/>
+                {isSelected && 
+                    <div 
+                        className="eventDayActiveDot" 
+                        style={{marginTop: (dayFormatted === today || calendarDate?.format(dateFormat) === dayFormatted) ? "5px" : "-5px" }}
+                    />
+                }
+            </div>
+        )
+    }
+
     return (
         <div className="calendarEventsMain">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateCalendar 
-                    onChange={(newValue) => setCalendarDate(dayjs(newValue))} 
+                    readOnly={fromPublicPage}
+                    onChange={(newValue) => !fromPublicPage && setCalendarDate(dayjs(newValue))} 
                     onMonthChange={handleCalendarChange}
                     onYearChange={handleCalendarChange}
                     value={calendarDate} 
                     slots={{ day: EventDay }}
-                    slotProps={{ day: { highlightedDays, calendarDate } as any }}
+                    slotProps={{ day: { highlightedDays } as any }}
                     sx={{bgcolor: "white", color: "black"}}
                 />
             </LocalizationProvider>

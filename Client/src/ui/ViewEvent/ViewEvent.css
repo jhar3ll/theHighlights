@@ -1,0 +1,16 @@
+.viewEventMain {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 50px;
+    text-align: center;
+}
+
+.viewEventDetailsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.viewEventDetailsContainer span, .viewEventDetailsContainer strong {
+    font-size: 24px;
+}
