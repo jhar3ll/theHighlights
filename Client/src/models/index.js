@@ -8,13 +8,15 @@ const TipType = {
   "PAYMENT": "PAYMENT"
 };
 
-const { Message, Event, Song, Tip, ContactInfo } = initSchema(schema);
+const { Message, Event, Setlist, Song, Tip, SetlistSong, ContactInfo } = initSchema(schema);
 
 export {
   Message,
   Event,
+  Setlist,
   Song,
   Tip,
+  SetlistSong,
   TipType,
   ContactInfo
 };

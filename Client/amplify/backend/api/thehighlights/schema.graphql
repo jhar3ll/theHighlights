@@ -1,6 +1,6 @@
 type ContactInfo {
-  email: String
-  phoneNumber: String
+  email: String!
+  phoneNumber: String!
   name: String!
 }
 
@@ -23,6 +23,16 @@ type Event @model @auth(rules: [{allow: public}]) {
   address: String
   dateTime: AWSDateTime!
   title: String!
+  Setlists: [Setlist] @hasMany(indexName: "byEvent", fields: ["id"])
+}
+
+type Setlist @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  addedBy: String!
+  title: String!
+  setNumber: Int
+  Songs: [Song] @manyToMany(relationName: "SetlistSong")
+  eventID: ID! @index(name: "byEvent")
 }
 
 type Song @model @auth(rules: [{allow: public}]) {
@@ -31,6 +41,7 @@ type Song @model @auth(rules: [{allow: public}]) {
   album: String!
   artist: String!
   title: String!
+  setlists: [Setlist] @manyToMany(relationName: "SetlistSong")
 }
 
 type Tip @model @auth(rules: [{allow: public}]) {
@@ -44,4 +55,3 @@ type Tip @model @auth(rules: [{allow: public}]) {
   transactionId: String!
   type: TipType!
 }
- 

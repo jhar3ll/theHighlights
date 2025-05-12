@@ -1,31 +1,23 @@
-/* .adminNavigationPanelContainer {
-    background-color: lightgray;
-    
+.adminMain {
     display: flex;
-    margin-inline: auto;
-    width: 50%;
-} */
-
-.adminMain .css-7ax0nd-MuiBottomNavigation-root {
-    background-color: gainsboro;
-    border-radius: 10px;
-    margin-inline: auto;
-    height: fit-content;
-    padding-bottom: 10px;
-    padding-top: 22px;
-    padding-right: 35px;
-    width: 50%;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected, .adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected svg {
-    color: cadetblue;
+.adminNavigationPanelContainer {
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: auto;
+    padding: 10px;
+    width: 40%;
 }
 
-.adminMain .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root {
-   
-}
-
-.adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root span, .adminMain .css-7ax0nd-MuiBottomNavigation-root .css-1scjuq2-MuiButtonBase-root-MuiBottomNavigationAction-root svg {
-    font-weight: 800;
-    font-size: 30px;
+.adminNavigationPanelContainer .css-53g0n7-MuiButtonBase-root-MuiIconButton-root {
+    flex-direction: column;
+    margin-top: 7px;
+    padding: 0;
 }

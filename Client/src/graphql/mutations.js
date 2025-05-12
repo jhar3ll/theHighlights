@@ -84,6 +84,11 @@ export const createEvent = /* GraphQL */ `
       address
       dateTime
       title
+      Setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -104,6 +109,11 @@ export const updateEvent = /* GraphQL */ `
       address
       dateTime
       title
+      Setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -124,6 +134,86 @@ export const deleteEvent = /* GraphQL */ `
       address
       dateTime
       title
+      Setlists {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createSetlist = /* GraphQL */ `
+  mutation CreateSetlist(
+    $input: CreateSetlistInput!
+    $condition: ModelSetlistConditionInput
+  ) {
+    createSetlist(input: $input, condition: $condition) {
+      id
+      addedBy
+      title
+      setNumber
+      Songs {
+        nextToken
+        startedAt
+        __typename
+      }
+      eventID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateSetlist = /* GraphQL */ `
+  mutation UpdateSetlist(
+    $input: UpdateSetlistInput!
+    $condition: ModelSetlistConditionInput
+  ) {
+    updateSetlist(input: $input, condition: $condition) {
+      id
+      addedBy
+      title
+      setNumber
+      Songs {
+        nextToken
+        startedAt
+        __typename
+      }
+      eventID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteSetlist = /* GraphQL */ `
+  mutation DeleteSetlist(
+    $input: DeleteSetlistInput!
+    $condition: ModelSetlistConditionInput
+  ) {
+    deleteSetlist(input: $input, condition: $condition) {
+      id
+      addedBy
+      title
+      setNumber
+      Songs {
+        nextToken
+        startedAt
+        __typename
+      }
+      eventID
       createdAt
       updatedAt
       _version
@@ -144,6 +234,11 @@ export const createSong = /* GraphQL */ `
       album
       artist
       title
+      setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -164,6 +259,11 @@ export const updateSong = /* GraphQL */ `
       album
       artist
       title
+      setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -184,6 +284,11 @@ export const deleteSong = /* GraphQL */ `
       album
       artist
       title
+      setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -256,6 +361,138 @@ export const deleteTip = /* GraphQL */ `
       requestInfo
       transactionId
       type
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createSetlistSong = /* GraphQL */ `
+  mutation CreateSetlistSong(
+    $input: CreateSetlistSongInput!
+    $condition: ModelSetlistSongConditionInput
+  ) {
+    createSetlistSong(input: $input, condition: $condition) {
+      id
+      setlistId
+      songId
+      setlist {
+        id
+        addedBy
+        title
+        setNumber
+        eventID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      song {
+        id
+        addedBy
+        album
+        artist
+        title
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateSetlistSong = /* GraphQL */ `
+  mutation UpdateSetlistSong(
+    $input: UpdateSetlistSongInput!
+    $condition: ModelSetlistSongConditionInput
+  ) {
+    updateSetlistSong(input: $input, condition: $condition) {
+      id
+      setlistId
+      songId
+      setlist {
+        id
+        addedBy
+        title
+        setNumber
+        eventID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      song {
+        id
+        addedBy
+        album
+        artist
+        title
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteSetlistSong = /* GraphQL */ `
+  mutation DeleteSetlistSong(
+    $input: DeleteSetlistSongInput!
+    $condition: ModelSetlistSongConditionInput
+  ) {
+    deleteSetlistSong(input: $input, condition: $condition) {
+      id
+      setlistId
+      songId
+      setlist {
+        id
+        addedBy
+        title
+        setNumber
+        eventID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      song {
+        id
+        addedBy
+        album
+        artist
+        title
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version

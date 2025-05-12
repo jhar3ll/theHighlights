@@ -40,6 +40,7 @@ import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import MessageIcon from '@mui/icons-material/Message';
 import MenuItem from '@mui/material/MenuItem';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import RestoreIcon from '@mui/icons-material/Restore';
 import SearchIcon from '@mui/icons-material/Search';
 import YouTubeIcon from '@mui/icons-material/YouTube';
@@ -71,6 +72,7 @@ export const Icons = {
     LibraryMusicIcon,
     MessageIcon,
     MonetizationOnIcon,
+    QueueMusicIcon,
     RestoreIcon,
     SearchIcon,
     YouTubeIcon

@@ -5,7 +5,7 @@ import { SongsAPI } from '../../api/SongsAPI';
 import { Icons, Library } from "../../lib/library";
 import AddSong from "../AddSong/AddSong";
 const { AddIcon } = Icons;
-const { Dialog, Divider, Fab } = Library;
+const { Dialog, Fab } = Library;
 
 const AdminSongs = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -41,11 +41,10 @@ const AdminSongs = () => {
       
       <div className="adminSongsSecondaryContainer">
         <div className="adminSongsHeader">
-          <h2>{songs.length} songs</h2>
+          <h1>Highlights songs ({songs.length})</h1>
           <Fab color="primary" onClick={() => setDialogOpen(true)} size="large"><AddIcon /></Fab>
         </div>
     
-        <Divider />
         <table className='adminSongsListTable'>
           <thead>
             <tr>

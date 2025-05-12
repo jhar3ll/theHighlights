@@ -84,6 +84,11 @@ export const getEvent = /* GraphQL */ `
       address
       dateTime
       title
+      Setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -151,6 +156,120 @@ export const syncEvents = /* GraphQL */ `
     }
   }
 `;
+export const getSetlist = /* GraphQL */ `
+  query GetSetlist($id: ID!) {
+    getSetlist(id: $id) {
+      id
+      addedBy
+      title
+      setNumber
+      Songs {
+        nextToken
+        startedAt
+        __typename
+      }
+      eventID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listSetlists = /* GraphQL */ `
+  query ListSetlists(
+    $filter: ModelSetlistFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSetlists(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        addedBy
+        title
+        setNumber
+        eventID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncSetlists = /* GraphQL */ `
+  query SyncSetlists(
+    $filter: ModelSetlistFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncSetlists(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        addedBy
+        title
+        setNumber
+        eventID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const setlistsByEventID = /* GraphQL */ `
+  query SetlistsByEventID(
+    $eventID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSetlistFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    setlistsByEventID(
+      eventID: $eventID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        addedBy
+        title
+        setNumber
+        eventID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const getSong = /* GraphQL */ `
   query GetSong($id: ID!) {
     getSong(id: $id) {
@@ -159,6 +278,11 @@ export const getSong = /* GraphQL */ `
       album
       artist
       title
+      setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -300,6 +424,165 @@ export const syncTips = /* GraphQL */ `
         requestInfo
         transactionId
         type
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getSetlistSong = /* GraphQL */ `
+  query GetSetlistSong($id: ID!) {
+    getSetlistSong(id: $id) {
+      id
+      setlistId
+      songId
+      setlist {
+        id
+        addedBy
+        title
+        setNumber
+        eventID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      song {
+        id
+        addedBy
+        album
+        artist
+        title
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listSetlistSongs = /* GraphQL */ `
+  query ListSetlistSongs(
+    $filter: ModelSetlistSongFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSetlistSongs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        setlistId
+        songId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncSetlistSongs = /* GraphQL */ `
+  query SyncSetlistSongs(
+    $filter: ModelSetlistSongFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncSetlistSongs(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        setlistId
+        songId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const setlistSongsBySetlistId = /* GraphQL */ `
+  query SetlistSongsBySetlistId(
+    $setlistId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSetlistSongFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    setlistSongsBySetlistId(
+      setlistId: $setlistId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        setlistId
+        songId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const setlistSongsBySongId = /* GraphQL */ `
+  query SetlistSongsBySongId(
+    $songId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSetlistSongFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    setlistSongsBySongId(
+      songId: $songId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        setlistId
+        songId
         createdAt
         updatedAt
         _version

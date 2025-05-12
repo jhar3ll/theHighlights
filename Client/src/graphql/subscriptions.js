@@ -72,6 +72,11 @@ export const onCreateEvent = /* GraphQL */ `
       address
       dateTime
       title
+      Setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -89,6 +94,11 @@ export const onUpdateEvent = /* GraphQL */ `
       address
       dateTime
       title
+      Setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -106,6 +116,77 @@ export const onDeleteEvent = /* GraphQL */ `
       address
       dateTime
       title
+      Setlists {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateSetlist = /* GraphQL */ `
+  subscription OnCreateSetlist($filter: ModelSubscriptionSetlistFilterInput) {
+    onCreateSetlist(filter: $filter) {
+      id
+      addedBy
+      title
+      setNumber
+      Songs {
+        nextToken
+        startedAt
+        __typename
+      }
+      eventID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateSetlist = /* GraphQL */ `
+  subscription OnUpdateSetlist($filter: ModelSubscriptionSetlistFilterInput) {
+    onUpdateSetlist(filter: $filter) {
+      id
+      addedBy
+      title
+      setNumber
+      Songs {
+        nextToken
+        startedAt
+        __typename
+      }
+      eventID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteSetlist = /* GraphQL */ `
+  subscription OnDeleteSetlist($filter: ModelSubscriptionSetlistFilterInput) {
+    onDeleteSetlist(filter: $filter) {
+      id
+      addedBy
+      title
+      setNumber
+      Songs {
+        nextToken
+        startedAt
+        __typename
+      }
+      eventID
       createdAt
       updatedAt
       _version
@@ -123,6 +204,11 @@ export const onCreateSong = /* GraphQL */ `
       album
       artist
       title
+      setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -140,6 +226,11 @@ export const onUpdateSong = /* GraphQL */ `
       album
       artist
       title
+      setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -157,6 +248,11 @@ export const onDeleteSong = /* GraphQL */ `
       album
       artist
       title
+      setlists {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -220,6 +316,135 @@ export const onDeleteTip = /* GraphQL */ `
       requestInfo
       transactionId
       type
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateSetlistSong = /* GraphQL */ `
+  subscription OnCreateSetlistSong(
+    $filter: ModelSubscriptionSetlistSongFilterInput
+  ) {
+    onCreateSetlistSong(filter: $filter) {
+      id
+      setlistId
+      songId
+      setlist {
+        id
+        addedBy
+        title
+        setNumber
+        eventID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      song {
+        id
+        addedBy
+        album
+        artist
+        title
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateSetlistSong = /* GraphQL */ `
+  subscription OnUpdateSetlistSong(
+    $filter: ModelSubscriptionSetlistSongFilterInput
+  ) {
+    onUpdateSetlistSong(filter: $filter) {
+      id
+      setlistId
+      songId
+      setlist {
+        id
+        addedBy
+        title
+        setNumber
+        eventID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      song {
+        id
+        addedBy
+        album
+        artist
+        title
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteSetlistSong = /* GraphQL */ `
+  subscription OnDeleteSetlistSong(
+    $filter: ModelSubscriptionSetlistSongFilterInput
+  ) {
+    onDeleteSetlistSong(filter: $filter) {
+      id
+      setlistId
+      songId
+      setlist {
+        id
+        addedBy
+        title
+        setNumber
+        eventID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      song {
+        id
+        addedBy
+        album
+        artist
+        title
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version

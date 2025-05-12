@@ -1,0 +1,13 @@
+.allMessagesTableContainer tbody tr{
+    cursor: pointer;
+}
+
+.allMessagesTableContainer tbody tr:hover{
+    opacity: 50%;
+}
+
+.messagesMain {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

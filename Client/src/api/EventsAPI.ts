@@ -1,13 +1,7 @@
 import { AWS_Services } from "../lib/library";
 import { Event } from "../models";
+import { EventCreateFormInputValues } from "../ui-components/EventCreateForm";
 const { DataStore, Predicates, SortDirection } = AWS_Services;
-
-type newEventType = {
-    addedBy: string
-    address?: string | null
-    dateTime: string
-    title: string
-}
 
 //get all events
 async function listEvents() {
@@ -23,7 +17,7 @@ async function listEvents() {
 }
 
 //create new event
-async function createEvent({addedBy, address, dateTime, title}: newEventType): Promise<{result: "SUCCESS"|"FAIL", eventOutput: Event}|undefined> {
+async function createEvent({addedBy, address, dateTime, title}: EventCreateFormInputValues): Promise<{result: "SUCCESS"|"FAIL", eventOutput: Event}|undefined> {
     if (!addedBy || !dateTime || !title) throw new Error("All fields are required.");
     try {
         const eventOutput = await DataStore.save(new Event({ addedBy, address, dateTime, title}));

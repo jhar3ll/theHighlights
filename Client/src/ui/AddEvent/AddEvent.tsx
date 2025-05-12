@@ -56,7 +56,8 @@ const AddEvent = ({ eventToEdit, selectedDate }: {eventToEdit: Event|null, selec
 
     async function handleSubmit() {
         let newEventResult;
-        const { address, dateTime, title } = eventInfo;
+        const { dateTime, title } = eventInfo;
+        const address = eventInfo.address || undefined;
         if (!currentUser) return setAlertMessage && setAlertMessage({duration: 2500, message: "Unable to retrieve user", severity: "error"});
         const addedBy = currentUser.name;
 

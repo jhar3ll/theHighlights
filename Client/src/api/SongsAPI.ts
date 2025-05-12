@@ -1,15 +1,10 @@
 import { AWS_Services } from "../lib/library";
 import { Song } from "../models";
+import { SongCreateFormInputValues } from "../ui-components/SongCreateForm";
 const { DataStore, Predicates, SortDirection } = AWS_Services;
 
-type newSongType = {
-    addedBy: string
-    album: string
-    artist: string
-    title: string
-}
 //create new song
-async function createSong({addedBy, album, artist, title}: newSongType): Promise<{result: "SUCCESS"|"FAIL", songOutput: Song}|undefined> {
+async function createSong({addedBy, album, artist, title}: SongCreateFormInputValues): Promise<{result: "SUCCESS"|"FAIL", songOutput: Song}|undefined> {
     if (!addedBy || !album || !artist || !title) throw new Error("All fields are required.");
     try {
         const songOutput = await DataStore.save(new Song({ addedBy, album, artist, title}));

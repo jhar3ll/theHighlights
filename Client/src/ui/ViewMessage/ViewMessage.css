@@ -1,0 +1,14 @@
+.viewMessageContainer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px;
+}
+
+.viewMessageContainer div {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    text-align: center;
+}

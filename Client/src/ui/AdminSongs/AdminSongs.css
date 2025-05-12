@@ -2,8 +2,7 @@
     align-items: center;
     display: flex;
     justify-content: center;
-    gap: 50px;
-    font-size: xx-large;
+    gap: 30px;
 }
 
 .adminSongsListTable tbody tr{
