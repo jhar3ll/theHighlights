@@ -15,8 +15,8 @@ const AdminSongs = () => {
   useEffect(() => {
     async function getAllSongs() {
       if (!songs.length){
-        const allSongs = await SongsAPI.listSongs();
-        allSongs && setSongs(allSongs);
+        const allSongs = await SongsAPI.getUserSongsList();
+        if (allSongs) setSongs(allSongs)
       }
     }
 
@@ -36,7 +36,7 @@ const AdminSongs = () => {
   return (
     <div className='adminSongsMain'>
       <Dialog onClose={handleDialogClose} open={dialogOpen}>
-        <AddSong songToEdit={songToEdit.current} />
+        <AddSong songToEdit={songToEdit.current} userSongs={songs} />
       </Dialog>
       
       <div className="adminSongsSecondaryContainer">

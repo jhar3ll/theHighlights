@@ -163,12 +163,14 @@ export const getSetlist = /* GraphQL */ `
       addedBy
       title
       setNumber
-      Songs {
-        nextToken
-        startedAt
+      eventID
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
-      eventID
       createdAt
       updatedAt
       _version
@@ -270,19 +272,18 @@ export const setlistsByEventID = /* GraphQL */ `
     }
   }
 `;
-export const getSong = /* GraphQL */ `
-  query GetSong($id: ID!) {
-    getSong(id: $id) {
+export const getUserSongs = /* GraphQL */ `
+  query GetUserSongs($id: ID!) {
+    getUserSongs(id: $id) {
       id
-      addedBy
-      album
-      artist
-      title
-      setlists {
-        nextToken
-        startedAt
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
+      userPoolId
       createdAt
       updatedAt
       _version
@@ -292,19 +293,16 @@ export const getSong = /* GraphQL */ `
     }
   }
 `;
-export const listSongs = /* GraphQL */ `
-  query ListSongs(
-    $filter: ModelSongFilterInput
+export const listUserSongs = /* GraphQL */ `
+  query ListUserSongs(
+    $filter: ModelUserSongsFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listSongs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUserSongs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        addedBy
-        album
-        artist
-        title
+        userPoolId
         createdAt
         updatedAt
         _version
@@ -318,14 +316,14 @@ export const listSongs = /* GraphQL */ `
     }
   }
 `;
-export const syncSongs = /* GraphQL */ `
-  query SyncSongs(
-    $filter: ModelSongFilterInput
+export const syncUserSongs = /* GraphQL */ `
+  query SyncUserSongs(
+    $filter: ModelUserSongsFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncSongs(
+    syncUserSongs(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -333,10 +331,7 @@ export const syncSongs = /* GraphQL */ `
     ) {
       items {
         id
-        addedBy
-        album
-        artist
-        title
+        userPoolId
         createdAt
         updatedAt
         _version
@@ -424,165 +419,6 @@ export const syncTips = /* GraphQL */ `
         requestInfo
         transactionId
         type
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      nextToken
-      startedAt
-      __typename
-    }
-  }
-`;
-export const getSetlistSong = /* GraphQL */ `
-  query GetSetlistSong($id: ID!) {
-    getSetlistSong(id: $id) {
-      id
-      setlistId
-      songId
-      setlist {
-        id
-        addedBy
-        title
-        setNumber
-        eventID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      song {
-        id
-        addedBy
-        album
-        artist
-        title
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const listSetlistSongs = /* GraphQL */ `
-  query ListSetlistSongs(
-    $filter: ModelSetlistSongFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listSetlistSongs(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        setlistId
-        songId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      nextToken
-      startedAt
-      __typename
-    }
-  }
-`;
-export const syncSetlistSongs = /* GraphQL */ `
-  query SyncSetlistSongs(
-    $filter: ModelSetlistSongFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncSetlistSongs(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        setlistId
-        songId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      nextToken
-      startedAt
-      __typename
-    }
-  }
-`;
-export const setlistSongsBySetlistId = /* GraphQL */ `
-  query SetlistSongsBySetlistId(
-    $setlistId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelSetlistSongFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    setlistSongsBySetlistId(
-      setlistId: $setlistId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        setlistId
-        songId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      nextToken
-      startedAt
-      __typename
-    }
-  }
-`;
-export const setlistSongsBySongId = /* GraphQL */ `
-  query SetlistSongsBySongId(
-    $songId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelSetlistSongFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    setlistSongsBySongId(
-      songId: $songId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        setlistId
-        songId
         createdAt
         updatedAt
         _version

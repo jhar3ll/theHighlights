@@ -17,7 +17,7 @@ type AddSetlistProps = {
 const AddSetlist = ({ availableEvents, setlistToEdit }: AddSetlistProps) => {
   const { currentUser, setAlertMessage } = useContext(AdminContext) || {};
   const initialSet = setlistToEdit ? 
-    {addedBy: setlistToEdit.addedBy, eventID: setlistToEdit.eventID, setNumber: setlistToEdit.setNumber, Songs: setlistToEdit.Songs, title: setlistToEdit.title} : 
+    {addedBy: setlistToEdit.addedBy, eventID: setlistToEdit.eventID, setNumber: setlistToEdit.setNumber, songs: setlistToEdit.songs, title: setlistToEdit.title} : 
     {addedBy: currentUser?.name, eventID: "", setNumber: 1, Songs: [], title: ""} as any;
 
   const [confirmOpen, setConfirmOpen] = useState(false);

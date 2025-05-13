@@ -6,8 +6,6 @@
 
 export { default as EventCreateForm } from "./EventCreateForm";
 export { default as EventUpdateForm } from "./EventUpdateForm";
-export { default as SongCreateForm } from "./SongCreateForm";
-export { default as SongUpdateForm } from "./SongUpdateForm";
 export { default as TipCreateForm } from "./TipCreateForm";
 export { default as TipUpdateForm } from "./TipUpdateForm";
 export { default as studioTheme } from "./studioTheme";

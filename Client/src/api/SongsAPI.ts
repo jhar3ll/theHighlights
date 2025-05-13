@@ -1,67 +1,62 @@
+import awsmobile from "../aws-exports";
 import { AWS_Services } from "../lib/library";
-import { Song } from "../models";
-import { SongCreateFormInputValues } from "../ui-components/SongCreateForm";
-const { DataStore, Predicates, SortDirection } = AWS_Services;
+import { LazySong, Song, UserSongs } from "../models";
+const { DataStore } = AWS_Services;
+const { aws_user_pools_id } = awsmobile;
 
-//create new song
-async function createSong({addedBy, album, artist, title}: SongCreateFormInputValues): Promise<{result: "SUCCESS"|"FAIL", songOutput: Song}|undefined> {
-    if (!addedBy || !album || !artist || !title) throw new Error("All fields are required.");
+//create new userSongsModel
+async function createUserSongsModel() {
     try {
-        const songOutput = await DataStore.save(new Song({ addedBy, album, artist, title}));
-        console.log("create new song SUCCESS: ", songOutput);
-        return { result: "SUCCESS", songOutput };
+        const userSongsModel = await DataStore.save(new UserSongs({ userPoolId: aws_user_pools_id, songs: [] }));
+        console.log("createUserSongsModel() SUCCESS: ", userSongsModel);
+        return userSongsModel;
     } catch (error) {
-        console.log("createSong() error: ", error);
-    }    
-}
-
-//delete song
-async function deleteSong(song:Song):Promise<"SUCCESS"|"FAIL"|undefined> {
-    try {
-        const songOutput = await DataStore.delete(Song, s => s.id.eq(song.id));
-        console.log("delete song SUCCESS: ", songOutput);
-        return "SUCCESS";
-    } catch (error) {
-        console.log("deleteSong() error: ", error);
-    }   
-}
-
-//get all songs
-async function listSongs() {
-    try {
-        const songs = await DataStore.query(Song, Predicates.ALL, {
-            sort: (song) => song.artist(SortDirection.ASCENDING).title(SortDirection.ASCENDING)
-        });
-        return songs;
-    } catch (error) {
-        console.log("listSongs() error: ", error);
+        console.log("createUserSongsModel() ERROR: ", error);
+        throw new Error("Unable to create userSongs Model");
     }
 }
 
-//update song
-async function updateSong(song: Song): Promise<{result: "SUCCESS"|"FAIL", songOutput: Song}|undefined> {
-    const { addedBy, album, artist, title } = song;
+//update user songs model
+async function updateUserSongs(updatedSongs :Song[]):Promise<{result: "SUCCESS"|"FAIL", userSongsOutput?: UserSongs}|undefined> {
     try {
-        const original = await DataStore.query(Song, song.id);
-        if (!original) throw new Error("Unable to retrieve original song with id: " + song.id);
-        const songOutput = await DataStore.save(
-            Song.copyOf(original, updated => {
-                updated.addedBy = addedBy
-                updated.album = album
-                updated.artist = artist
-                updated.title = title
+        let userSongsModel = await getUserSongsModel();
+        if (!userSongsModel) throw new Error("No user songs model found");
+        const userSongsOutput = await DataStore.save(UserSongs.copyOf(userSongsModel, updated => {
+            updated.songs = updatedSongs
         }));
-        console.log("update song SUCCESS: ", songOutput);
-        return { result: "SUCCESS", songOutput };
+        console.log("updateUserSongs() SUCCESS: ", userSongsOutput)
+        return { result: "SUCCESS", userSongsOutput };
     } catch (error) {
-        console.log("createSong() error: ", error);
-    }    
+        console.log("updateUserSongs() error: ", error);
+        return { result: "FAIL" };
+    }   
 }
 
+//get user songs model
+async function getUserSongsModel() {
+    try {
+        const userSongs = await DataStore.query(UserSongs, u => u.userPoolId.eq(aws_user_pools_id));
+        if (userSongs.length) return userSongs[0];
+    } catch (error) {
+        console.log("getUserSongsModel() ERROR: ", error);
+    }
+}
 
+//get user songs
+async function getUserSongsList() {
+    try {
+        const userSongModel = await getUserSongsModel();
+        if (userSongModel) return userSongModel.songs;
+        else {
+            await createUserSongsModel();
+            return [] as LazySong[];
+        }
+    } catch (error) {
+        console.log("getUserSongsList() ERROR: ", error);
+    }
+}
 export const SongsAPI = {
-    createSong,
-    deleteSong,
-    listSongs,
-    updateSong
+    createUserSongsModel,
+    getUserSongsList,
+    updateUserSongs
 };

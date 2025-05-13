@@ -11,6 +11,11 @@
     overflow-y: auto;
 }
 
+.availableSongsListContainer .css-19opgx6-MuiFormControlLabel-root {
+    align-items: center;
+    display: flex;
+}
+
 .selectSongsButtonsContainer {
     display: flex;
     justify-content: space-around;

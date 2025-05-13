@@ -8,20 +8,15 @@ import { Song } from "../../models";
 import Confirmation from "../Confirmation/Confirmation";
 const { Button, TextField } = Library;
 
-type newSongType = {
-    album: string
-    artist: string
-    title: string
-}
-
-const AddSong = ({ songToEdit }: {songToEdit: Song|null}) => {
-    const initialSet = songToEdit ? {album: songToEdit.album, artist: songToEdit.artist, title: songToEdit.title} : {album: "", artist: "", title: ""};
+const AddSong = ({ songToEdit, userSongs }: {songToEdit: Song|null, userSongs: Song[]}) => {
     const { currentUser, setAlertMessage } = useContext(AdminContext) || {};
+    const initialSet = songToEdit ? 
+        {addedBy: songToEdit.addedBy, album: songToEdit.album, artist: songToEdit.artist,  title: songToEdit.title} : 
+        {addedBy: currentUser ? currentUser.name : "default", album: "", artist: "", title: ""};
     const [confirmOpen, setConfirmOpen] = useState(false);
-    const [songInfo, setSongInfo] = useState<newSongType>(initialSet);
-    const isFieldEmpty = Object.values(songInfo).some(field => !field);
-
-
+    const [songInfo, setSongInfo] = useState<Song>(initialSet);
+    const isFieldEmpty = Object.values(songInfo).some(value => !value);
+    
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.currentTarget;
         setSongInfo(prevState => ({ ...prevState, [name]: capitalizeWords(value) }));
@@ -29,31 +24,34 @@ const AddSong = ({ songToEdit }: {songToEdit: Song|null}) => {
 
     async function handleDelete() {
         if (!songToEdit) return;
-        const deleteResult = await SongsAPI.deleteSong(songToEdit);
-        if (deleteResult && deleteResult === "SUCCESS") 
-            setAlertMessage && setAlertMessage({
-                duration: 2500, 
-                message: `Successfully deleted song ${songToEdit.artist} - ${songToEdit.title}`,
-                open: true,
-                severity: "success"
-        });
+        //update userSongs Model
+    
+        // if (deleteResult && deleteResult === "SUCCESS") 
+        //     setAlertMessage && setAlertMessage({
+        //         duration: 2500, 
+        //         message: `Successfully deleted song ${songToEdit.artist} - ${songToEdit.title}`,
+        //         open: true,
+        //         severity: "success"
+        // });
     }
 
     async function handleSubmit() {
         let newSongResult;
-        const { album, artist, title } = songInfo;
         if (!currentUser) return setAlertMessage && setAlertMessage({duration: 2500, message: "Unable to retrieve user", severity: "error"});
-        const addedBy = currentUser.name;
-
+        const updatedSongs = [...userSongs];
+        
         if (songToEdit){
-            newSongResult = await SongsAPI.updateSong({...songToEdit, addedBy, album, artist, title});
+            const thisSongIndex = updatedSongs.findIndex(song => (song.artist === songToEdit.artist) && (song.title === songToEdit.title));
+            updatedSongs[thisSongIndex] = {...songToEdit};
+            newSongResult = await SongsAPI.updateUserSongs(updatedSongs);
         } else {
-            newSongResult = await SongsAPI.createSong({ addedBy: currentUser.name, album, artist, title });
+            updatedSongs.push(songInfo)
+            newSongResult = await SongsAPI.updateUserSongs(updatedSongs);
         }
         if (newSongResult && newSongResult.result === "SUCCESS"){
             setAlertMessage && setAlertMessage({
                 duration: 2500, 
-                message: `Successfully ${songToEdit ? "updated": "added new"} song ${newSongResult.songOutput.artist} - ${newSongResult.songOutput.title}`,
+                message: `Successfully ${songToEdit ? "updated": "added new"} song ${songInfo.artist} - ${songInfo.title}`,
                 open: true,
                 severity: "success"
             });

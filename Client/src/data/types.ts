@@ -1,5 +1,4 @@
-import { AsyncCollection } from "aws-amplify/dist/esm/datastore";
-import { ContactInfo, LazySetlistSong } from "../models";
+import { ContactInfo, Event, LazySong, Setlist } from "../models";
 import { AlertMessageProps } from "../ui/AlertMessage/AlertMessage";
 
 export type AdminContextType = {
@@ -15,8 +14,8 @@ export type ServiceContextType = {
 export type newSetlistType = {
     addedBy: string
     eventID: string
-    setNumber?: number|null|undefined
-    Songs: AsyncCollection<LazySetlistSong>
+    setNumber: number
+    songs: LazySong[]
     title: string
 }
 
@@ -24,6 +23,11 @@ export type MessageInput = {
   contactInfo: ContactInfo
   description: string
   title: string
+}
+
+export type SetlistWithEvent = Setlist & {
+    event: Event
+    songs: Song[]
 }
 
 export type Song = {

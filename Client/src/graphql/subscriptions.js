@@ -137,12 +137,14 @@ export const onCreateSetlist = /* GraphQL */ `
       addedBy
       title
       setNumber
-      Songs {
-        nextToken
-        startedAt
+      eventID
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
-      eventID
       createdAt
       updatedAt
       _version
@@ -159,12 +161,14 @@ export const onUpdateSetlist = /* GraphQL */ `
       addedBy
       title
       setNumber
-      Songs {
-        nextToken
-        startedAt
+      eventID
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
-      eventID
       createdAt
       updatedAt
       _version
@@ -181,32 +185,12 @@ export const onDeleteSetlist = /* GraphQL */ `
       addedBy
       title
       setNumber
-      Songs {
-        nextToken
-        startedAt
-        __typename
-      }
       eventID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onCreateSong = /* GraphQL */ `
-  subscription OnCreateSong($filter: ModelSubscriptionSongFilterInput) {
-    onCreateSong(filter: $filter) {
-      id
-      addedBy
-      album
-      artist
-      title
-      setlists {
-        nextToken
-        startedAt
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
       createdAt
@@ -218,19 +202,20 @@ export const onCreateSong = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateSong = /* GraphQL */ `
-  subscription OnUpdateSong($filter: ModelSubscriptionSongFilterInput) {
-    onUpdateSong(filter: $filter) {
+export const onCreateUserSongs = /* GraphQL */ `
+  subscription OnCreateUserSongs(
+    $filter: ModelSubscriptionUserSongsFilterInput
+  ) {
+    onCreateUserSongs(filter: $filter) {
       id
-      addedBy
-      album
-      artist
-      title
-      setlists {
-        nextToken
-        startedAt
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
+      userPoolId
       createdAt
       updatedAt
       _version
@@ -240,19 +225,43 @@ export const onUpdateSong = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteSong = /* GraphQL */ `
-  subscription OnDeleteSong($filter: ModelSubscriptionSongFilterInput) {
-    onDeleteSong(filter: $filter) {
+export const onUpdateUserSongs = /* GraphQL */ `
+  subscription OnUpdateUserSongs(
+    $filter: ModelSubscriptionUserSongsFilterInput
+  ) {
+    onUpdateUserSongs(filter: $filter) {
       id
-      addedBy
-      album
-      artist
-      title
-      setlists {
-        nextToken
-        startedAt
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
+      userPoolId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteUserSongs = /* GraphQL */ `
+  subscription OnDeleteUserSongs(
+    $filter: ModelSubscriptionUserSongsFilterInput
+  ) {
+    onDeleteUserSongs(filter: $filter) {
+      id
+      songs {
+        addedBy
+        album
+        artist
+        title
+        __typename
+      }
+      userPoolId
       createdAt
       updatedAt
       _version
@@ -316,135 +325,6 @@ export const onDeleteTip = /* GraphQL */ `
       requestInfo
       transactionId
       type
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onCreateSetlistSong = /* GraphQL */ `
-  subscription OnCreateSetlistSong(
-    $filter: ModelSubscriptionSetlistSongFilterInput
-  ) {
-    onCreateSetlistSong(filter: $filter) {
-      id
-      setlistId
-      songId
-      setlist {
-        id
-        addedBy
-        title
-        setNumber
-        eventID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      song {
-        id
-        addedBy
-        album
-        artist
-        title
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onUpdateSetlistSong = /* GraphQL */ `
-  subscription OnUpdateSetlistSong(
-    $filter: ModelSubscriptionSetlistSongFilterInput
-  ) {
-    onUpdateSetlistSong(filter: $filter) {
-      id
-      setlistId
-      songId
-      setlist {
-        id
-        addedBy
-        title
-        setNumber
-        eventID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      song {
-        id
-        addedBy
-        album
-        artist
-        title
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onDeleteSetlistSong = /* GraphQL */ `
-  subscription OnDeleteSetlistSong(
-    $filter: ModelSubscriptionSetlistSongFilterInput
-  ) {
-    onDeleteSetlistSong(filter: $filter) {
-      id
-      setlistId
-      songId
-      setlist {
-        id
-        addedBy
-        title
-        setNumber
-        eventID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      song {
-        id
-        addedBy
-        album
-        artist
-        title
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
       createdAt
       updatedAt
       _version

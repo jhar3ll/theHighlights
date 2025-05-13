@@ -1,6 +1,6 @@
 import { Amplify } from "aws-amplify";
 import { fetchAuthSession, fetchUserAttributes, signOut, updateUserAttribute } from "aws-amplify/auth";
-import { DataStore, Predicates, SortDirection } from "aws-amplify/datastore";
+import { AsyncCollection, DataStore, Predicates, SortDirection } from "aws-amplify/datastore";
 import { Hub } from "aws-amplify/utils";
 import { Authenticator } from "@aws-amplify/ui-react";
 import dayjs from 'dayjs';
@@ -54,6 +54,7 @@ import { BrowserRouter, Link, Route, Routes, useLocation, useNavigate, useParams
 
 export const AWS_Services = {
     Amplify,
+    AsyncCollection,
     Authenticator,
     DataStore,
     fetchAuthSession, 

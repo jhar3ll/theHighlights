@@ -1,34 +1,51 @@
 import "./AdminSetlists.css";
 import React, { useEffect, useRef, useState } from 'react'
-import { Icons, Library } from "../../lib/library";
+import { AWS_Services, Icons, Library } from "../../lib/library";
 import AddSetlist from "../AddSetlist/AddSetlist";
 import { Event, Setlist } from "../../models";
 import { SetlistAPI } from "../../api/SetlistAPI";
 import { EventsAPI } from "../../api/EventsAPI";
+import { SetlistWithEvent } from "../../data/types";
+const { DataStore } = AWS_Services;
 const { AddIcon } = Icons;
-const { Dialog, Fab } = Library;
+const { dayjs, Dialog, Fab } = Library;
 
 const AdminSetlist = () => {
   const availableEvents = useRef<Event[]>([]);
   const currentSetlist = useRef(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [setlists, setSetlists] = useState<Setlist[]|null>(null);
-  
+  const [setlists, setSetlists] = useState<SetlistWithEvent[]|null>(null);
 
   useEffect(() => {
+    async function getSetlistsWithEvents(modelSetlists: Setlist[]){
+      return await Promise.all(modelSetlists.map(async (setlist: Setlist) => {
+        const setlistEvent = await DataStore.query(Event, e => e.id.eq(setlist.eventID));
+        return { ...setlist, event: setlistEvent[0] };
+        })
+      );
+    }
+    
     async function getAllSetlists() {
       const allSetlists = await SetlistAPI.listSetlists();
       availableEvents.current = await EventsAPI.listEvents() || [];
-      allSetlists && setSetlists(allSetlists);
+      if (allSetlists){
+        const setlistsWithSongsAndEvents = await getSetlistsWithEvents(allSetlists);
+        console.log(setlistsWithSongsAndEvents)
+        setSetlists(setlistsWithSongsAndEvents as any)
+      }
     }
 
     getAllSetlists();
   },[]);
 
+  function getEventDateTime(eventDateTime: string){
+    return dayjs(eventDateTime).format("MM/DD/YY");
+  }
+
   function handleViewSetlist(setlist: Setlist){
     console.log(setlist);
   }
-
+  
   return (
     <div className="adminSetlistsMain">
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
@@ -44,7 +61,7 @@ const AdminSetlist = () => {
           <thead>
           <tr>
               <th>Title</th>
-              <th>Event ID</th>
+              <th>Event</th>
               <th>Set #</th>
               <th># Of Songs</th>
               <th>Added By</th>
@@ -55,9 +72,9 @@ const AdminSetlist = () => {
               return (
                 <tr key={index} onClick={() => handleViewSetlist(setlist)}>
                     <td>{setlist.title}</td>
-                    <td>{setlist.eventID}</td>
+                    {<td>{setlist.event.title} | {getEventDateTime(setlist.event.dateTime)}</td>}
                     <td>{setlist.setNumber || "-"}</td>
-                    <td>{"no. of songs here"}</td>
+                    <td>{123}</td>
                     <td>{setlist.addedBy}</td>
                 </tr>
               )})

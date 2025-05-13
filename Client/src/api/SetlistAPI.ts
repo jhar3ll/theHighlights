@@ -5,10 +5,10 @@ import { newSetlistType } from "../data/types";
 const { DataStore, Predicates, SortDirection } = AWS_Services;
 
 async function createSetlist(setlistInfo: newSetlistType): Promise<{result: "SUCCESS"|"FAIL", setlistOutput?: Setlist}>{
-    const { addedBy, eventID, setNumber, Songs, title } = setlistInfo;
+    const { addedBy, eventID, setNumber, songs, title } = setlistInfo;
     try {
-        const songsArray = await Songs.toArray();
-        const setlistOutput = await DataStore.save(new Setlist({ addedBy, eventID, setNumber, Songs: songsArray, title }));
+        const setlistOutput = await DataStore.save(new Setlist({ addedBy, eventID, setNumber, songs, title }));
+        console.log("createSetlist() SUCCESS: ", setlistOutput);
         return {result: "SUCCESS", setlistOutput };
     } catch (error) {
         console.log("createSetlist() ERROR: ", error);
@@ -32,7 +32,6 @@ async function listSetlists() {
         const allSetlists = await DataStore.query(Setlist, Predicates.ALL, {
             sort: setlist => setlist.createdAt(SortDirection.DESCENDING)
         });
-        console.log(allSetlists);
         return allSetlists;
     } catch (error) {
         console.log("listSetlists() ERROR: ", error);
@@ -41,17 +40,16 @@ async function listSetlists() {
 
 //update setlist
 async function updateSetlist(setlist: Setlist): Promise<{result: "SUCCESS"|"FAIL", setlistOutput: Setlist}|undefined> {
-    const { addedBy, eventID, setNumber, Songs, title } = setlist;
+    const { addedBy, eventID, setNumber, songs, title } = setlist;
     try {
         const original = await DataStore.query(Setlist, setlist.id);
         if (!original) throw new Error("Unable to retrieve original setlist with id: " + setlist.id);
-        const updatedSongs = await Songs.toArray();
         const setlistOutput = await DataStore.save(
             Setlist.copyOf(original, updated => {
                 updated.addedBy = addedBy
                 updated.eventID = eventID
                 updated.setNumber = setNumber
-                updated.Songs = updatedSongs
+                updated.songs = songs
                 updated.title = title
         }));
         console.log("update setlist SUCCESS: ", setlistOutput);

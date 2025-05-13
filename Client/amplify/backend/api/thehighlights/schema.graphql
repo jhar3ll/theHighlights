@@ -1,3 +1,10 @@
+type Song {
+  addedBy: String!
+  album: String
+  artist: String!
+  title: String!
+}
+
 type ContactInfo {
   email: String!
   phoneNumber: String!
@@ -30,18 +37,15 @@ type Setlist @model @auth(rules: [{allow: public}]) {
   id: ID!
   addedBy: String!
   title: String!
-  setNumber: Int
-  Songs: [Song] @manyToMany(relationName: "SetlistSong")
+  setNumber: Int!
   eventID: ID! @index(name: "byEvent")
+  songs: [Song!]!
 }
 
-type Song @model @auth(rules: [{allow: public}]) {
+type UserSongs @model @auth(rules: [{allow: public}]) {
   id: ID!
-  addedBy: String!
-  album: String!
-  artist: String!
-  title: String!
-  setlists: [Setlist] @manyToMany(relationName: "SetlistSong")
+  songs: [Song!]
+  userPoolId: String!
 }
 
 type Tip @model @auth(rules: [{allow: public}]) {

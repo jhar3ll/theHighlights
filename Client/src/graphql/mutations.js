@@ -158,12 +158,14 @@ export const createSetlist = /* GraphQL */ `
       addedBy
       title
       setNumber
-      Songs {
-        nextToken
-        startedAt
+      eventID
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
-      eventID
       createdAt
       updatedAt
       _version
@@ -183,12 +185,14 @@ export const updateSetlist = /* GraphQL */ `
       addedBy
       title
       setNumber
-      Songs {
-        nextToken
-        startedAt
+      eventID
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
-      eventID
       createdAt
       updatedAt
       _version
@@ -208,35 +212,12 @@ export const deleteSetlist = /* GraphQL */ `
       addedBy
       title
       setNumber
-      Songs {
-        nextToken
-        startedAt
-        __typename
-      }
       eventID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createSong = /* GraphQL */ `
-  mutation CreateSong(
-    $input: CreateSongInput!
-    $condition: ModelSongConditionInput
-  ) {
-    createSong(input: $input, condition: $condition) {
-      id
-      addedBy
-      album
-      artist
-      title
-      setlists {
-        nextToken
-        startedAt
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
       createdAt
@@ -248,22 +229,21 @@ export const createSong = /* GraphQL */ `
     }
   }
 `;
-export const updateSong = /* GraphQL */ `
-  mutation UpdateSong(
-    $input: UpdateSongInput!
-    $condition: ModelSongConditionInput
+export const createUserSongs = /* GraphQL */ `
+  mutation CreateUserSongs(
+    $input: CreateUserSongsInput!
+    $condition: ModelUserSongsConditionInput
   ) {
-    updateSong(input: $input, condition: $condition) {
+    createUserSongs(input: $input, condition: $condition) {
       id
-      addedBy
-      album
-      artist
-      title
-      setlists {
-        nextToken
-        startedAt
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
+      userPoolId
       createdAt
       updatedAt
       _version
@@ -273,22 +253,45 @@ export const updateSong = /* GraphQL */ `
     }
   }
 `;
-export const deleteSong = /* GraphQL */ `
-  mutation DeleteSong(
-    $input: DeleteSongInput!
-    $condition: ModelSongConditionInput
+export const updateUserSongs = /* GraphQL */ `
+  mutation UpdateUserSongs(
+    $input: UpdateUserSongsInput!
+    $condition: ModelUserSongsConditionInput
   ) {
-    deleteSong(input: $input, condition: $condition) {
+    updateUserSongs(input: $input, condition: $condition) {
       id
-      addedBy
-      album
-      artist
-      title
-      setlists {
-        nextToken
-        startedAt
+      songs {
+        addedBy
+        album
+        artist
+        title
         __typename
       }
+      userPoolId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteUserSongs = /* GraphQL */ `
+  mutation DeleteUserSongs(
+    $input: DeleteUserSongsInput!
+    $condition: ModelUserSongsConditionInput
+  ) {
+    deleteUserSongs(input: $input, condition: $condition) {
+      id
+      songs {
+        addedBy
+        album
+        artist
+        title
+        __typename
+      }
+      userPoolId
       createdAt
       updatedAt
       _version
@@ -361,138 +364,6 @@ export const deleteTip = /* GraphQL */ `
       requestInfo
       transactionId
       type
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createSetlistSong = /* GraphQL */ `
-  mutation CreateSetlistSong(
-    $input: CreateSetlistSongInput!
-    $condition: ModelSetlistSongConditionInput
-  ) {
-    createSetlistSong(input: $input, condition: $condition) {
-      id
-      setlistId
-      songId
-      setlist {
-        id
-        addedBy
-        title
-        setNumber
-        eventID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      song {
-        id
-        addedBy
-        album
-        artist
-        title
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateSetlistSong = /* GraphQL */ `
-  mutation UpdateSetlistSong(
-    $input: UpdateSetlistSongInput!
-    $condition: ModelSetlistSongConditionInput
-  ) {
-    updateSetlistSong(input: $input, condition: $condition) {
-      id
-      setlistId
-      songId
-      setlist {
-        id
-        addedBy
-        title
-        setNumber
-        eventID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      song {
-        id
-        addedBy
-        album
-        artist
-        title
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteSetlistSong = /* GraphQL */ `
-  mutation DeleteSetlistSong(
-    $input: DeleteSetlistSongInput!
-    $condition: ModelSetlistSongConditionInput
-  ) {
-    deleteSetlistSong(input: $input, condition: $condition) {
-      id
-      setlistId
-      songId
-      setlist {
-        id
-        addedBy
-        title
-        setNumber
-        eventID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      song {
-        id
-        addedBy
-        album
-        artist
-        title
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
       createdAt
       updatedAt
       _version

@@ -23,7 +23,7 @@ const Tip = () => {
   useEffect(() => {
     async function getAllSongsUser() {
       if (!songList.length){
-        const allSongs = await SongsAPI.listSongs();
+        const allSongs = await SongsAPI.getUserSongsList();
         allSongs && setSongList(allSongs);
       }
     }
@@ -69,7 +69,7 @@ const Tip = () => {
   }
 
   function handleSongSelection(event: React.ChangeEvent<HTMLInputElement>) {
-    const songIndex = songList.findIndex(song => song.id === event.target.value);
+    const songIndex = songList.findIndex(song => song.id === Number(event.target.value));
     if (!songIndex) return;
     setSongSelection(songList[songIndex]);
   }

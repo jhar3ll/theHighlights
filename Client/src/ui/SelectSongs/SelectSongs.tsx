@@ -1,12 +1,13 @@
 import "./SelectSongs.css";
 import React, { useContext, useEffect, useState } from 'react';
 import { Library } from "../../lib/library";
-import { Setlist, Song } from "../../models";
+import { LazySong, Setlist, Song } from "../../models";
 import { SongsAPI } from "../../api/SongsAPI";
 import { newSetlistType } from "../../data/types";
 import { capitalizeWords } from "../../util/capitalizeWords";
 import { AdminContext } from "../../contexts/contexts";
 import { SetlistAPI } from "../../api/SetlistAPI";
+
 const { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, FormGroup } = Library;
 
 type SelectSongsProps = {
@@ -14,15 +15,16 @@ type SelectSongsProps = {
     setlistInfo: newSetlistType
     setlistToEdit: Setlist|null
 }
+
 const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSongsProps) => {
     const [availableSongs, setAvailableSongs] = useState<Song[]>([]);
-    const { currentUser } = useContext(AdminContext) || {};
+    const { currentUser, setAlertMessage } = useContext(AdminContext) || {};
     const [loading, setLoading] = useState(true);
-    const [selectedSongs, setSelectedSongs] = useState<{[key:string]:Song|null}>({});
+    const [selectedSongs, setSelectedSongs] = useState<{[key:string]:LazySong|null}>({});
 
     useEffect(() => {
         async function getAllSongs() {
-            const allSongs = await SongsAPI.listSongs();
+            const allSongs = await SongsAPI.getUserSongsList();
             allSongs && setAvailableSongs(allSongs);
             setLoading(false);
         }
@@ -30,31 +32,32 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
     },[]);
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>){
-        const { value } = event.target;
-        setSelectedSongs(prevState => ({...prevState, [value]: prevState[value] ? null : availableSongs[Number(value)]}));
+        const { value } = JSON.parse(event.target.value);
+        const label = `${value.artist} - ${value.title}`;
+        setSelectedSongs(prevState => ({...prevState, [label]: prevState[label] ? null : value}));
     };
 
     async function handleSubmit() {
         let newSetlistResult;
-        const Songs = Object.values(selectedSongs).filter((s): s is Song => s !== null) as any;
+        const songs: LazySong[] = Object.values(selectedSongs).filter((s): s is LazySong => s !== null);
         const { eventID, setNumber, title } = setlistInfo;
-        // if (!currentUser) return setAlertMessage && setAlertMessage({duration: 2500, message: "Unable to retrieve user", severity: "error"});
+        if (!currentUser) return setAlertMessage && setAlertMessage({duration: 2500, message: "Unable to retrieve user", severity: "error"});
         const addedBy = currentUser ? currentUser.name : "";
     
         if (setlistToEdit){
-            newSetlistResult = await SetlistAPI.updateSetlist({...setlistToEdit, addedBy, eventID, setNumber, Songs, title});
+            newSetlistResult = await SetlistAPI.updateSetlist({...setlistToEdit, addedBy, eventID, setNumber, songs, title});
         } else {
-            newSetlistResult = await SetlistAPI.createSetlist({ addedBy, eventID, setNumber, Songs, title });
+            newSetlistResult = await SetlistAPI.createSetlist({ addedBy, eventID, setNumber, songs, title });
         }
-        console.log(newSetlistResult)
-        // if (newSetlistResult && newSetlistResult.result === "SUCCESS"){
-        //   setAlertMessage && setAlertMessage({
-        //       duration: 2500, 
-        //       message: `Successfully ${setlistToEdit ? "updated": "added new"} setlist ${newSetlistResult.setlistOutput?.title}`,
-        //       open: true,
-        //       severity: "success"
-        //   });
-        // }
+       
+        if (newSetlistResult && newSetlistResult.result === "SUCCESS"){
+          setAlertMessage && setAlertMessage({
+              duration: 2500, 
+              message: `Successfully ${setlistToEdit ? "updated": "added new"} setlist ${newSetlistResult.setlistOutput?.title}`,
+              open: true,
+              severity: "success"
+          });
+        }
     }
 
     return (
@@ -65,13 +68,16 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
                         <h3>Select Songs For Setlist "{capitalizeWords(setlistInfo.title)}" (Set #{setlistInfo.setNumber})</h3>
                         <FormGroup>
                             <div className="availableSongsListContainer">
-                                {availableSongs.map((song, index) =>
-                                    <FormControlLabel 
-                                        key={index} 
-                                        control={ <Checkbox checked={!!selectedSongs[index]} onChange={handleChange} value={String(index)}/>} 
-                                        label={`${song.artist} - ${song.title}`} 
-                                    />
-                                )}
+                                {availableSongs.map((song, index) => {
+                                    const label = `${song.artist} - ${song.title}`;
+                                    return (
+                                        <FormControlLabel 
+                                            key={index} 
+                                            control={ <Checkbox checked={!!selectedSongs[label]} onChange={handleChange} value={label}/>} 
+                                            label={label} 
+                                        />
+                                    )
+                                })}
                             </div>
                         </FormGroup>
                     </FormControl>

@@ -18,7 +18,7 @@
       "function": {
         "theHighlightsCreateTipOnSuccess": {
           "deploymentBucketName": "amplify-thehighlights-dev-3db9d-deployment",
-          "s3Key": "amplify-builds/theHighlightsCreateTipOnSuccess-6e68653958655836724d-build.zip"
+          "s3Key": "amplify-builds/theHighlightsCreateTipOnSuccess-74475175314c4b39312f-build.zip"
         }
       },
       "auth": {

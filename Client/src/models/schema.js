@@ -199,24 +199,8 @@ export const schema = {
                     "name": "setNumber",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
-                },
-                "Songs": {
-                    "name": "Songs",
-                    "isArray": true,
-                    "type": {
-                        "model": "SetlistSong"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "setlist"
-                        ]
-                    }
                 },
                 "eventID": {
                     "name": "eventID",
@@ -224,6 +208,16 @@ export const schema = {
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
+                },
+                "songs": {
+                    "name": "songs",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Song"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -276,8 +270,8 @@ export const schema = {
                 }
             ]
         },
-        "Song": {
-            "name": "Song",
+        "UserSongs": {
+            "name": "UserSongs",
             "fields": {
                 "id": {
                     "name": "id",
@@ -286,49 +280,22 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "addedBy": {
-                    "name": "addedBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "album": {
-                    "name": "album",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "artist": {
-                    "name": "artist",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "title": {
-                    "name": "title",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "setlists": {
-                    "name": "setlists",
+                "songs": {
+                    "name": "songs",
                     "isArray": true,
                     "type": {
-                        "model": "SetlistSong"
+                        "nonModel": "Song"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "song"
-                        ]
-                    }
+                    "isArrayNullable": true
+                },
+                "userPoolId": {
+                    "name": "userPoolId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -348,7 +315,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Songs",
+            "pluralName": "UserSongs",
             "attributes": [
                 {
                     "type": "model",
@@ -481,120 +448,6 @@ export const schema = {
                     }
                 }
             ]
-        },
-        "SetlistSong": {
-            "name": "SetlistSong",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "setlistId": {
-                    "name": "setlistId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "songId": {
-                    "name": "songId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "setlist": {
-                    "name": "setlist",
-                    "isArray": false,
-                    "type": {
-                        "model": "Setlist"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "setlistId"
-                        ]
-                    }
-                },
-                "song": {
-                    "name": "song",
-                    "isArray": false,
-                    "type": {
-                        "model": "Song"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "songId"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "SetlistSongs",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "bySetlist",
-                        "fields": [
-                            "setlistId"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "bySong",
-                        "fields": [
-                            "songId"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
         }
     },
     "enums": {
@@ -608,6 +461,39 @@ export const schema = {
         }
     },
     "nonModels": {
+        "Song": {
+            "name": "Song",
+            "fields": {
+                "addedBy": {
+                    "name": "addedBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "album": {
+                    "name": "album",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "artist": {
+                    "name": "artist",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
         "ContactInfo": {
             "name": "ContactInfo",
             "fields": {
@@ -636,5 +522,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "8759aa734f8d4f7b410838a5c46fe7e7"
+    "version": "9b7322d3c1741b4b36d622bec080896e"
 };
