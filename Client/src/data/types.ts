@@ -1,4 +1,5 @@
-import { ContactInfo } from "../models";
+import { AsyncCollection } from "aws-amplify/dist/esm/datastore";
+import { ContactInfo, LazySetlistSong } from "../models";
 import { AlertMessageProps } from "../ui/AlertMessage/AlertMessage";
 
 export type AdminContextType = {
@@ -9,6 +10,14 @@ export type AdminContextType = {
 export type ServiceContextType = {
     currentUser: User|null
     setCurrentUser: React.Dispatch<React.SetStateAction<User|null>>
+}
+
+export type newSetlistType = {
+    addedBy: string
+    eventID: string
+    setNumber?: number|null|undefined
+    Songs: AsyncCollection<LazySetlistSong>
+    title: string
 }
 
 export type MessageInput = {

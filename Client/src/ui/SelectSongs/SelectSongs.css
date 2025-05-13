@@ -1,0 +1,18 @@
+.availableSongsContainer{
+    text-align: center;
+}
+
+.availableSongsListContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-left: 20px;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.selectSongsButtonsContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}

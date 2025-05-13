@@ -147,6 +147,8 @@ const AdminTips = () => {
           <RestoreIcon fontSize="large" htmlColor="white" />
         </IconButton>
       </div>
+
+      <h1>Tips</h1>
       
       {calendarOpen ?
         <div className="tipsCalendarContainer">

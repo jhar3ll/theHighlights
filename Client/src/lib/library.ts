@@ -12,11 +12,16 @@ import Badge from '@mui/material/Badge';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 import Chip from '@mui/material/Chip';
+import CircularProgress from '@mui/material/CircularProgress';
 import { DateCalendar } from "@mui/x-date-pickers";
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 import Fab from '@mui/material/Fab';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel  from "@mui/material/FormControlLabel";
 import IconButton from '@mui/material/IconButton';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -85,13 +90,18 @@ export const Library = {
     BottomNavigation,
     BottomNavigationAction,
     Button,
+    Checkbox,
     Chip,
+    CircularProgress,
     DateCalendar,
     dayjs,
     Dialog,
     Divider,
     Fab,
+    FormControl,
     FormControlLabel,
+    FormGroup,
+    FormLabel,
     IconButton,
     LocalizationProvider,
     MenuItem,
