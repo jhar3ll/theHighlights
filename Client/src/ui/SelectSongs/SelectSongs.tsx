@@ -7,6 +7,7 @@ import { newSetlistType } from "../../data/types";
 import { capitalizeWords } from "../../util/capitalizeWords";
 import { AdminContext } from "../../contexts/contexts";
 import { SetlistAPI } from "../../api/SetlistAPI";
+import { getSongLabel } from "../../util/getSongLabel";
 
 const { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, FormGroup } = Library;
 
@@ -32,7 +33,7 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
     },[]);
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>){
-        const { value } = JSON.parse(event.target.value);
+        const value = JSON.parse(event.target.value);
         const label = `${value.artist} - ${value.title}`;
         setSelectedSongs(prevState => ({...prevState, [label]: prevState[label] ? null : value}));
     };
@@ -40,6 +41,7 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
     async function handleSubmit() {
         let newSetlistResult;
         const songs: LazySong[] = Object.values(selectedSongs).filter((s): s is LazySong => s !== null);
+       
         const { eventID, setNumber, title } = setlistInfo;
         if (!currentUser) return setAlertMessage && setAlertMessage({duration: 2500, message: "Unable to retrieve user", severity: "error"});
         const addedBy = currentUser ? currentUser.name : "";
@@ -69,11 +71,11 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
                         <FormGroup>
                             <div className="availableSongsListContainer">
                                 {availableSongs.map((song, index) => {
-                                    const label = `${song.artist} - ${song.title}`;
+                                    const label = getSongLabel(song);
                                     return (
                                         <FormControlLabel 
                                             key={index} 
-                                            control={ <Checkbox checked={!!selectedSongs[label]} onChange={handleChange} value={label}/>} 
+                                            control={ <Checkbox checked={!!selectedSongs[label]} onChange={handleChange} value={JSON.stringify(song)}/>} 
                                             label={label} 
                                         />
                                     )

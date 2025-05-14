@@ -12,7 +12,7 @@ const { dayjs, Dialog, Fab } = Library;
 
 const AdminSetlist = () => {
   const availableEvents = useRef<Event[]>([]);
-  const currentSetlist = useRef(null);
+  const currentSetlist = useRef<Setlist|null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [setlists, setSetlists] = useState<SetlistWithEvent[]|null>(null);
 
@@ -43,7 +43,8 @@ const AdminSetlist = () => {
   }
 
   function handleViewSetlist(setlist: Setlist){
-    console.log(setlist);
+    currentSetlist.current = setlist;
+    setDialogOpen(true);
   }
   
   return (
