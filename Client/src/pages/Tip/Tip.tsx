@@ -5,6 +5,7 @@ import Pay from "../../ui/Pay/Pay";
 import { tipInfoType } from "../../data/types";
 import { SongsAPI } from "../../api/SongsAPI";
 import { Song } from "../../models";
+import { getSongLabel } from "../../util/getSongLabel";
 
 const { Button, FormControlLabel, Radio, RadioGroup, TextField } = Library;
 const { AttachMoneyIcon, LibraryMusicIcon } = Icons;
@@ -69,7 +70,7 @@ const Tip = () => {
   }
 
   function handleSongSelection(event: React.ChangeEvent<HTMLInputElement>) {
-    const songIndex = songList.findIndex(song => song.id === Number(event.target.value));
+    const songIndex = songList.findIndex(song => getSongLabel(song) === event.target.value);
     if (!songIndex) return;
     setSongSelection(songList[songIndex]);
   }
@@ -118,12 +119,12 @@ const Tip = () => {
           />
         </div>
         <div className="songListContainer">
-          <RadioGroup className="songSelectionRadioGroup" value={songSelection && songSelection.id} onChange={handleSongSelection}>
+          <RadioGroup className="songSelectionRadioGroup" value={songSelection && getSongLabel(songSelection)} onChange={handleSongSelection}>
             {songList.map((song, index) => (
               <FormControlLabel 
                 className="songSelectionRadio"
                 key={index} 
-                value={song.id} 
+                value={getSongLabel(song)} 
                 control={<Radio style={{color: "white"}}/>} label={`${song.artist} - ${song.title}`} 
               />
             ))}

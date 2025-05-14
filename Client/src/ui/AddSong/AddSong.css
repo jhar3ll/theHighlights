@@ -16,6 +16,10 @@
     text-transform: capitalize;
 }
 
+.addSongMain h3{
+    color: red;
+}
+
 .addSongMain span {
     font-size: 12px;
     font-style: italic;

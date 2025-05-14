@@ -16,7 +16,10 @@ const AdminSongs = () => {
     async function getAllSongs() {
       if (!songs.length){
         const allSongs = await SongsAPI.getUserSongsList();
-        if (allSongs) setSongs(allSongs)
+        if (allSongs) setSongs([...allSongs].sort((a,b) => {
+          if (a.artist === b.artist) return a.title.localeCompare(b.title)
+          else return a.artist.localeCompare(b.artist);
+        }));
       }
     }
 
