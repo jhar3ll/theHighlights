@@ -18,27 +18,25 @@ type SelectSongsProps = {
     setlistToEdit: Setlist|null
 }
 
-type songObjectType = {[key:string]:LazySong|null}
-
 const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSongsProps) => {
     const [availableSongs, setAvailableSongs] = useState<Song[]>([]);
-    const { currentUser, setAlertMessage } = useContext(AdminContext) || {};
     const controls = useDragControls();
+    const { currentUser, setAlertMessage } = useContext(AdminContext) || {};
     const [loading, setLoading] = useState(true);
-    const [selectedSongs, setSelectedSongs] = useState<songObjectType>({});
+    const [selectedSongs, setSelectedSongs] = useState<Song[]>([]);
+    const selectedSongsMap = selectedSongs.map(song => getSongLabel(song));
 
     useEffect(() => {
         async function getAllSongs() {
             const allSongs = await SongsAPI.getUserSongsList();
-            allSongs && setAvailableSongs(allSongs);
+            if (!allSongs) return;
+            setAvailableSongs(allSongs);
             setLoading(false);
         }
 
         function checkEditingSelectedSongs(){
             if (!setlistToEdit) return;
-            const incomingSelectedSongs:songObjectType = {};
-            setlistToEdit.songs.forEach(song => incomingSelectedSongs[getSongLabel(song)] = song);
-            setSelectedSongs(incomingSelectedSongs);
+            setSelectedSongs(setlistToEdit.songs);
         }
 
         getAllSongs();
@@ -46,9 +44,16 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
     },[setlistToEdit]);
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>){
-        const value = JSON.parse(event.target.value);
-        const label = `${value.artist} - ${value.title}`;
-        setSelectedSongs(prevState => ({...prevState, [label]: prevState[label] ? null : value}));
+        const song = JSON.parse(event.target.value);
+        const songLabel = getSongLabel(song);
+        if (!song) return;
+        setSelectedSongs(prevState => {
+            if (selectedSongsMap.includes(songLabel)) {
+                return prevState.filter(s => getSongLabel(s) !== songLabel);
+            } else {
+                return [...prevState, song];
+            }
+        });
     };
 
     async function handleSubmit() {
@@ -74,7 +79,7 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
           });
         }
     }
-   console.log(availableSongs)
+    
     return (
         <div>
             {loading ? <CircularProgress /> :
@@ -83,23 +88,19 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
                         <h3>Select Songs For Setlist "{capitalizeWords(setlistInfo.title)}" (Set #{setlistInfo.setNumber})</h3>
                         <FormGroup>
                             <div className="availableSongsListContainer">
-                                <Reorder.Group values={availableSongs} onReorder={setAvailableSongs}>
-                                    {availableSongs.map((song, index) => {
-                                        const label = getSongLabel(song);
-                                        return (
-                                            <Reorder.Item as="div" key={index} dragControls={controls} value={song}>
-                                                <div className="availableSongsListItem">
-                                                    <FormControlLabel 
-                                                        key={index} 
-                                                        control={ <Checkbox checked={!!selectedSongs[label]} value={JSON.stringify(song)}/>} 
-                                                        label={label} 
-                                                    />
-                                                    <IconButton onPointerDown={(e) => controls.start(e)}><DragHandleIcon /></IconButton>
-                                                </div>
-                                            </Reorder.Item>
-                                        )
-                                    })}
-                                </Reorder.Group>
+                                {availableSongs.map((song, index) => {
+                                    const label = getSongLabel(song);
+                                    return (
+                                        <div className="availableSongsListItem">
+                                            <FormControlLabel 
+                                                key={index} 
+                                                control={ <Checkbox checked={selectedSongsMap.includes(label)} onChange={handleChange} value={JSON.stringify(song)}/>} 
+                                                label
+                                            />
+                                            <span>{label}</span>
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </FormGroup>
                     </FormControl>

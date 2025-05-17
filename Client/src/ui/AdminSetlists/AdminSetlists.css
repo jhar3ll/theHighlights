@@ -16,6 +16,10 @@
     width: 90%;
 }
 
+.singleSetlistContainer .css-mnflth-MuiButtonBase-root-MuiButton-root{
+    margin-top: 15px;
+}
+
 .singleSetlistHeader {
     display: flex;
     flex-direction: column;

@@ -5,8 +5,7 @@
 .availableSongsListContainer{
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    padding-left: 20px;
+    justify-content: start;
     max-height: 50vh;
     overflow-y: auto;
 }
@@ -14,13 +13,15 @@
 .availableSongsListContainer .css-19opgx6-MuiFormControlLabel-root {
     align-items: center;
     display: flex;
+    justify-content: start;
 }
 
-.availableSongsListContainer ul li {
-    list-style: none;
+.availableSongsListContainer ul {
+    padding: 30px;
 }
 
 .availableSongsListItem {
+    align-items: center;
     display: flex;
 }
 

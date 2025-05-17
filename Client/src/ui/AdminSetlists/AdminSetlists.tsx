@@ -1,22 +1,27 @@
 import "./AdminSetlists.css";
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { AWS_Services, Icons, Library } from "../../lib/library";
 import AddSetlist from "../AddSetlist/AddSetlist";
-import { Event, Setlist } from "../../models";
+import { Event, Setlist, Song } from "../../models";
 import { SetlistAPI } from "../../api/SetlistAPI";
 import { EventsAPI } from "../../api/EventsAPI";
 import { SetlistWithEvent } from "../../data/types";
 import { getSongLabel } from "../../util/getSongLabel";
+import { AdminContext } from "../../contexts/contexts";
 const { DataStore } = AWS_Services;
-const { AddIcon, ClearIcon, EditIcon, VisibilityIcon } = Icons;
-const { dayjs, Dialog, Fab, IconButton } = Library;
+const { AddIcon, ClearIcon, DragHandleIcon, EditIcon, VisibilityIcon } = Icons;
+const { Button, dayjs, Dialog, Fab, IconButton, Reorder, useDragControls } = Library;
 
 const AdminSetlist = () => {
+  const { setAlertMessage } = useContext(AdminContext) || {};
+  const controls = useDragControls();
   const availableEvents = useRef<Event[]>([]);
   const currentSetlist = useRef<Setlist|null>(null);
+  const reordered = useRef(false);
   const [completedSongs, setCompletedSongs] = useState<number[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [setlists, setSetlists] = useState<SetlistWithEvent[]|null>(null);
+  const [setlistSongs, setSetlistSongs] = useState<Song[]>([])
   const [singleSetlist, setSingleSetlist] = useState<SetlistWithEvent|null>(null);
 
   useEffect(() => {
@@ -49,15 +54,44 @@ const AdminSetlist = () => {
     setDialogOpen(false);
   }
 
+  function handleReorder(songs: Song[]){
+    reordered.current = true;
+    setSetlistSongs(songs);
+  }
+
+  function handleSetlist(setlist: SetlistWithEvent){
+    currentSetlist.current = setlist;
+    setSingleSetlist(setlist);
+    setSetlistSongs(setlist.songs);
+  }
+
   function handleSongToggle(index: number){
     const completedSongsCopy = [...completedSongs];
-    
     if (completedSongs.includes(index)){
       const songIndex = completedSongsCopy.findIndex(i => i === index);
       completedSongsCopy.splice(songIndex, 1);
     } else completedSongsCopy.push(index);
-    
     setCompletedSongs(completedSongsCopy);  
+  }
+
+  async function handleUpdateSetlist() {
+    console.log(currentSetlist.current)
+    if (!currentSetlist.current?.id) throw new Error("Setlist ID is missing.");
+    
+    const updateResult = await SetlistAPI.updateSetlist({
+      ...currentSetlist.current,
+      id: currentSetlist.current.id,
+      songs: setlistSongs
+    });
+    if (updateResult && updateResult.result === "SUCCESS"){
+      setAlertMessage && setAlertMessage({
+        duration: 2500, 
+        message: `Successfully updated setlist ${updateResult.setlistOutput?.title}`,
+        open: true,
+        severity: "success"
+      });
+    }
+    setSingleSetlist(null);
   }
 
   function handleViewSetlist(setlist: Setlist){
@@ -77,27 +111,33 @@ const AdminSetlist = () => {
       </div>
 
       {singleSetlist ? 
-        <div>
-            <IconButton onClick={() => setSingleSetlist(null)}><ClearIcon htmlColor="white" fontSize="large"/></IconButton>
-            <div className="singleSetlistHeader">
-              <span>Setlist: <strong>{singleSetlist.title}</strong></span>
-              <span>Event: <strong>{singleSetlist.event.title}</strong></span>
-            </div>
-            <div>
-              <h3>Set #{singleSetlist.setNumber}</h3>
-              <ul className="singleSetlistItemContainer">
-                {singleSetlist.songs.map((song, index) => 
-                  <li 
-                    className="singleSetlistItem" 
-                    key={index} 
-                    onClick={() => handleSongToggle(index)}
+        <div className="singleSetlistContainer">
+          <IconButton onClick={() => setSingleSetlist(null)}><ClearIcon htmlColor="white" fontSize="large"/></IconButton>
+          <div className="singleSetlistHeader">
+            <span>Setlist: <strong>{singleSetlist.title}</strong></span>
+            <span>Event: <strong>{singleSetlist.event.title}</strong></span>
+          </div>
+          <div>
+            <h3>Set #{singleSetlist.setNumber}</h3>
+            <Reorder.Group className="singleSetlistItemContainer" as="div" axis="y" onReorder={(songs) => handleReorder(songs)} values={setlistSongs}>
+              {setlistSongs.map((song, index) => {
+                const label = getSongLabel(song);
+                return (
+                  <Reorder.Item
+                    className="singleSetlistItem"
+                    dragControls={controls}
+                    key={label} 
                     style={{textDecorationLine: completedSongs.includes(index) ? "line-through" : ""}}
+                    value={song}
                   >
-                    <span>{getSongLabel(song)}</span>
-                  </li>
+                  <span onClick={() => handleSongToggle(index)}>{getSongLabel(song)}</span>
+                  <IconButton onPointerDown={(e) => { controls.start(e)}}><DragHandleIcon htmlColor="white" /></IconButton>
+                </Reorder.Item>
                 )}
-              </ul>
-            </div>
+              )}
+            </Reorder.Group>
+          </div>
+          {reordered.current && <Button color="info" onClick={handleUpdateSetlist} variant="contained">Update</Button>}
         </div>
         :
         <table className='allSetlistsTableContainer'>
@@ -117,7 +157,7 @@ const AdminSetlist = () => {
                 <tr key={index}>
                   <td>
                     <div>
-                      <IconButton onClick={() => setSingleSetlist(setlist)}><VisibilityIcon fontSize="large" htmlColor="lightblue"/></IconButton>
+                      <IconButton onClick={() => handleSetlist(setlist)}><VisibilityIcon fontSize="large" htmlColor="lightblue"/></IconButton>
                       <IconButton onClick={() => handleViewSetlist(setlist)}><EditIcon fontSize="large" htmlColor="lightblue"/></IconButton>
                     </div>
                   </td>
