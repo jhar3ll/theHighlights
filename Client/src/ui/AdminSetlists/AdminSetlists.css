@@ -10,3 +10,34 @@
     flex-direction: column;
     justify-content: center;
 }
+
+.allSetlistsTableContainer {
+    margin: auto;
+    width: 90%;
+}
+
+.singleSetlistHeader {
+    display: flex;
+    flex-direction: column;
+}
+
+.singleSetlistItem {
+    list-style-position: inside;
+    list-style-type: decimal;
+}
+
+.singleSetlistItemContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.singleSetlistItem span:hover{
+    cursor: pointer;
+    opacity: 50%;
+}
+
+.singleSetlistItem span {
+    color: lightblue;   
+}

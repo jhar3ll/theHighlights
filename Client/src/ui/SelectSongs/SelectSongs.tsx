@@ -1,6 +1,6 @@
 import "./SelectSongs.css";
 import React, { useContext, useEffect, useState } from 'react';
-import { Library } from "../../lib/library";
+import { Icons, Library } from "../../lib/library";
 import { LazySong, Setlist, Song } from "../../models";
 import { SongsAPI } from "../../api/SongsAPI";
 import { newSetlistType } from "../../data/types";
@@ -9,7 +9,8 @@ import { AdminContext } from "../../contexts/contexts";
 import { SetlistAPI } from "../../api/SetlistAPI";
 import { getSongLabel } from "../../util/getSongLabel";
 
-const { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, FormGroup } = Library;
+const { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, FormGroup, IconButton, Reorder, useDragControls } = Library;
+const { DragHandleIcon } = Icons;
 
 type SelectSongsProps = {
     handleCloseDialog: React.Dispatch<React.SetStateAction<boolean>>
@@ -17,11 +18,14 @@ type SelectSongsProps = {
     setlistToEdit: Setlist|null
 }
 
+type songObjectType = {[key:string]:LazySong|null}
+
 const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSongsProps) => {
     const [availableSongs, setAvailableSongs] = useState<Song[]>([]);
     const { currentUser, setAlertMessage } = useContext(AdminContext) || {};
+    const controls = useDragControls();
     const [loading, setLoading] = useState(true);
-    const [selectedSongs, setSelectedSongs] = useState<{[key:string]:LazySong|null}>({});
+    const [selectedSongs, setSelectedSongs] = useState<songObjectType>({});
 
     useEffect(() => {
         async function getAllSongs() {
@@ -29,8 +33,17 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
             allSongs && setAvailableSongs(allSongs);
             setLoading(false);
         }
+
+        function checkEditingSelectedSongs(){
+            if (!setlistToEdit) return;
+            const incomingSelectedSongs:songObjectType = {};
+            setlistToEdit.songs.forEach(song => incomingSelectedSongs[getSongLabel(song)] = song);
+            setSelectedSongs(incomingSelectedSongs);
+        }
+
         getAllSongs();
-    },[]);
+        checkEditingSelectedSongs();
+    },[setlistToEdit]);
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>){
         const value = JSON.parse(event.target.value);
@@ -61,7 +74,7 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
           });
         }
     }
-
+   console.log(availableSongs)
     return (
         <div>
             {loading ? <CircularProgress /> :
@@ -70,16 +83,23 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
                         <h3>Select Songs For Setlist "{capitalizeWords(setlistInfo.title)}" (Set #{setlistInfo.setNumber})</h3>
                         <FormGroup>
                             <div className="availableSongsListContainer">
-                                {availableSongs.map((song, index) => {
-                                    const label = getSongLabel(song);
-                                    return (
-                                        <FormControlLabel 
-                                            key={index} 
-                                            control={ <Checkbox checked={!!selectedSongs[label]} onChange={handleChange} value={JSON.stringify(song)}/>} 
-                                            label={label} 
-                                        />
-                                    )
-                                })}
+                                <Reorder.Group values={availableSongs} onReorder={setAvailableSongs}>
+                                    {availableSongs.map((song, index) => {
+                                        const label = getSongLabel(song);
+                                        return (
+                                            <Reorder.Item as="div" key={index} dragControls={controls} value={song}>
+                                                <div className="availableSongsListItem">
+                                                    <FormControlLabel 
+                                                        key={index} 
+                                                        control={ <Checkbox checked={!!selectedSongs[label]} value={JSON.stringify(song)}/>} 
+                                                        label={label} 
+                                                    />
+                                                    <IconButton onPointerDown={(e) => controls.start(e)}><DragHandleIcon /></IconButton>
+                                                </div>
+                                            </Reorder.Item>
+                                        )
+                                    })}
+                                </Reorder.Group>
                             </div>
                         </FormGroup>
                     </FormControl>

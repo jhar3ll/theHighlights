@@ -16,6 +16,14 @@
     display: flex;
 }
 
+.availableSongsListContainer ul li {
+    list-style: none;
+}
+
+.availableSongsListItem {
+    display: flex;
+}
+
 .selectSongsButtonsContainer {
     display: flex;
     justify-content: space-around;

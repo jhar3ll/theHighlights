@@ -5,6 +5,7 @@ import { Hub } from "aws-amplify/utils";
 import { Authenticator } from "@aws-amplify/ui-react";
 import dayjs from 'dayjs';
 import type { Dayjs } from "dayjs";
+import { Reorder, useDragControls } from "framer-motion"
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Alert from '@mui/material/Alert';
@@ -38,6 +39,8 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
+import EditIcon from '@mui/icons-material/Edit';
 import EventIcon from '@mui/icons-material/Event';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -48,6 +51,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import RestoreIcon from '@mui/icons-material/Restore';
 import SearchIcon from '@mui/icons-material/Search';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 
 import { BrowserRouter, Link, Route, Routes, useLocation, useNavigate, useParams, parsePath } from "react-router-dom";
@@ -72,6 +76,8 @@ export const Icons = {
     CalendarMonthIcon,
     CheckIcon,
     ClearIcon,
+    DragHandleIcon,
+    EditIcon,
     EventIcon,
     FacebookIcon,
     InstagramIcon,
@@ -81,6 +87,7 @@ export const Icons = {
     QueueMusicIcon,
     RestoreIcon,
     SearchIcon,
+    VisibilityIcon,
     YouTubeIcon
 }
 
@@ -109,9 +116,11 @@ export const Library = {
     PickersDay,
     Radio,
     RadioGroup,
+    Reorder,
     Router: { BrowserRouter, Link, Route, Routes, useLocation, useNavigate, useParams,  parsePath },
     Snackbar,
-    TextField
+    TextField,
+    useDragControls
 }
 
 export { Dayjs, PickersDayProps, PickerValidDate };

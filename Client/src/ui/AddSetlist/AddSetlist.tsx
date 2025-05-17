@@ -43,7 +43,7 @@ const AddSetlist = ({ availableEvents, setlistToEdit }: AddSetlistProps) => {
   }
   
   return (
-    <div className='addSongMain'>
+    <div className='addSetlistMain'>
       <Confirmation 
         confirmFunction={async () => await handleDelete()}
         message={<span className="confirmDeleteText">Delete setlist <strong>{setlistToEdit?.title}</strong> ? </span>}
@@ -51,10 +51,12 @@ const AddSetlist = ({ availableEvents, setlistToEdit }: AddSetlistProps) => {
         setOpen={setConfirmOpen}
       />
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-        <SelectSongs handleCloseDialog={setDialogOpen} setlistInfo={setlistInfo} setlistToEdit={setlistToEdit}/>
+        <SelectSongs handleCloseDialog={setDialogOpen} setlistInfo={setlistInfo} setlistToEdit={setlistToEdit} />
       </Dialog>
 
       <h2>{setlistToEdit ? "Update Setlist" : "Add New Setlist"}</h2>
+
+      {setlistToEdit && <h3>Songs: <span>{setlistInfo.songs.length}</span></h3>}
       
       <div className='addSetlistFormFieldsContainer'>
         <TextField

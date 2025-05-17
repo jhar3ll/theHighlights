@@ -6,15 +6,18 @@ import { Event, Setlist } from "../../models";
 import { SetlistAPI } from "../../api/SetlistAPI";
 import { EventsAPI } from "../../api/EventsAPI";
 import { SetlistWithEvent } from "../../data/types";
+import { getSongLabel } from "../../util/getSongLabel";
 const { DataStore } = AWS_Services;
-const { AddIcon } = Icons;
-const { dayjs, Dialog, Fab } = Library;
+const { AddIcon, ClearIcon, EditIcon, VisibilityIcon } = Icons;
+const { dayjs, Dialog, Fab, IconButton } = Library;
 
 const AdminSetlist = () => {
   const availableEvents = useRef<Event[]>([]);
   const currentSetlist = useRef<Setlist|null>(null);
+  const [completedSongs, setCompletedSongs] = useState<number[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [setlists, setSetlists] = useState<SetlistWithEvent[]|null>(null);
+  const [singleSetlist, setSingleSetlist] = useState<SetlistWithEvent|null>(null);
 
   useEffect(() => {
     async function getSetlistsWithEvents(modelSetlists: Setlist[]){
@@ -30,7 +33,6 @@ const AdminSetlist = () => {
       availableEvents.current = await EventsAPI.listEvents() || [];
       if (allSetlists){
         const setlistsWithSongsAndEvents = await getSetlistsWithEvents(allSetlists);
-        console.log(setlistsWithSongsAndEvents)
         setSetlists(setlistsWithSongsAndEvents as any)
       }
     }
@@ -42,6 +44,22 @@ const AdminSetlist = () => {
     return dayjs(eventDateTime).format("MM/DD/YY");
   }
 
+  function handleDialogClose(){
+    currentSetlist.current = null;
+    setDialogOpen(false);
+  }
+
+  function handleSongToggle(index: number){
+    const completedSongsCopy = [...completedSongs];
+    
+    if (completedSongs.includes(index)){
+      const songIndex = completedSongsCopy.findIndex(i => i === index);
+      completedSongsCopy.splice(songIndex, 1);
+    } else completedSongsCopy.push(index);
+    
+    setCompletedSongs(completedSongsCopy);  
+  }
+
   function handleViewSetlist(setlist: Setlist){
     currentSetlist.current = setlist;
     setDialogOpen(true);
@@ -49,7 +67,7 @@ const AdminSetlist = () => {
   
   return (
     <div className="adminSetlistsMain">
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+      <Dialog open={dialogOpen} onClose={handleDialogClose}>
         <AddSetlist availableEvents={availableEvents.current} setlistToEdit={currentSetlist.current}/>
       </Dialog>
 
@@ -58,30 +76,62 @@ const AdminSetlist = () => {
         <Fab color="primary" onClick={() => setDialogOpen(true)} size="large"><AddIcon /></Fab>
       </div>
 
-      <table className='allSetlistsTableContainer'>
+      {singleSetlist ? 
+        <div>
+            <IconButton onClick={() => setSingleSetlist(null)}><ClearIcon htmlColor="white" fontSize="large"/></IconButton>
+            <div className="singleSetlistHeader">
+              <span>Setlist: <strong>{singleSetlist.title}</strong></span>
+              <span>Event: <strong>{singleSetlist.event.title}</strong></span>
+            </div>
+            <div>
+              <h3>Set #{singleSetlist.setNumber}</h3>
+              <ul className="singleSetlistItemContainer">
+                {singleSetlist.songs.map((song, index) => 
+                  <li 
+                    className="singleSetlistItem" 
+                    key={index} 
+                    onClick={() => handleSongToggle(index)}
+                    style={{textDecorationLine: completedSongs.includes(index) ? "line-through" : ""}}
+                  >
+                    <span>{getSongLabel(song)}</span>
+                  </li>
+                )}
+              </ul>
+            </div>
+        </div>
+        :
+        <table className='allSetlistsTableContainer'>
           <thead>
-          <tr>
+            <tr>
+              <th />
               <th>Title</th>
               <th>Event</th>
               <th>Set #</th>
               <th># Of Songs</th>
               <th>Added By</th>
-          </tr>
+            </tr>
           </thead>
           <tbody>
             {setlists && setlists.map((setlist, index) => {
               return (
-                <tr key={index} onClick={() => handleViewSetlist(setlist)}>
-                    <td>{setlist.title}</td>
-                    {<td>{setlist.event.title} | {getEventDateTime(setlist.event.dateTime)}</td>}
-                    <td>{setlist.setNumber || "-"}</td>
-                    <td>{123}</td>
-                    <td>{setlist.addedBy}</td>
+                <tr key={index}>
+                  <td>
+                    <div>
+                      <IconButton onClick={() => setSingleSetlist(setlist)}><VisibilityIcon fontSize="large" htmlColor="lightblue"/></IconButton>
+                      <IconButton onClick={() => handleViewSetlist(setlist)}><EditIcon fontSize="large" htmlColor="lightblue"/></IconButton>
+                    </div>
+                  </td>
+                  <td>{setlist.title}</td>
+                  {<td>{setlist.event.title} | {getEventDateTime(setlist.event.dateTime)}</td>}
+                  <td>{setlist.setNumber || "-"}</td>
+                  <td>{setlist.songs.length}</td>
+                  <td>{setlist.addedBy}</td>
                 </tr>
               )})
             }
           </tbody>
-      </table>
+        </table>
+      }
     </div>
   )
 }
