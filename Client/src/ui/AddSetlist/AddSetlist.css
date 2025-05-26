@@ -1,3 +1,9 @@
+.addSetlistErrorText {
+    color: red;
+    font-size: 16px;
+    font-weight: 500;
+}
+
 .addSetlistFormFieldsContainer {
     display: flex;
     flex-direction: column;

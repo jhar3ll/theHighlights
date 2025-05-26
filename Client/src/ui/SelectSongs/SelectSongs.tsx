@@ -1,7 +1,7 @@
 import "./SelectSongs.css";
 import React, { useContext, useEffect, useState } from 'react';
-import { Icons, Library } from "../../lib/library";
-import { LazySong, Setlist, Song } from "../../models";
+import { Library } from "../../lib/library";
+import { Setlist, Song } from "../../models";
 import { SongsAPI } from "../../api/SongsAPI";
 import { newSetlistType } from "../../data/types";
 import { capitalizeWords } from "../../util/capitalizeWords";
@@ -9,8 +9,7 @@ import { AdminContext } from "../../contexts/contexts";
 import { SetlistAPI } from "../../api/SetlistAPI";
 import { getSongLabel } from "../../util/getSongLabel";
 
-const { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, FormGroup, IconButton, Reorder, useDragControls } = Library;
-const { DragHandleIcon } = Icons;
+const { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, FormGroup } = Library;
 
 type SelectSongsProps = {
     handleCloseDialog: React.Dispatch<React.SetStateAction<boolean>>
@@ -19,12 +18,11 @@ type SelectSongsProps = {
 }
 
 const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSongsProps) => {
-    const [availableSongs, setAvailableSongs] = useState<Song[]>([]);
-    const controls = useDragControls();
     const { currentUser, setAlertMessage } = useContext(AdminContext) || {};
+    const [availableSongs, setAvailableSongs] = useState<Song[]>([]);
     const [loading, setLoading] = useState(true);
-    const [selectedSongs, setSelectedSongs] = useState<Song[]>([]);
-    const selectedSongsMap = selectedSongs.map(song => getSongLabel(song));
+    const [songs, setSelectedSongs] = useState<Song[]>([]);
+    const selectedSongsMap = songs.map(song => getSongLabel(song));
 
     useEffect(() => {
         async function getAllSongs() {
@@ -58,9 +56,8 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
 
     async function handleSubmit() {
         let newSetlistResult;
-        const songs: LazySong[] = Object.values(selectedSongs).filter((s): s is LazySong => s !== null);
-       
         const { eventID, setNumber, title } = setlistInfo;
+        
         if (!currentUser) return setAlertMessage && setAlertMessage({duration: 2500, message: "Unable to retrieve user", severity: "error"});
         const addedBy = currentUser ? currentUser.name : "";
     
@@ -91,7 +88,7 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
                                 {availableSongs.map((song, index) => {
                                     const label = getSongLabel(song);
                                     return (
-                                        <div className="availableSongsListItem">
+                                        <div className="availableSongsListItem" key={index}>
                                             <FormControlLabel 
                                                 key={index} 
                                                 control={ <Checkbox checked={selectedSongsMap.includes(label)} onChange={handleChange} value={JSON.stringify(song)}/>} 
@@ -108,7 +105,7 @@ const SelectSongs = ({ handleCloseDialog, setlistInfo, setlistToEdit }:SelectSon
             }
             <div className="selectSongsButtonsContainer">
                 <Button color="warning" onClick={() => handleCloseDialog(false)} size="large" variant="contained">Back</Button>
-                <Button onClick={handleSubmit} size="large" variant="contained">Done</Button>
+                <Button disabled={!songs.length} onClick={handleSubmit} size="large" variant="contained">Done</Button>
             </div>
         </div>
     )

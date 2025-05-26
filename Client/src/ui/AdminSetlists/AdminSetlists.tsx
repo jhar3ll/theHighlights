@@ -49,6 +49,11 @@ const AdminSetlist = () => {
     return dayjs(eventDateTime).format("MM/DD/YY");
   }
 
+  function handleClearSetlist(){
+    currentSetlist.current = null;
+    setSingleSetlist(null);
+  }
+
   function handleDialogClose(){
     currentSetlist.current = null;
     setDialogOpen(false);
@@ -75,7 +80,6 @@ const AdminSetlist = () => {
   }
 
   async function handleUpdateSetlist() {
-    console.log(currentSetlist.current)
     if (!currentSetlist.current?.id) throw new Error("Setlist ID is missing.");
     
     const updateResult = await SetlistAPI.updateSetlist({
@@ -83,6 +87,7 @@ const AdminSetlist = () => {
       id: currentSetlist.current.id,
       songs: setlistSongs
     });
+    
     if (updateResult && updateResult.result === "SUCCESS"){
       setAlertMessage && setAlertMessage({
         duration: 2500, 
@@ -107,12 +112,12 @@ const AdminSetlist = () => {
 
       <div className='adminSetlistsHeader'>
         <h1>Highlights Setlists</h1>
-        <Fab color="primary" onClick={() => setDialogOpen(true)} size="large"><AddIcon /></Fab>
+        <Fab color="primary" disabled={!!currentSetlist.current} onClick={() => setDialogOpen(true)} size="large"><AddIcon /></Fab>
       </div>
 
       {singleSetlist ? 
         <div className="singleSetlistContainer">
-          <IconButton onClick={() => setSingleSetlist(null)}><ClearIcon htmlColor="white" fontSize="large"/></IconButton>
+          <IconButton onClick={handleClearSetlist}><ClearIcon htmlColor="white" fontSize="large"/></IconButton>
           <div className="singleSetlistHeader">
             <span>Setlist: <strong>{singleSetlist.title}</strong></span>
             <span>Event: <strong>{singleSetlist.event.title}</strong></span>

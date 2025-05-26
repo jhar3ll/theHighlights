@@ -7,6 +7,7 @@ import { SetlistAPI } from '../../api/SetlistAPI';
 import Confirmation from '../Confirmation/Confirmation';
 import { Library } from '../../lib/library';
 import SelectSongs from '../SelectSongs/SelectSongs';
+import { EventsAPI } from "../../api/EventsAPI";
 const { Button, Dialog, MenuItem, TextField } = Library;
 
 type AddSetlistProps = {
@@ -25,8 +26,15 @@ const AddSetlist = ({ availableEvents, setlistToEdit }: AddSetlistProps) => {
   const [setlistInfo, setSetlistInfo] = useState<newSetlistType>(initialSet);
   const isFieldEmpty = Object.values(setlistInfo).some(field => !field);
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  async function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
+    if (name === "eventID"){
+      const event = await EventsAPI.getEvent(value);
+      if (event){
+        const setlists = await event.Setlists.toArray();
+        setSetlistInfo(prevState => ({ ...prevState, setNumber: setlists.length ? (setlists.length + 1) : 1 }));
+      } 
+    }
     setSetlistInfo(prevState => ({ ...prevState, [name]: value }));
   }
 
@@ -69,6 +77,7 @@ const AddSetlist = ({ availableEvents, setlistToEdit }: AddSetlistProps) => {
         <TextField 
           label="Set #"
           name='setNumber'
+          disabled={!setlistToEdit}
           onChange={handleChange}
           required
           type='number'
@@ -77,6 +86,7 @@ const AddSetlist = ({ availableEvents, setlistToEdit }: AddSetlistProps) => {
         <TextField 
           label="Event"
           name='eventID'
+          required
           onChange={handleChange}
           select
           value={setlistInfo.eventID}

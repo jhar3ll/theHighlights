@@ -28,6 +28,17 @@ async function createEvent({addedBy, address, dateTime, title}: EventCreateFormI
     }    
 }
 
+//get event by id
+async function getEvent(eventId: string): Promise<Event|undefined> {
+    try {
+        const event = await DataStore.query(Event, eventId);
+        if (!event) throw new Error("Unable to retrieve event with id: " + eventId);
+        return event;
+    } catch (error) {
+        console.log("getEventById() error: ", error);
+    }
+}
+
 //delete event
 async function deleteEvent(event:Event):Promise<"SUCCESS"|"FAIL"|undefined> {
     try {
@@ -60,8 +71,9 @@ async function updateEvent(event: Event): Promise<{result: "SUCCESS"|"FAIL", eve
 }
 
 export const EventsAPI = {
-    listEvents,
     createEvent,
     deleteEvent,
+    getEvent,
+    listEvents,
     updateEvent
 };
