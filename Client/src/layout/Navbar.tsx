@@ -1,6 +1,7 @@
 import "./Navbar.css";
-import React, { CSSProperties } from 'react'
+import { CSSProperties, useContext } from 'react'
 import { Icons, Library } from "../lib/library";
+import { ServiceContext } from "../contexts/contexts";
 const { Link, useLocation } = Library.Router;
 const { IconButton } = Library;
 const { FacebookIcon, InstagramIcon, YouTubeIcon } = Icons;
@@ -15,6 +16,7 @@ const Logo = () => {
 }
 
 const Navbar = () => {
+  const { currentUser } = useContext(ServiceContext) || {};
   const { pathname } = useLocation();
   const pages = [
     {name: "Tip", path: "/tip"},
@@ -33,18 +35,22 @@ const Navbar = () => {
         pointerEvents: "none"
       };
   }
-
+  
   return (
     <div className="navbarMain">
       <nav className="navbarContainer">
         <Logo />
         <ul className="navbarListContainer">
+          {currentUser && (
+            <li className="navbarListItem">
+              <Link to="/admin" style={getCurrentPageStyle("/admin") as {}}>Admin</Link>
+            </li>
+          )}
           {pages.map((page, index) => (
             <li key={index} className="navbarListItem">
               <Link to={page.path} style={getCurrentPageStyle(page.path) as {}}>{page.name}</Link>
             </li>
-            ))
-          }
+          ))}
         </ul>
       </nav>
       <div className="navbarSocialMediaContainer">

@@ -38,7 +38,7 @@ const AdminSetlist = () => {
       availableEvents.current = await EventsAPI.listEvents() || [];
       if (allSetlists){
         const setlistsWithSongsAndEvents = await getSetlistsWithEvents(allSetlists);
-        setSetlists(setlistsWithSongsAndEvents as any)
+        setSetlists(setlistsWithSongsAndEvents as any);
       }
     }
 

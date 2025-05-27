@@ -1,5 +1,5 @@
 import "./AddSong.css";
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Library } from '../../lib/library';
 import { SongsAPI } from "../../api/SongsAPI";
 import { AdminContext } from "../../contexts/contexts";
@@ -19,12 +19,7 @@ const AddSong = ({ songToEdit, userSongs }: {songToEdit: Song|null, userSongs: S
     const [songInfo, setSongInfo] = useState<Song>(initialSet);
     const isFieldEmpty = Object.entries(songInfo).some(([key, value]) => key !== "album" && !value);
     
-    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        const { name, value } = event.currentTarget;
-        setSongInfo(prevState => ({ ...prevState, [name]: capitalizeWords(value) }));
-    }
-
-    async function handleSubmit(remove?: boolean) {
+    const handleSubmit = useCallback(async (remove?: boolean) => {
         let newSongResult;
         if (!currentUser) return setAlertMessage && setAlertMessage({duration: 2500, message: "Unable to retrieve user", severity: "error"});
         const thisSongLabel = getSongLabel(songInfo);
@@ -33,7 +28,7 @@ const AddSong = ({ songToEdit, userSongs }: {songToEdit: Song|null, userSongs: S
         if (songToEdit){
             const thisSongIndex = updatedSongs.findIndex(song => (song.artist === songToEdit.artist) && (song.title === songToEdit.title));
             if (remove) updatedSongs.splice(thisSongIndex, 1);
-            else updatedSongs[thisSongIndex] = {...songToEdit};
+            else updatedSongs[thisSongIndex] = {...songInfo};
             newSongResult = await SongsAPI.updateUserSongs(updatedSongs);
         } else {
             if (updatedSongs.map(song => getSongLabel(song)).includes(thisSongLabel))
@@ -49,7 +44,24 @@ const AddSong = ({ songToEdit, userSongs }: {songToEdit: Song|null, userSongs: S
                 severity: "success"
             });
         }
+    }, [currentUser, setAlertMessage, songInfo, songToEdit, userSongs]);
+
+    useEffect(() => {
+        const listener = (event: KeyboardEvent) => {
+            if (event.key === "Enter" && !isFieldEmpty) {
+                event.preventDefault();
+                handleSubmit();
+            }
+        };
+        document.addEventListener("keydown", listener);
+        return () => { document.removeEventListener("keydown", listener)};
+    }, [handleSubmit, isFieldEmpty]);
+    
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.currentTarget;
+        setSongInfo(prevState => ({ ...prevState, [name]: capitalizeWords(value) }));
     }
+
 
     return (
         <div className='addSongMain'>
@@ -93,6 +105,7 @@ const AddSong = ({ songToEdit, userSongs }: {songToEdit: Song|null, userSongs: S
                     disabled={isFieldEmpty} 
                     onClick={() => handleSubmit()} 
                     style={{cursor: isFieldEmpty ? "not-allowed" : "pointer", pointerEvents: "all"}}
+                    type="submit"
                     variant="contained"
                 >submit</Button>
             </div>
