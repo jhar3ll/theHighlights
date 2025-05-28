@@ -45,6 +45,7 @@ import EventIcon from '@mui/icons-material/Event';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
+import LogoutIcon from '@mui/icons-material/Logout';
 import MessageIcon from '@mui/icons-material/Message';
 import MenuItem from '@mui/material/MenuItem';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
@@ -82,6 +83,7 @@ export const Icons = {
     FacebookIcon,
     InstagramIcon,
     LibraryMusicIcon,
+    LogoutIcon,
     MessageIcon,
     MonetizationOnIcon,
     QueueMusicIcon,

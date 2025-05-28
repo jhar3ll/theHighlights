@@ -1,5 +1,5 @@
 import "./Confirmation.css";
-import React, { JSX, ReactElement, ReactNode } from 'react'
+import React, { JSX } from 'react'
 import { Library } from '../../lib/library';
 const { Button, Dialog } = Library;
 

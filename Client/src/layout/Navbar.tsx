@@ -1,10 +1,11 @@
 import "./Navbar.css";
-import { CSSProperties, useContext } from 'react'
-import { Icons, Library } from "../lib/library";
+import { CSSProperties, useContext, useState } from 'react'
+import { AWS_Services, Icons, Library } from "../lib/library";
 import { ServiceContext } from "../contexts/contexts";
-const { Link, useLocation } = Library.Router;
+import Confirmation from "../ui/Confirmation/Confirmation";
+const { Link, useLocation, useNavigate } = Library.Router;
 const { IconButton } = Library;
-const { FacebookIcon, InstagramIcon, YouTubeIcon } = Icons;
+const { FacebookIcon, InstagramIcon, LogoutIcon, YouTubeIcon } = Icons;
 
 const Logo = () => {
   return (
@@ -18,6 +19,8 @@ const Logo = () => {
 const Navbar = () => {
   const { currentUser } = useContext(ServiceContext) || {};
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [confirm, setConfirm] = useState(false);
   const pages = [
     {name: "Tip", path: "/tip"},
     {name: "Events", path: "/events"},
@@ -36,15 +39,38 @@ const Navbar = () => {
       };
   }
   
+  async function handleSignOut(){
+    setConfirm(false);
+    try {
+      await AWS_Services.signOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  }
+
   return (
     <div className="navbarMain">
+      <Confirmation 
+        confirmFunction={handleSignOut} 
+        message="Are you sure you want to sign out?" 
+        open={confirm}
+        setOpen={setConfirm}
+      />
       <nav className="navbarContainer">
         <Logo />
         <ul className="navbarListContainer">
           {currentUser && (
-            <li className="navbarListItem">
-              <Link to="/admin" style={getCurrentPageStyle("/admin") as {}}>Admin</Link>
-            </li>
+            <div className="navbarUserContainer">
+              <li className="navbarListItem">
+                <IconButton className="navbarListItemIcon" onClick={() => setConfirm(true)} size="large">
+                  <LogoutIcon htmlColor="white" />
+                </IconButton>
+              </li>
+              <li className="navbarListItem">
+                <Link to="/admin" style={getCurrentPageStyle("/admin") as {}}>Admin</Link>
+              </li>
+            </div>
           )}
           {pages.map((page, index) => (
             <li key={index} className="navbarListItem">

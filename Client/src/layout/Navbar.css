@@ -8,10 +8,11 @@
 }
 
 .navbarListContainer{
+    align-items: center;
     display: flex;
     list-style: none;
     gap: 1rem;
-    padding: 1rem;
+    justify-content: center;
 }
 
 .navbarListContainer a {
@@ -45,4 +46,10 @@
     display: flex;
     gap: 1rem;
     justify-content: center;
+}
+
+.navbarUserContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
