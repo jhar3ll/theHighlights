@@ -19,6 +19,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { DateCalendar } from "@mui/x-date-pickers";
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
 import Fab from '@mui/material/Fab';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
@@ -46,6 +47,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
 import MessageIcon from '@mui/icons-material/Message';
 import MenuItem from '@mui/material/MenuItem';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
@@ -84,6 +86,7 @@ export const Icons = {
     InstagramIcon,
     LibraryMusicIcon,
     LogoutIcon,
+    MenuIcon,
     MessageIcon,
     MonetizationOnIcon,
     QueueMusicIcon,
@@ -107,6 +110,7 @@ export const Library = {
     dayjs,
     Dialog,
     Divider,
+    Drawer,
     Fab,
     FormControl,
     FormControlLabel,

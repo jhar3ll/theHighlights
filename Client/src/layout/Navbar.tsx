@@ -4,8 +4,8 @@ import { AWS_Services, Icons, Library } from "../lib/library";
 import { ServiceContext } from "../contexts/contexts";
 import Confirmation from "../ui/Confirmation/Confirmation";
 const { Link, useLocation, useNavigate } = Library.Router;
-const { IconButton } = Library;
-const { FacebookIcon, InstagramIcon, LogoutIcon, YouTubeIcon } = Icons;
+const { Drawer, IconButton } = Library;
+const { FacebookIcon, InstagramIcon, LogoutIcon, MenuIcon, YouTubeIcon } = Icons;
 
 const Logo = () => {
   return (
@@ -21,6 +21,7 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [confirm, setConfirm] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const pages = [
     {name: "Tip", path: "/tip"},
     {name: "Events", path: "/events"},
@@ -49,6 +50,30 @@ const Navbar = () => {
     }
   }
 
+  const NavbarListItems = () => {
+    return (
+      <ul className="navbarListContainer">
+        {currentUser && (
+          <div className="navbarUserContainer">
+            <li className="navbarListItem">
+              <IconButton className="navbarListItemIcon" onClick={() => setConfirm(true)} size="large">
+                <LogoutIcon htmlColor="white" />
+              </IconButton>
+            </li>
+            <li className="navbarListItem">
+              <Link to="/admin" style={getCurrentPageStyle("/admin") as {}}>Admin</Link>
+            </li>
+          </div>
+        )}
+        {pages.map((page, index) => (
+          <li key={index} className="navbarListItem">
+            <Link to={page.path} style={getCurrentPageStyle(page.path) as {}}>{page.name}</Link>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
   return (
     <div className="navbarMain">
       <Confirmation 
@@ -57,28 +82,24 @@ const Navbar = () => {
         open={confirm}
         setOpen={setConfirm}
       />
+      <Drawer 
+        anchor="right"
+        open={drawerOpen} 
+        onClose={() => setDrawerOpen(false)}
+        
+      >
+        <div className="navbarDrawerContainer">
+          <span>Hello the drawer is open :)</span>
+        </div>
+      </Drawer>
       <nav className="navbarContainer">
         <Logo />
-        <ul className="navbarListContainer">
-          {currentUser && (
-            <div className="navbarUserContainer">
-              <li className="navbarListItem">
-                <IconButton className="navbarListItemIcon" onClick={() => setConfirm(true)} size="large">
-                  <LogoutIcon htmlColor="white" />
-                </IconButton>
-              </li>
-              <li className="navbarListItem">
-                <Link to="/admin" style={getCurrentPageStyle("/admin") as {}}>Admin</Link>
-              </li>
-            </div>
-          )}
-          {pages.map((page, index) => (
-            <li key={index} className="navbarListItem">
-              <Link to={page.path} style={getCurrentPageStyle(page.path) as {}}>{page.name}</Link>
-            </li>
-          ))}
-        </ul>
+        <IconButton className="navbarMenuIcon" onClick={() => setDrawerOpen(true)} size="large">
+          <MenuIcon fontSize="inherit" htmlColor="white" />
+        </IconButton>
+        <NavbarListItems />
       </nav>
+
       <div className="navbarSocialMediaContainer">
         <IconButton className="navbarSocialMediaIcon" aria-label="facebook" size="large">
           <FacebookIcon fontSize="inherit" htmlColor="white" />

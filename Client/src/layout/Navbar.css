@@ -7,6 +7,10 @@
     padding: 5px 10px;
 }
 
+.navbarContainer .css-154kngp-MuiButtonBase-root-MuiIconButton-root {
+    display: none;
+}
+
 .navbarListContainer{
     align-items: center;
     display: flex;
@@ -39,17 +43,59 @@
 }
 
 .navbarMain {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     margin-bottom: 20px;
 }
 
 .navbarSocialMediaContainer {
     display: flex;
     gap: 1rem;
-    justify-content: center;
+    align-self: center;
 }
 
 .navbarUserContainer {
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+    .navbarContainer {
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .navbarContainer .css-154kngp-MuiButtonBase-root-MuiIconButton-root {
+        display: flex;
+    }
+
+    .navbarContainer .css-154kngp-MuiButtonBase-root-MuiIconButton-root:active {
+        opacity: 0.5;
+    }
+
+    .navbarDrawerContainer {
+        background-color: white;
+    }
+
+    .navbarListContainer {
+        display: none;
+    }
+    .navbarLogoContainer {
+        margin-left: 0;
+        
+    }
+
+    .navbarLogoContainer:hover, .navbarListContainer a:hover {
+        opacity: 1;
+    }
+
+    .navbarLogoContainer:active {
+        opacity: 0.5;
+    }
+
+    .navbarUserContainer {
+        display: none;
+    }
+    
 }
