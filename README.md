@@ -15,3 +15,5 @@ It is built on an AWS backend (AWS Amplify) and React for frontend. It also uses
 ![image](https://github.com/user-attachments/assets/fe9e5279-d388-49e0-85ae-7d1a5bcf6b4a)
 
 ![image](https://github.com/user-attachments/assets/8f13b34f-d1b2-4350-ae0f-12c04ed3cb8b)
+
+![image](https://github.com/user-attachments/assets/9d190db6-150c-451a-9377-827ef1db52d8)
